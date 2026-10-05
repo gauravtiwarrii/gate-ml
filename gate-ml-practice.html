@@ -3,19 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Practice Environment — GATE ML</title>
-<meta name="description" content="A premium GATE-style practice environment: 150 questions in MCQ, MSQ and NAT format, timed mocks with the real question palette, topic practice, review and flashcards.">
-<meta name="color-scheme" content="dark" />
-<meta name="theme-color" content="#0a0a0a" />
+<title>GATE ML Practice Questions – Mock Tests, Quizzes &amp; Flashcards</title>
+<meta name="description" content="Practise 150 GATE ML questions in MCQ, MSQ and NAT format with worked solutions, timed mock tests with real GATE marking, review mode and 60 flashcards.">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://gate-ml.vercel.app/gate-ml-practice.html" />
+<meta name="author" content="GATE ML">
+<meta name="theme-color" content="#0a0a0a" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="GATE ML" />
-<meta property="og:title" content="Practice Environment — GATE ML" />
-<meta property="og:description" content="150 exam-pattern questions, timed mocks with the GATE question palette, review mode and flashcards." />
+<meta property="og:title" content="GATE ML Practice Questions – Mock Tests, Quizzes &amp; Flashcards" />
+<meta property="og:description" content="150 exam-pattern GATE ML questions with worked solutions, timed mocks with real marking, review mode and flashcards." />
 <meta property="og:url" content="https://gate-ml.vercel.app/gate-ml-practice.html" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Practice Environment — GATE ML" />
-<meta name="twitter:description" content="150 exam-pattern questions, timed mocks, review mode and flashcards for GATE Data Science & AI." />
+<meta property="og:image" content="https://gate-ml.vercel.app/assets/og-cover.svg" />
+<meta property="og:image:alt" content="GATE ML practice environment" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="GATE ML Practice Questions – Mock Tests, Quizzes &amp; Flashcards" />
+<meta name="twitter:description" content="MCQ, MSQ and NAT questions, timed mocks, review mode and flashcards for GATE Data Science & AI." />
+<meta name="twitter:image" content="https://gate-ml.vercel.app/assets/og-cover.svg" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebPage","@id":"https://gate-ml.vercel.app/gate-ml-practice.html#webpage","url":"https://gate-ml.vercel.app/gate-ml-practice.html","name":"GATE ML Practice Questions – Mock Tests, Quizzes & Flashcards","description":"Practise 150 GATE ML questions in MCQ, MSQ and NAT format with worked solutions, timed mocks, review mode and flashcards.","isPartOf":{"@id":"https://gate-ml.vercel.app/#website"},"inLanguage":"en-IN","dateModified":"2026-10-06"},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://gate-ml.vercel.app/"},{"@type":"ListItem","position":2,"name":"Practice questions","item":"https://gate-ml.vercel.app/gate-ml-practice.html"}]},
+{"@type":"Quiz","@id":"https://gate-ml.vercel.app/gate-ml-practice.html#quiz","name":"GATE ML practice question bank","educationalLevel":"graduate","teaches":"Machine learning for GATE Data Science and AI","hasPart":[{"@type":"Question","name":"GATE-pattern MCQ, MSQ and NAT practice set","acceptedAnswer":{"@type":"Answer","text":"Worked solutions are shown in-app after answering; the indexed landing page describes the format without exposing the answer key."}}]}
+]}
+</script>
+<link rel="stylesheet" href="assets/seo.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -422,6 +434,8 @@ tbody tr:hover{background:var(--surface-2)}
     <nav class="sitenav" aria-label="Site">
       <a href="index.html">Hub</a>
       <a href="ml-guide.html">Guide</a>
+      <a href="topics/">Topics</a>
+      <a href="resources">Resources</a>
     </nav>
     <div class="clock" id="clock" hidden>00:00</div>
   </div>
@@ -1904,7 +1918,9 @@ function drawReport() {
     '<div class="row">' +
       '<button class="btn primary" id="goRev">Go through the answers</button>' +
       '<button class="btn" id="again">Take another paper</button>' +
-    '</div>';
+    '</div>' +
+    '<div class="ad-slot ad-slot--results" data-ad-slot="results" role="complementary" aria-label="Advertisement"></div>' +
+    '<p class="muted" style="font-size:12.5px">Keep going in the <a href="ml-guide.html">ML guide</a> or revise <a href="topics/">topic notes</a>.</p>';
 
   byId("again").addEventListener("click", function () { endMock(); S.ans = {}; drawMockSetup(); });
   byId("goRev").addEventListener("click", function () {
@@ -2116,6 +2132,23 @@ renderModes();
   if (t && TOPICS[t]) { S.tf = t; start = "practice"; }
   if (m && MODES.some(function (x) { return x.k === m; })) { start = m; }
   go(start);
+})();
+</script>
+<script src="site-config.js" defer></script>
+<script src="assets/seo.js" defer></script>
+<script src="assets/ads.js" defer></script>
+<script>
+/* Practice-funnel analytics (safe: dispatches even when GA is off). */
+(function () {
+  function emit(n, p) { try { if (window.GateMLTrack) window.GateMLTrack(n, p || {}); } catch (e) {} }
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest("button") : null;
+    if (!b || !b.id) return;
+    if (b.id === "startP") emit("practice_started", {});
+    if (b.id === "begin") emit("practice_started", { kind: "mock" });
+    if (b.id === "submit") emit("quiz_completed", { kind: "mock" });
+    if (b.id === "checkBtn") emit("question_answered", {});
+  });
 })();
 </script>
 

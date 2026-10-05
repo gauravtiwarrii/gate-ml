@@ -1,4 +1,18 @@
 User-agent: *
 Allow: /
 
+# Keep crawlers out of utility / private areas (no such areas are linked publicly).
+Disallow: /admin
+Disallow: /private
+Disallow: /api/
+Disallow: /internal
+Disallow: /debug
+
+# Practice sessions with query state are thin/duplicative — canonical + JS noindex
+# handle them, but disallow the raw parameter forms as a backstop.
+Disallow: /*?m=
+Disallow: /*?t=
+Disallow: /*?q=
+
 Sitemap: https://gate-ml.vercel.app/sitemap.xml
+
