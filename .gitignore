@@ -1,0 +1,23 @@
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+
+# Vercel CLI
+.vercel
+
+# Scratch / validation artifacts (local only, never commit)
+_probe.txt
+*.log
+_chrome_log.txt
+_links.py
+_tmpchk.js
+_validate.py
+_shot_*.png
+_shot*.png
+_tmp*
+

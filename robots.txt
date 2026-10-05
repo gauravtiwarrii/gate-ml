@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gate-ml.vercel.app/sitemap.xml

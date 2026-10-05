@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    { "source": "/practice", "destination": "/gate-ml-practice.html" },
+    { "source": "/guide", "destination": "/ml-guide.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
+    }
+  ]
+}

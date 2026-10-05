@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice Environment — GATE ML</title>
+<meta name="description" content="A premium GATE-style practice environment: 150 questions in MCQ, MSQ and NAT format, timed mocks with the real question palette, topic practice, review and flashcards.">
+<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#0a0a0a" />
+<link rel="canonical" href="https://gate-ml.vercel.app/gate-ml-practice.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="GATE ML" />
+<meta property="og:title" content="Practice Environment — GATE ML" />
+<meta property="og:description" content="150 exam-pattern questions, timed mocks with the GATE question palette, review mode and flashcards." />
+<meta property="og:url" content="https://gate-ml.vercel.app/gate-ml-practice.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Practice Environment — GATE ML" />
+<meta name="twitter:description" content="150 exam-pattern questions, timed mocks, review mode and flashcards for GATE Data Science & AI." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   GATE ML Practice — premium examination interface
+   One dark environment, hairline borders, engineering orange
+   as the single accent. Colour carries state, not decoration:
+   the five palette colours keep the same semantics the real
+   GATE computer-based test uses.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+  --paper:#0a0a0a;
+  --surface:#111111;
+  --surface-2:#181818;
+  --surface-3:#1f1f1f;
+  --ink:#f5f3ee;
+  --ink-soft:#a9a59d;
+  --ink-faint:#7c7871;
+  --line:rgba(245,243,238,0.14);
+  --line-soft:rgba(245,243,238,0.07);
+  --accent:#e2601f;
+  --accent-tint:rgba(226,96,31,0.13);
+  /* state aliases — names kept because inline JS styles reference them */
+  --navy:#e2601f;                 /* selection + focus */
+  --navy-deep:#0a0a0a;
+  --navy-tint:rgba(226,96,31,0.13);
+  --green:#4f9d6f;                /* answered correctly */
+  --green-tint:rgba(79,157,111,0.14);
+  --crimson:#cf6a5e;              /* answered incorrectly / seen */
+  --crimson-tint:rgba(207,106,94,0.13);
+  --violet:#8f83c0;               /* marked for review */
+  --violet-tint:rgba(143,131,192,0.16);
+  --amber:#c08a3e;                /* warnings / mid accuracy */
+  --amber-tint:rgba(192,138,62,0.15);
+  --ui:"Manrope","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --read:"Georgia","Times New Roman",serif;
+  --code:"DM Mono",ui-monospace,Consolas,"Cascadia Mono","SF Mono",Menlo,monospace;
+  --r:8px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--ui);
+  font-size:15.5px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+
+/* ---------------- top bar ---------------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(10,10,10,0.88);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  color:var(--ink);
+  display:flex;align-items:center;gap:18px;
+  padding:0 20px;height:64px;
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.brand b{
+  font-size:15px;font-weight:800;letter-spacing:-.02em;text-transform:uppercase;
+}
+.brand span{
+  font-family:var(--code);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-faint);font-weight:400;
+}
+a.brand{color:inherit;text-decoration:none;transition:opacity .18s}
+a.brand:hover{opacity:.75}
+.modes{display:flex;gap:2px;margin-left:4px;flex:1;overflow-x:auto;scrollbar-width:none}
+.modes::-webkit-scrollbar{display:none}
+.modes button{
+  background:transparent;border:0;color:var(--ink-soft);
+  padding:8px 13px;border-radius:6px;
+  font-family:var(--code);font-size:11.5px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  transition:background .16s,color .16s;
+}
+.modes button:hover{background:rgba(245,243,238,.07);color:var(--ink)}
+.modes button[aria-current="true"]{background:var(--ink);color:var(--navy-deep);font-weight:600}
+.topend{display:flex;align-items:center;gap:16px}
+.sitenav{display:flex;gap:4px}
+.sitenav a{
+  font-family:var(--code);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);padding:7px 10px;border-radius:6px;
+  border:1px solid transparent;transition:color .16s,border-color .16s;
+}
+.sitenav a:hover{color:var(--ink);border-color:var(--line)}
+.clock{
+  font-family:var(--code);
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum";
+  font-size:16px;font-weight:500;letter-spacing:.08em;
+  padding:6px 13px;border-radius:6px;
+  background:var(--surface-2);border:1px solid var(--line);
+  min-width:92px;text-align:center;
+}
+.clock.warn{background:var(--amber);border-color:var(--amber);color:#0a0a0a}
+.clock.crit{background:var(--crimson);border-color:var(--crimson);color:#fff}
+.clock[hidden]{display:none}
+@media (max-width:760px){
+  .topbar{padding:0 14px;gap:12px}
+  .brand span{display:none}
+  .sitenav{display:none}
+}
+
+/* ---------------- layout ---------------- */
+main{max-width:1180px;margin:0 auto;padding:30px 20px 84px}
+.shell{display:grid;grid-template-columns:minmax(0,1fr) 264px;gap:24px;align-items:start}
+@media (max-width:900px){ .shell{grid-template-columns:minmax(0,1fr)} }
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  box-shadow:0 12px 32px rgba(0,0,0,0.24);
+}
+h1{font-size:clamp(1.55rem,3vw,2.1rem);line-height:1.14;margin:0 0 10px;letter-spacing:-.045em;font-weight:800}
+h2{font-size:1.22rem;margin:0 0 12px;font-weight:800;letter-spacing:-.03em}
+h3{font-size:15px;margin:0 0 8px;font-weight:700;letter-spacing:-.02em}
+p{margin:0 0 12px}
+.lede{color:var(--ink-soft);max-width:64ch;margin-bottom:22px}
+.muted{color:var(--ink-soft)}
+.faint{color:var(--ink-faint)}
+code{font-family:var(--code);font-size:.9em;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:4px;padding:1px 5px}
+pre{
+  font-family:var(--code);font-size:12.5px;background:var(--surface-2);
+  border:1px solid var(--line);border-left:2px solid var(--accent);
+  border-radius:6px;padding:12px 14px;overflow-x:auto;margin:0 0 13px;color:var(--ink);
+}
+pre code{background:none;border:0;padding:0;font-size:inherit}
+
+/* ---------------- question ---------------- */
+.qwrap{padding:clamp(20px,3vw,30px)}
+.qmeta{
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line-soft);
+}
+.qno{
+  font-family:var(--code);font-size:15px;font-weight:500;letter-spacing:.06em;
+  color:var(--ink);
+}
+.tag{
+  font-family:var(--code);font-size:10px;font-weight:500;
+  padding:3px 8px;border-radius:4px;border:1px solid var(--line);
+  color:var(--ink-soft);background:var(--surface-2);
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.tag.t-mcq{background:var(--accent-tint);border-color:rgba(226,96,31,.4);color:#ef8b52}
+.tag.t-msq{background:var(--violet-tint);border-color:rgba(143,131,192,.45);color:#a99fd6}
+.tag.t-nat{background:var(--amber-tint);border-color:rgba(192,138,62,.45);color:#d3a463}
+.tag.d-hard{background:var(--crimson-tint);border-color:rgba(207,106,94,.45);color:#e08d84}
+.spacer{flex:1}
+.qstem{font-family:var(--read);font-size:17px;line-height:1.68;max-width:70ch;margin-bottom:18px;color:var(--ink)}
+.qstem p:last-child{margin-bottom:0}
+
+.opts{display:flex;flex-direction:column;gap:9px;max-width:72ch;margin-bottom:18px}
+.opt{
+  display:flex;gap:13px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:12px 15px;font-family:var(--read);font-size:15.5px;line-height:1.55;
+  transition:border-color .16s,background .16s,transform .16s;
+}
+.opt:hover:not(:disabled){border-color:rgba(226,96,31,.55);background:var(--surface-3);transform:translateX(3px)}
+.opt:disabled{cursor:default}
+.olet{
+  flex:0 0 auto;width:26px;height:26px;border-radius:5px;
+  border:1px solid var(--line);background:var(--surface-3);
+  font-family:var(--code);font-size:12px;font-weight:500;color:var(--ink-soft);
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+  transition:background .16s,border-color .16s,color .16s;
+}
+.opt.sel{border-color:var(--accent);background:var(--accent-tint)}
+.opt.sel .olet{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt.right{border-color:var(--green);background:var(--green-tint)}
+.opt.right .olet{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrong{border-color:var(--crimson);background:var(--crimson-tint)}
+.opt.wrong .olet{background:var(--crimson);border-color:var(--crimson);color:#fff}
+.opt.missed{border-color:var(--green);border-style:dashed;background:transparent}
+
+.natwrap{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-bottom:18px}
+.natwrap input{
+  font-family:var(--code);font-size:16px;width:200px;padding:11px 14px;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--surface-2);
+}
+.natwrap input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-tint)}
+/* ---------------- buttons ---------------- */
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.btn{
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
+  border-radius:6px;padding:10px 17px;font-size:13.5px;font-weight:700;
+  letter-spacing:-.01em;
+  transition:background .16s,border-color .16s,transform .16s;
+}
+.btn:hover{transform:translateY(-1px);border-color:var(--ink-faint);background:var(--surface-3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:#f07029;border-color:#f07029}
+.btn.violet{background:var(--violet-tint);border-color:rgba(143,131,192,.5);color:#a99fd6}
+.btn.violet:hover{background:rgba(143,131,192,.26)}
+.btn.danger{background:transparent;border-color:rgba(207,106,94,.6);color:#e08d84}
+.btn.danger:hover{background:var(--crimson-tint)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.sm{padding:6px 12px;font-size:12.5px}
+.btn.bm[aria-pressed="true"]{background:var(--amber-tint);border-color:rgba(192,138,62,.55);color:#d3a463}
+
+/* ---------------- verdict + solution ---------------- */
+.verdict{
+  display:flex;align-items:center;gap:9px;font-weight:700;font-size:13.5px;
+  margin-bottom:12px;padding:10px 14px;border-radius:6px;
+  font-family:var(--code);letter-spacing:.04em;
+}
+.verdict.ok{background:var(--green-tint);color:#6fc193;border:1px solid rgba(79,157,111,.4)}
+.verdict.no{background:var(--crimson-tint);color:#e5938a;border:1px solid rgba(207,106,94,.4)}
+.verdict.skip{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line)}
+.sol{border-top:1px solid var(--line-soft);padding-top:16px;margin-top:4px}
+.sol h3{
+  color:#ef8b52;margin-bottom:8px;
+  font-family:var(--code);font-size:11px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.sol .body{font-family:var(--read);font-size:15.5px;line-height:1.68;max-width:70ch;color:var(--ink-soft)}
+.sol .body strong,.sol .body em{color:var(--ink)}
+.sol .body p{margin-bottom:.7em}
+
+/* ---------------- palette rail ---------------- */
+.rail{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px}
+.rail .card{padding:17px}
+.railhead{
+  font-family:var(--code);font-size:11px;font-weight:500;color:var(--ink-faint);
+  letter-spacing:.16em;text-transform:uppercase;margin-bottom:13px;
+}
+.pal{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.pchip{
+  aspect-ratio:1;border-radius:6px;border:1px solid var(--line);
+  background:var(--surface-2);color:var(--ink-soft);
+  font-family:var(--code);font-size:12.5px;font-weight:500;font-variant-numeric:tabular-nums;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  transition:transform .14s,border-color .14s;
+}
+.pchip:hover{transform:scale(1.1);border-color:var(--ink-faint)}
+.pchip.seen{background:var(--crimson);border-color:var(--crimson);color:#fff}
+.pchip.done{background:var(--green);border-color:var(--green);color:#fff}
+.pchip.mark{background:var(--violet);border-color:var(--violet);color:#fff}
+.pchip.mark.done::after{
+  content:"";position:absolute;right:-2px;bottom:-2px;width:9px;height:9px;
+  border-radius:50%;background:var(--green);border:1.5px solid var(--surface);
+}
+.pchip.cur{box-shadow:0 0 0 2px var(--accent);z-index:1;border-color:transparent}
+.legend{display:flex;flex-direction:column;gap:7px;margin-top:14px;font-size:12.5px;color:var(--ink-soft)}
+.legend div{display:flex;align-items:center;gap:9px}
+.legend b{font-weight:700;margin-left:auto;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.dot{width:11px;height:11px;border-radius:3px;border:1px solid var(--line);flex:0 0 auto;background:var(--surface-2)}
+.dot.seen{background:var(--crimson);border-color:var(--crimson)}
+.dot.done{background:var(--green);border-color:var(--green)}
+.dot.mark{background:var(--violet);border-color:var(--violet)}
+.dot.none{background:var(--surface-2)}
+
+/* ---------------- home ---------------- */
+.hero{padding:clamp(24px,3.4vw,38px);margin-bottom:20px}
+.herotop{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:22px}
+.tile{
+  display:block;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:19px 20px;transition:border-color .18s,transform .18s,background .18s;
+  position:relative;overflow:hidden;
+}
+.tile::after{
+  content:"↗";position:absolute;top:16px;right:18px;
+  font-family:var(--code);color:var(--ink-faint);
+  transition:transform .22s,color .18s;
+}
+.tile:hover{border-color:rgba(226,96,31,.5);transform:translateY(-2px);background:var(--surface-2)}
+.tile:hover::after{transform:translate(3px,-3px);color:var(--accent)}
+.tile b{display:block;font-size:15.5px;font-weight:800;letter-spacing:-.03em;margin-bottom:5px;padding-right:24px}
+.tile span{display:block;font-size:13.4px;color:var(--ink-soft);line-height:1.55}
+.tile .kbd{margin-top:10px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:22px}
+.stat{background:var(--surface);padding:14px 16px}
+.stat b{
+  display:block;font-family:var(--code);
+  font-size:22px;font-weight:500;font-variant-numeric:tabular-nums;
+  letter-spacing:-.02em;line-height:1.25;color:var(--ink);
+}
+.stat span{
+  font-family:var(--code);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+/* ---------------- topic list ---------------- */
+.tlist{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.trow{
+  display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;
+  background:var(--surface);border:0;width:100%;text-align:left;padding:14px 17px;
+  transition:background .16s,padding .16s;
+}
+.trow:hover{background:var(--accent-tint);padding-left:22px}
+.trow b{font-size:14.6px;font-weight:700;letter-spacing:-.02em}
+.trow small{display:block;color:var(--ink-soft);font-size:12.5px;font-weight:400;margin-top:1px}
+.bar{width:110px;height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:3px;transition:width .5s ease}
+.cnt{font-family:var(--code);font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
+
+/* ---------------- flashcards ---------------- */
+.fc{
+  min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:36px 32px;cursor:pointer;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  transition:border-color .2s;
+}
+.fc:hover{border-color:rgba(226,96,31,.4)}
+.fc .side{
+  font-family:var(--code);font-size:10.5px;font-weight:500;color:var(--ink-faint);
+  margin-bottom:16px;letter-spacing:.16em;text-transform:uppercase;
+}
+.fc .front{font-family:var(--read);font-size:clamp(18px,2.4vw,22px);line-height:1.45;max-width:44ch;font-weight:600;color:var(--ink)}
+.fc .back{font-family:var(--read);font-size:16.5px;line-height:1.65;max-width:56ch;color:var(--ink-soft)}
+.fc .back strong{color:var(--ink)}
+.fc .hint{margin-top:20px;font-family:var(--code);font-size:11px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase}
+
+/* ---------------- report ---------------- */
+.score{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.score b{
+  font-size:clamp(44px,7vw,68px);font-weight:800;letter-spacing:-.05em;
+  font-variant-numeric:tabular-nums;line-height:1;color:var(--ink);
+}
+.score span{font-family:var(--code);font-size:14px;color:var(--ink-soft);letter-spacing:.04em}
+table{width:100%;border-collapse:collapse;font-size:13.8px}
+th{
+  text-align:left;font-family:var(--code);font-weight:500;color:var(--ink-faint);
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  padding:9px 10px;border-bottom:1px solid var(--line);
+}
+td{padding:10px;border-bottom:1px solid var(--line-soft);font-variant-numeric:tabular-nums}
+td:first-child,th:first-child{font-variant-numeric:normal}
+tr:last-child td{border-bottom:0}
+tbody tr{transition:background .14s}
+tbody tr:hover{background:var(--surface-2)}
+
+/* ---------------- misc ---------------- */
+.kbd{display:inline-flex;gap:4px;align-items:center;font-family:var(--code);font-size:11px;color:var(--ink-faint)}
+.kbd i{
+  font-style:normal;font-family:var(--code);font-size:10.5px;
+  border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:1px 6px;background:var(--surface-2);color:var(--ink-soft);
+}
+.empty{text-align:center;padding:56px 24px;color:var(--ink-soft)}
+.empty b{display:block;font-size:17px;color:var(--ink);margin-bottom:6px;font-weight:800;letter-spacing:-.03em}
+.pick{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.pick button{
+  border:1px solid var(--line);background:var(--surface);border-radius:999px;
+  padding:6px 14px;font-family:var(--code);font-size:11.5px;font-weight:500;
+  letter-spacing:.06em;color:var(--ink-soft);
+  transition:background .15s,color .15s,border-color .15s;
+}
+.pick button:hover{border-color:var(--ink-faint);color:var(--ink)}
+.pick button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--navy-deep)}
+.bigrow{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.natwrap input.right{border-color:var(--green);background:var(--green-tint)}
+.natwrap input.wrong{border-color:var(--crimson);background:var(--crimson-tint)}
+
+/* ---------------- responsive ---------------- */
+@media (max-width:640px){
+  main{padding:22px 14px 72px}
+  .qwrap{padding:18px 16px}
+  .qstem{font-size:16px}
+  .opt{padding:12px 13px;gap:11px}
+  .rail{position:static}
+  .pal{grid-template-columns:repeat(10,1fr);gap:5px}
+  .pchip{font-size:11px}
+  .tiles{grid-template-columns:1fr}
+  .bar{width:74px}
+  .trow{grid-template-columns:1fr auto;gap:8px 12px}
+  .trow .bar{display:none}
+  .fc{min-height:240px;padding:28px 18px}
+  .strip{grid-template-columns:repeat(2,1fr)}
+  table{font-size:12.6px}
+  .btn{padding:11px 16px}
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html" title="Back to the study hub"><b>GATE&nbsp;ML</b><span>Practice environment</span></a>
+  <nav class="modes" id="modes" aria-label="Practice modes"></nav>
+  <div class="topend">
+    <nav class="sitenav" aria-label="Site">
+      <a href="index.html">Hub</a>
+      <a href="ml-guide.html">Guide</a>
+    </nav>
+    <div class="clock" id="clock" hidden>00:00</div>
+  </div>
+</header>
+
+<main id="view"></main>
+
+<script id="data">
+/* Question bank. Schema:
+   id     unique integer
+   t      topic key (see TOPICS in app script)
+   type   "mcq" | "msq" | "nat"
+   d      difficulty: 1 easy, 2 medium, 3 hard
+   m      marks: 1 or 2
+   q      question stem (HTML allowed)
+   o      options array (mcq/msq only)
+   a      mcq: index | msq: array of indexes | nat: [min, max]
+   s      worked solution (HTML allowed)
+*/
+const QUESTIONS = [
+/* ---------- Unit 1 · Foundations ---------- */
+{id:1,t:"found",type:"mcq",d:1,m:1,
+ q:"A spam filter is trained on a folder of emails that a human has already tagged as <b>spam</b> or <b>not spam</b>. This is an example of:",
+ o:["Supervised learning","Unsupervised learning","Reinforcement learning","Active learning"],a:0,
+ s:"Every training example arrives with the right answer attached (the tag). Learning a mapping from input to a known output label is the definition of supervised learning. Unsupervised learning would be handed the same emails with no tags and asked to find structure; reinforcement learning would need an agent taking actions and collecting rewards over time."},
+
+{id:2,t:"found",type:"mcq",d:1,m:1,
+ q:"Which of the following is a <b>regression</b> problem?",
+ o:["Deciding whether a credit-card transaction is fraudulent","Predicting tomorrow's maximum temperature in degrees Celsius","Grouping customers into five marketing segments","Choosing which advertisement to show to maximise long-run clicks"],a:1,
+ s:"Regression predicts a continuous number. Temperature is continuous, so that is regression. Fraud / not-fraud is binary classification, segmenting customers with no labels is clustering, and choosing an ad to maximise long-run reward is a reinforcement-learning problem."},
+
+{id:3,t:"found",type:"mcq",d:2,m:2,
+ q:"A model reaches <b>2% error on the training set</b> and <b>27% error on the test set</b>. The most likely diagnosis is:",
+ o:["High bias, low variance","Low bias, high variance","High bias, high variance","The irreducible noise dominates"],a:1,
+ s:"Training error is tiny, so the model is flexible enough to fit the data &mdash; bias is low. The huge gap between train and test means it has memorised quirks of the training sample that do not repeat, which is exactly high variance, i.e. overfitting. High bias would show up as <i>both</i> errors being large."},
+
+{id:4,t:"found",type:"msq",d:2,m:2,
+ q:"Which of the following would typically <b>reduce</b> overfitting? Select all that apply.",
+ o:["Adding an L2 regularisation penalty","Collecting more training data","Increasing the depth of a decision tree","Stopping training early using a validation curve"],a:[0,1,3],
+ s:"Regularisation shrinks the coefficients and so shrinks variance. More data makes it harder for the model to memorise noise. Early stopping halts the fit before the validation error starts climbing. Increasing tree depth does the opposite &mdash; it raises capacity and makes overfitting worse."},
+
+{id:5,t:"found",type:"nat",d:2,m:1,
+ q:"A dataset has 4 binary features. How many <b>distinct feature vectors</b> are possible?",a:[16,16],
+ s:"Each feature is independently 0 or 1, so the count is 2 &times; 2 &times; 2 &times; 2 = 2<sup>4</sup> = <b>16</b>. This is the input space; note how quickly it explodes &mdash; 20 binary features already give more than a million possible rows, which is the seed of the curse of dimensionality."},
+
+{id:6,t:"found",type:"mcq",d:2,m:2,
+ q:"<b>Inductive bias</b> of a learning algorithm means:",
+ o:["The error introduced by mislabelled training examples","The set of assumptions the learner uses to generalise to inputs it has never seen","Systematic unfairness of the model toward a demographic group","The gap between the training and test distributions"],a:1,
+ s:"Data alone never picks a unique hypothesis &mdash; infinitely many functions fit any finite sample. The assumptions that break that tie are the inductive bias: linear regression assumes a straight-line relationship, k-NN assumes nearby points share a label, a decision tree prefers short trees. Without some bias, generalisation is impossible."},
+
+{id:7,t:"found",type:"mcq",d:1,m:1,
+ q:"Which of these is <b>not</b> a machine learning task?",
+ o:["Predicting house prices from area and locality","Sorting a list of integers using quicksort","Clustering news articles by topic","Recommending films to a user"],a:1,
+ s:"Quicksort is an algorithm whose rules are written out completely by a programmer; nothing is learned from data. The other three all involve inferring a rule or structure from examples."},
+
+{id:8,t:"found",type:"nat",d:3,m:2,
+ q:"How many distinct <b>Boolean functions</b> can be defined over 3 binary input variables?",a:[256,256],
+ s:"With 3 binary inputs there are 2<sup>3</sup> = 8 possible input rows. A Boolean function assigns one of two outputs to each of those 8 rows independently, so the count is 2<sup>8</sup> = <b>256</b>. In general the answer is 2<sup>(2<sup>n</sup>)</sup>. This is why a learner must restrict its hypothesis space &mdash; searching all functions is hopeless."},
+
+{id:9,t:"found",type:"mcq",d:2,m:1,
+ q:"What is the <b>validation set</b> for?",
+ o:["Adding extra examples to training once the model has converged","Choosing hyperparameters and comparing models without touching the test set","Giving the final unbiased estimate of performance to report","Balancing the class distribution"],a:1,
+ s:"The moment you use a set to <i>make a choice</i>, its score stops being an unbiased estimate of future performance. So model selection happens on the validation set and the test set is opened exactly once, at the end, for reporting."},
+
+{id:10,t:"found",type:"msq",d:3,m:2,
+ q:"Which statements about the <b>curse of dimensionality</b> are correct? Select all that apply.",
+ o:["The volume of the feature space grows exponentially with the number of dimensions, so data becomes sparse","In very high dimensions the nearest and farthest neighbours of a point have increasingly similar distances","Adding more features always improves a k-nearest-neighbour classifier","Keeping the same data density needs exponentially more samples as dimension grows"],a:[0,1,3],
+ s:"Options A, B and D are three faces of the same phenomenon. C is false and is the practical consequence: because distances lose their contrast, k-NN degrades as irrelevant dimensions pile up. The remedy is feature selection or dimensionality reduction, not more features."},
+
+{id:11,t:"found",type:"mcq",d:1,m:1,
+ q:"A program learns to play chess by playing millions of games against itself, receiving +1 for a win and &minus;1 for a loss. This is:",
+ o:["Supervised learning","Unsupervised learning","Reinforcement learning","Transfer learning"],a:2,
+ s:"There is no teacher supplying the correct move for each position. There is an agent, a sequence of actions, and a delayed scalar reward at the end of the game &mdash; the defining shape of reinforcement learning."},
+
+{id:12,t:"found",type:"mcq",d:3,m:2,
+ q:"Expected test error decomposes as bias<sup>2</sup> + variance + irreducible error. Which component can <b>no</b> model reduce, however good it is?",
+ o:["Bias squared","Variance","Irreducible error","All three can be driven to zero with enough data"],a:2,
+ s:"Irreducible error is the noise in the data-generating process itself &mdash; two houses with identical listed features genuinely sell for different prices. No function of the features can explain it. Bias falls with a richer model, variance falls with more data or regularisation, but this floor stays."},
+
+{id:13,t:"found",type:"nat",d:2,m:1,
+ q:"A linear model of the form y = w<sub>1</sub>x<sub>1</sub> + &hellip; + w<sub>d</sub>x<sub>d</sub> + b is fitted on a dataset with 12 features. How many <b>learnable parameters</b> does it have?",a:[13,13],
+ s:"One weight per feature gives 12, plus the single intercept b, so <b>13</b>. A common slip is forgetting the bias term; it is a parameter like any other and is usually left out of the regularisation penalty."},
+
+{id:14,t:"found",type:"mcq",d:2,m:2,
+ q:"Which pair is correctly labelled as (<b>generative</b>, <b>discriminative</b>)?",
+ o:["(Logistic regression, Naive Bayes)","(Naive Bayes, Logistic regression)","(SVM, Decision tree)","(k-NN, k-Means)"],a:1,
+ s:"A generative model learns how the data was produced &mdash; P(x | y) and P(y) &mdash; and uses Bayes' rule to classify; Naive Bayes is the textbook case. A discriminative model goes straight for the boundary P(y | x); logistic regression, SVMs and trees are all discriminative. k-Means is not a classifier at all."},
+
+{id:15,t:"found",type:"msq",d:2,m:2,
+ q:"Which of the following are <b>classification</b> tasks? Select all that apply.",
+ o:["Deciding whether a tumour is malignant or benign","Predicting how many rupees a customer will spend next month","Identifying which digit 0&ndash;9 appears in an image","Estimating the probability of loan default and approving the loan if it is below 0.5"],a:[0,2,3],
+ s:"A and C map inputs to a discrete label. D is also classification &mdash; the model outputs a probability, but the decision being learned and evaluated is a binary approve / reject. B predicts a continuous rupee amount, which is regression."},
+
+/* ---------- Unit 2 · Workflow and preprocessing ---------- */
+{id:16,t:"prep",type:"mcq",d:1,m:1,
+ q:"After applying <b>standardisation</b> (z-score scaling) to a feature, its mean and standard deviation become:",
+ o:["0 and 1","1 and 0","0 and 0","Unchanged"],a:0,
+ s:"z = (x &minus; &mu;) / &sigma;. Subtracting the mean centres the column at 0; dividing by the standard deviation rescales the spread to 1. Note this does <i>not</i> make the distribution normal &mdash; a skewed column stays skewed, it is just recentred and rescaled."},
+
+{id:17,t:"prep",type:"nat",d:2,m:2,
+ q:"A feature takes the values 2, 4, 4, 4, 5, 5, 7, 9. Using the <b>population</b> standard deviation, what is the z-score of the value 9?",a:[2,2],
+ s:"Mean = (2+4+4+4+5+5+7+9)/8 = 40/8 = 5.<br>Squared deviations: 9, 1, 1, 1, 0, 0, 4, 16 &rarr; sum = 32.<br>Variance = 32/8 = 4, so &sigma; = 2.<br>z = (9 &minus; 5) / 2 = <b>2</b>. The value sits exactly two standard deviations above the mean."},
+
+{id:18,t:"prep",type:"nat",d:1,m:1,
+ q:"A feature ranges from 10 to 50 in the training data. After <b>min&ndash;max scaling</b> to [0, 1], what value does 30 map to?",a:[0.49,0.51],
+ s:"x' = (x &minus; min) / (max &minus; min) = (30 &minus; 10) / (50 &minus; 10) = 20 / 40 = <b>0.5</b>. Min&ndash;max scaling is convenient but fragile: a single extreme outlier in the training data squashes every other point toward zero, which is why standardisation is the safer default."},
+
+{id:19,t:"prep",type:"msq",d:2,m:2,
+ q:"Which of the following must be <b>fitted on the training split only</b> and then merely applied to validation and test data? Select all that apply.",
+ o:["The mean and standard deviation used by a standard scaler","The median used to impute missing values","The rotation matrix learned by PCA","The random seed"],a:[0,1,2],
+ s:"Anything that <i>learns a number from the data</i> is part of the model and must see training data only; otherwise test information leaks backwards into training and the reported score is optimistic. A random seed learns nothing, it just fixes the pseudo-random stream, so it is set globally."},
+
+{id:20,t:"prep",type:"mcq",d:2,m:2,
+ q:"Which of these is a clear case of <b>data leakage</b>?",
+ o:["Computing the scaler's mean and variance over the whole dataset before splitting into train and test","Using 5-fold cross-validation to tune a hyperparameter","Dropping exact duplicate rows before splitting","One-hot encoding a categorical column"],a:0,
+ s:"If the scaler has already seen the test rows, the test score is contaminated &mdash; the model was tuned in a world where test statistics were known. Fit the scaler inside the training fold and transform the rest. In scikit-learn, wrapping the steps in a <code>Pipeline</code> and passing that to <code>cross_val_score</code> prevents this automatically."},
+
+{id:21,t:"prep",type:"nat",d:1,m:1,
+ q:"A categorical column has 5 distinct categories. How many columns does plain <b>one-hot encoding</b> (without dropping any level) produce?",a:[5,5],
+ s:"One indicator column per category, so <b>5</b>. If you drop the first level to avoid perfect multicollinearity &mdash; the <code>drop='first'</code> option, which matters for linear models &mdash; you get 4. Trees and forests do not care either way."},
+
+{id:22,t:"prep",type:"mcq",d:2,m:2,
+ q:"A feature records service quality as <i>Low</i>, <i>Medium</i>, <i>High</i>. The most appropriate encoding is:",
+ o:["One-hot encoding, because the values are text","Ordinal encoding 0, 1, 2 so the ordering is preserved","Assigning random integers to each level","Hashing the strings to 32-bit integers"],a:1,
+ s:"The values carry a genuine order, and throwing that away costs the model information. Mapping them to 0, 1, 2 lets a model exploit monotonicity. One-hot is the right choice for a <i>nominal</i> column such as city, where an artificial ordering would invent a relationship that does not exist."},
+
+{id:23,t:"prep",type:"nat",d:2,m:2,
+ q:"A column contains 3, 7, missing, 9, 11, missing, 5. Missing entries are filled with the <b>median of the observed values</b>. What value is used?",a:[7,7],
+ s:"Observed values sorted: 3, 5, 7, 9, 11. There are five of them, so the median is the third, <b>7</b>. Median imputation is preferred over the mean whenever the column is skewed or has outliers, because the median barely moves when one extreme value is added."},
+
+{id:24,t:"prep",type:"mcq",d:3,m:2,
+ q:"Why is <b>SMOTE</b> usually preferred over simply duplicating minority-class rows?",
+ o:["It runs faster on large datasets","It creates synthetic points along the segments joining minority neighbours, so the classifier sees new regions rather than exact repeats","It deletes majority-class rows to balance the counts","It changes the loss function to weight the minority class"],a:1,
+ s:"Duplicating a row tells the classifier nothing new &mdash; the same point just counts more, which mostly encourages overfitting to those exact coordinates. SMOTE interpolates between a minority point and one of its minority neighbours, filling out the region the class occupies. C describes undersampling and D describes class weighting; both are valid alternatives but are not what SMOTE does."},
+
+{id:25,t:"prep",type:"msq",d:3,m:2,
+ q:"Which statements about splitting <b>time-series</b> data are correct? Select all that apply.",
+ o:["A random shuffled train/test split is perfectly valid","The split must respect chronological order","A feature computed using future values causes leakage","Cross-validation should use expanding or rolling windows"],a:[1,2,3],
+ s:"Shuffling lets the model train on Friday and be tested on Wednesday, so it effectively peeks at the future and the score is meaningless. Everything in a forecasting setup must be causal: train on the past, test on the following stretch, and validate with <code>TimeSeriesSplit</code>-style expanding windows."},
+
+{id:26,t:"prep",type:"mcq",d:2,m:1,
+ q:"Which algorithm is <b>most sensitive</b> to unscaled features?",
+ o:["Decision tree","k-nearest neighbours with Euclidean distance","Random forest","Rule-based classifier"],a:1,
+ s:"k-NN adds up squared differences across features, so a column measured in rupees (range 0&ndash;100000) completely drowns a column measured in years (range 0&ndash;50). Trees split one feature at a time on a threshold, and a monotone rescaling does not change which rows fall on which side, so they are scale-invariant."},
+
+{id:27,t:"prep",type:"nat",d:1,m:1,
+ q:"A dataset of 1000 rows is split 70% train, 15% validation, 15% test. How many rows are in the <b>test</b> set?",a:[150,150],
+ s:"15% of 1000 = <b>150</b>. Train gets 700 and validation gets 150. When classes are imbalanced, make the split <i>stratified</i> so each part keeps the same class proportions &mdash; otherwise a rare class can vanish from the test set entirely."},
+
+{id:28,t:"prep",type:"mcq",d:2,m:2,
+ q:"For a feature with Q<sub>1</sub> = 20 and Q<sub>3</sub> = 40, which value is flagged as an outlier by the standard <b>1.5 &times; IQR</b> rule?",
+ o:["65","68","72","70"],a:2,
+ s:"IQR = 40 &minus; 20 = 20. Upper fence = Q<sub>3</sub> + 1.5 &times; IQR = 40 + 30 = 70. Only a value strictly above 70 is flagged, so <b>72</b>. The lower fence is 20 &minus; 30 = &minus;10. Note 70 sits exactly on the fence and is not an outlier."},
+
+{id:29,t:"prep",type:"msq",d:2,m:2,
+ q:"Which of these belong in a preprocessing pipeline that runs <b>before</b> the model is fitted? Select all that apply.",
+ o:["Handling missing values","Encoding categorical columns","Scaling numeric columns","Inspecting the test labels to decide which features to keep"],a:[0,1,2],
+ s:"A, B and C are the standard three steps and all belong inside a <code>Pipeline</code> so they are refitted on each training fold. D is leakage in its purest form: choosing features by looking at test answers guarantees an inflated test score that will not survive contact with real data."},
+
+{id:30,t:"prep",type:"mcq",d:3,m:2,
+ q:"A scaler is fitted on the training and test data combined. What exactly goes wrong?",
+ o:["The optimiser fails to converge","Test statistics leak into training, so the reported test score is optimistic","The scaler outputs NaN values","Nothing &mdash; this is standard practice"],a:1,
+ s:"Nothing crashes, and that is precisely the danger &mdash; the bug is silent. The training pipeline has quietly been told the mean and variance of data it was not supposed to see, so the test score is no longer an honest simulation of deployment, where tomorrow's rows have not arrived yet."},
+
+/* ---------- Unit 3 · Regression ---------- */
+{id:31,t:"reg",type:"mcq",d:1,m:1,
+ q:"Ordinary linear regression is fitted by minimising:",
+ o:["The sum of absolute errors","The sum of squared errors","The number of misclassified points","The entropy of the residuals"],a:1,
+ s:"Least squares minimises &Sigma;(y<sub>i</sub> &minus; &#375;<sub>i</sub>)<sup>2</sup>. Squaring makes the objective smooth and differentiable, gives a closed-form solution, and corresponds to maximum likelihood under Gaussian noise. The price is sensitivity to outliers, since a residual of 10 counts a hundred times more than a residual of 1."},
+
+{id:32,t:"reg",type:"nat",d:2,m:2,
+ q:"Fit a least-squares line to the points (1, 2), (2, 4), (3, 5), (4, 4), (5, 5). What is the <b>slope</b>?",a:[0.59,0.61],
+ s:"x&#772; = 3, y&#772; = 4.<br>Deviations (x &minus; x&#772;): &minus;2, &minus;1, 0, 1, 2 &nbsp;&nbsp; (y &minus; y&#772;): &minus;2, 0, 1, 0, 1<br>S<sub>xy</sub> = 4 + 0 + 0 + 0 + 2 = 6<br>S<sub>xx</sub> = 4 + 1 + 0 + 1 + 4 = 10<br>slope = S<sub>xy</sub> / S<sub>xx</sub> = 6 / 10 = <b>0.6</b>. The intercept would then be 4 &minus; 0.6 &times; 3 = 2.2."},
+
+{id:33,t:"reg",type:"mcq",d:2,m:2,
+ q:"During gradient descent the loss rises steeply and then becomes NaN. The most likely cause is:",
+ o:["The learning rate is too large","The learning rate is too small","The dataset is too small","The features were standardised"],a:0,
+ s:"Too large a step overshoots the minimum, lands somewhere with an even steeper gradient, overshoots further, and the weights blow up to infinity within a few iterations. The classic fix is to cut the learning rate by a factor of ten. Too small a rate gives the opposite symptom: the loss creeps down painfully slowly but never diverges."},
+
+{id:34,t:"reg",type:"nat",d:2,m:2,
+ q:"A regression model has residual sum of squares SS<sub>res</sub> = 10 and total sum of squares SS<sub>tot</sub> = 50. What is R<sup>2</sup>?",a:[0.79,0.81],
+ s:"R<sup>2</sup> = 1 &minus; SS<sub>res</sub> / SS<sub>tot</sub> = 1 &minus; 10/50 = 1 &minus; 0.2 = <b>0.8</b>. Read it as: the model explains 80% of the variance in y that a horizontal line at y&#772; leaves unexplained. R<sup>2</sup> can go negative on test data if the model does worse than simply predicting the mean."},
+
+{id:35,t:"reg",type:"msq",d:2,m:2,
+ q:"Which statements about <b>Ridge</b> and <b>Lasso</b> are correct? Select all that apply.",
+ o:["Lasso (L1) can drive coefficients exactly to zero, so it performs feature selection","Ridge (L2) shrinks coefficients toward zero but rarely sets them exactly to zero","Raising the penalty strength &lambda; increases variance and decreases bias","The penalty term depends only on the weights, not on the data"],a:[0,1,3],
+ s:"The L1 penalty has a corner at zero, so the optimum often lands exactly on it &mdash; that is why Lasso zeroes features out. The L2 penalty is smooth and only squeezes coefficients toward zero. C is backwards: raising &lambda; constrains the model, which <i>lowers</i> variance and <i>raises</i> bias. That trade is the whole point of regularisation."},
+
+{id:36,t:"reg",type:"mcq",d:3,m:2,
+ q:"The normal equation w = (X<sup>T</sup>X)<sup>&minus;1</sup>X<sup>T</sup>y cannot be used when:",
+ o:["The number of samples exceeds the number of features","X<sup>T</sup>X is singular, for example when two features are perfectly correlated or features outnumber samples","The target is continuous","The features have been standardised"],a:1,
+ s:"The inverse exists only if X<sup>T</sup>X has full rank. Perfectly collinear columns, or d &gt; n, make it singular. Ridge regression fixes exactly this: (X<sup>T</sup>X + &lambda;I)<sup>&minus;1</sup> is always invertible for &lambda; &gt; 0, because adding &lambda; to every eigenvalue lifts the zero ones off the floor."},
+
+{id:37,t:"reg",type:"nat",d:2,m:1,
+ q:"Actual values are 3, 5, 7 and the model predicts 2, 5, 9. What is the <b>mean squared error</b>? Give your answer to two decimal places.",a:[1.6,1.7],
+ s:"Errors: 3 &minus; 2 = 1, 5 &minus; 5 = 0, 7 &minus; 9 = &minus;2.<br>Squared: 1, 0, 4 &rarr; sum = 5.<br>MSE = 5 / 3 = <b>1.67</b>. The MAE for the same predictions would be (1 + 0 + 2)/3 = 1.00 &mdash; notice how the squared measure is dragged up by the single larger miss."},
+
+{id:38,t:"reg",type:"mcq",d:2,m:2,
+ q:"Compared with MSE, the <b>mean absolute error</b> is:",
+ o:["More sensitive to outliers","Less sensitive to outliers","Always larger than MSE","Not differentiable anywhere"],a:1,
+ s:"MSE squares the residual, so one badly-wrong point dominates the total and drags the fitted line toward it. MAE weights every rupee of error equally, which makes it the robust choice when the data has genuine outliers. MAE is non-differentiable only at exactly zero, which subgradient methods handle without trouble."},
+
+{id:39,t:"reg",type:"mcq",d:1,m:1,
+ q:"A degree-10 polynomial is fitted to 15 data points and passes almost exactly through every one, yet performs terribly on new data. This is:",
+ o:["Underfitting","Overfitting","Data leakage","Class imbalance"],a:1,
+ s:"The model has enough flexibility to bend through the noise as well as the signal. Training error is near zero and test error is large &mdash; the signature of overfitting. Lowering the degree, adding a ridge penalty, or collecting more points would all help."},
+
+{id:40,t:"reg",type:"nat",d:3,m:2,
+ q:"A single-feature model &#375; = wx starts at w = 0. One training sample is (x = 2, y = 6) and the loss is &frac12;(wx &minus; y)<sup>2</sup>. After <b>one</b> gradient-descent step with learning rate 0.1, what is w?",a:[1.19,1.21],
+ s:"Prediction at w = 0 is 0, so the error is 0 &minus; 6 = &minus;6.<br>&part;L/&part;w = (wx &minus; y)&middot;x = (&minus;6)(2) = &minus;12.<br>w &larr; w &minus; &eta; &middot; &part;L/&part;w = 0 &minus; 0.1 &times; (&minus;12) = <b>1.2</b>.<br>The true minimiser is w = 3, so one step has moved 40% of the way there."},
+
+{id:41,t:"reg",type:"msq",d:2,m:2,
+ q:"Which are standard assumptions of ordinary least squares? Select all that apply.",
+ o:["The errors have constant variance (homoscedasticity)","The errors are independent of one another","The predictor variables themselves must be normally distributed","The mean response is linear in the parameters"],a:[0,1,3],
+ s:"OLS assumes things about the <i>errors</i>, not about the predictors. Predictors may be binary, skewed, anything. The normality assumption &mdash; where it appears at all &mdash; applies to the error term and is needed only for confidence intervals and p-values, not for the point estimates themselves."},
+
+{id:42,t:"reg",type:"mcq",d:3,m:2,
+ q:"<b>Elastic Net</b> is preferred over pure Lasso when:",
+ o:["There is only a single feature","Groups of features are strongly correlated and Lasso would arbitrarily keep just one of them","The target is categorical","No regularisation is wanted at all"],a:1,
+ s:"Faced with several nearly identical features, Lasso picks one essentially at random and zeroes the rest, which makes the selected set unstable across resamples. Elastic Net mixes in an L2 term, which has a grouping effect: correlated predictors are shrunk together and tend to enter or leave as a block."},
+
+{id:43,t:"reg",type:"nat",d:2,m:2,
+ q:"With n = 100 samples, p = 5 predictors and R<sup>2</sup> = 0.80, what is the <b>adjusted R<sup>2</sup></b>? Give three decimal places.",a:[0.78,0.80],
+ s:"Adjusted R<sup>2</sup> = 1 &minus; (1 &minus; R<sup>2</sup>)(n &minus; 1)/(n &minus; p &minus; 1)<br>= 1 &minus; (0.20)(99)/(94)<br>= 1 &minus; 0.2106 = <b>0.789</b>.<br>Plain R<sup>2</sup> never falls when you add a predictor, even a random one. The adjusted version charges rent for each extra parameter, so it can go down."},
+
+{id:44,t:"reg",type:"mcq",d:2,m:2,
+ q:"Severe <b>multicollinearity</b> among predictors mainly causes:",
+ o:["The predictions to become wildly inaccurate","The individual coefficient estimates to become unstable and hard to interpret, while predictions stay reasonable","The residuals to become correlated with time","The target to become non-linear"],a:1,
+ s:"When two columns carry nearly the same information, many different coefficient pairs fit the data almost equally well, so the estimates swing violently between resamples and their standard errors explode. The fitted surface, however, is still fine &mdash; which is why multicollinearity hurts interpretation far more than prediction."},
+
+{id:45,t:"reg",type:"mcq",d:2,m:1,
+ q:"Which loss behaves like squared error for small residuals and like absolute error for large ones?",
+ o:["Hinge loss","Huber loss","Cross-entropy loss","Hinge-squared loss"],a:1,
+ s:"Huber loss is quadratic inside a band of width &delta; around zero and linear outside it. That gives smooth, well-behaved gradients near the optimum while refusing to let a distant outlier dominate the total &mdash; a practical compromise between MSE and MAE."},
+
+/* ---------- Unit 4 · Classification ---------- */
+{id:46,t:"clf",type:"mcq",d:1,m:1,
+ q:"The raw output of a logistic regression model, before any threshold is applied, is:",
+ o:["A class label, 0 or 1","A probability between 0 and 1","An unbounded real number","A distance from the decision boundary in original units"],a:1,
+ s:"The linear part w&middot;x + b is unbounded, but the sigmoid &sigma;(z) = 1/(1 + e<sup>&minus;z</sup>) squashes it into (0, 1) and it is read as P(y = 1 | x). Converting that probability into a label needs a separate decision &mdash; the threshold, which is 0.5 by default but should be tuned for imbalanced problems."},
+
+{id:47,t:"clf",type:"nat",d:2,m:2,
+ q:"A logistic model has weights w = [2, &minus;1] and bias b = 0.5. For the input x = [1, 2], what probability does it assign to class 1? Give two decimal places.",a:[0.61,0.63],
+ s:"z = 2(1) + (&minus;1)(2) + 0.5 = 2 &minus; 2 + 0.5 = 0.5<br>&sigma;(0.5) = 1 / (1 + e<sup>&minus;0.5</sup>) = 1 / (1 + 0.6065) = 1 / 1.6065 = <b>0.62</b><br>Since 0.62 &gt; 0.5, the default threshold predicts class 1."},
+
+{id:48,t:"clf",type:"mcq",d:2,m:2,
+ q:"In the original feature space, the decision boundary of plain logistic regression is:",
+ o:["A hyperplane","A circle","An arbitrary smooth curve","A set of axis-parallel rectangles"],a:0,
+ s:"The boundary is the set of points where P = 0.5, which means z = w&middot;x + b = 0 &mdash; the equation of a hyperplane. The sigmoid bends the <i>probability</i> non-linearly but leaves the boundary straight. Curved boundaries require explicit polynomial or interaction features."},
+
+{id:49,t:"clf",type:"nat",d:2,m:2,
+ q:"A decision-tree node contains 6 positive and 2 negative examples. What is its <b>entropy</b> in bits? Give two decimal places.",a:[0.80,0.82],
+ s:"p = 6/8 = 0.75, so 1 &minus; p = 0.25.<br>H = &minus;0.75 log<sub>2</sub>(0.75) &minus; 0.25 log<sub>2</sub>(0.25)<br>= 0.75 (0.415) + 0.25 (2) = 0.3113 + 0.5 = <b>0.81</b> bits.<br>A pure node has entropy 0; a 50-50 node has entropy exactly 1."},
+
+{id:50,t:"clf",type:"nat",d:2,m:1,
+ q:"For the same node &mdash; 6 positive and 2 negative &mdash; what is the <b>Gini impurity</b>? Give three decimal places.",a:[0.37,0.38],
+ s:"Gini = 1 &minus; &Sigma; p<sub>k</sub><sup>2</sup> = 1 &minus; (0.75<sup>2</sup> + 0.25<sup>2</sup>) = 1 &minus; (0.5625 + 0.0625) = <b>0.375</b>.<br>Gini and entropy almost always choose the same split. Gini is the CART default because it avoids a logarithm and is therefore cheaper."},
+
+{id:51,t:"clf",type:"msq",d:2,m:2,
+ q:"Which statements about <b>support vector machines</b> are correct? Select all that apply.",
+ o:["The boundary is placed to maximise the margin between the classes","Only the support vectors determine the fitted boundary","SVMs are insensitive to the scale of the features","A kernel lets an SVM build a non-linear boundary without explicitly computing the high-dimensional features"],a:[0,1,3],
+ s:"C is false &mdash; the margin is measured with a distance, so an unscaled feature dominates it exactly as it dominates k-NN. Always standardise before fitting an SVM. The other three are the defining properties: maximum margin, sparsity in the support vectors, and the kernel trick."},
+
+{id:52,t:"clf",type:"mcq",d:3,m:2,
+ q:"The <b>kernel trick</b> works because:",
+ o:["It compresses the dataset so training is faster","Many algorithms depend on the data only through inner products, and a kernel computes the inner product in a higher-dimensional space directly","It removes outliers before fitting","It converts a classification problem into a regression problem"],a:1,
+ s:"Write the SVM in its dual form and the training points appear only as x<sub>i</sub> &middot; x<sub>j</sub>. Replace that with K(x<sub>i</sub>, x<sub>j</sub>) and you are implicitly working in a richer space &mdash; the RBF kernel corresponds to an infinite-dimensional one &mdash; while every computation stays in the original dimension."},
+
+{id:53,t:"clf",type:"mcq",d:2,m:2,
+ q:"What exactly is <i>naive</i> about the Naive Bayes classifier?",
+ o:["It assumes the classes are equally likely","It assumes the features are conditionally independent given the class","It assumes the features are normally distributed","It ignores the prior probabilities"],a:1,
+ s:"It factorises P(x<sub>1</sub>,&hellip;,x<sub>d</sub> | y) into &prod; P(x<sub>j</sub> | y). That is usually false &mdash; in text, 'machine' and 'learning' clearly co-occur &mdash; yet the classifier stays strong, because ranking the classes correctly does not require the probabilities themselves to be calibrated."},
+
+{id:54,t:"clf",type:"nat",d:3,m:2,
+ q:"P(spam) = 0.4 and P(ham) = 0.6. The word <i>offer</i> appears in 50% of spam and 10% of ham. Using Bayes' rule, what is P(spam | the message contains <i>offer</i>)? Give two decimal places.",a:[0.76,0.78],
+ s:"Numerator: P(offer | spam) P(spam) = 0.5 &times; 0.4 = 0.20<br>Other branch: P(offer | ham) P(ham) = 0.1 &times; 0.6 = 0.06<br>Evidence: 0.20 + 0.06 = 0.26<br>P(spam | offer) = 0.20 / 0.26 = <b>0.77</b>.<br>One informative word has lifted the belief from 0.40 to 0.77."},
+
+{id:55,t:"clf",type:"mcq",d:2,m:1,
+ q:"A 1-nearest-neighbour classifier evaluated on its own training data gives:",
+ o:["Zero training error, but often high variance on new data","High training error and low variance","Zero test error","The same error as a majority-class baseline"],a:0,
+ s:"Every training point is its own nearest neighbour at distance zero, so training accuracy is a perfect and completely meaningless 100%. The boundary it draws is extremely jagged and follows individual noisy points, which is high variance. Raising k smooths it out."},
+
+{id:56,t:"clf",type:"msq",d:2,m:2,
+ q:"Which statements about decision trees are correct? Select all that apply.",
+ o:["They produce axis-parallel decision boundaries","They can capture feature interactions without those interactions being specified in advance","A fully grown unpruned tree tends to overfit","They require features to be standardised first"],a:[0,1,2],
+ s:"Each split is a test of the form 'feature &lt; threshold', so the boundary is made of axis-parallel cuts &mdash; a diagonal boundary has to be approximated by a staircase. Deeper levels condition on earlier splits, which is how interactions get captured for free. D is false: a monotone rescaling does not change which rows fall on which side of a threshold."},
+
+{id:57,t:"clf",type:"mcq",d:3,m:2,
+ q:"In a soft-margin SVM, increasing the parameter <b>C</b>:",
+ o:["Widens the margin and tolerates more misclassified training points","Narrows the margin and penalises misclassified training points more heavily","Has no effect once a kernel is used","Is equivalent to increasing the L2 regularisation strength"],a:1,
+ s:"C is the price charged for each margin violation. A large C says 'get the training points right at any cost', producing a narrow margin that hugs the data and risks overfitting. A small C tolerates violations for a wider, smoother margin. So C moves <i>inversely</i> to regularisation strength &mdash; which makes D wrong."},
+
+{id:58,t:"clf",type:"nat",d:2,m:1,
+ q:"In a binary k-nearest-neighbour classifier with k = 5, at least how many of the five neighbours must belong to class 1 for the majority vote to predict class 1?",a:[3,3],
+ s:"A strict majority of 5 is <b>3</b>. Odd values of k are chosen precisely so that a binary vote can never tie. With k = 4 a 2&ndash;2 split forces an arbitrary tie-break rule."},
+
+{id:59,t:"clf",type:"mcq",d:2,m:2,
+ q:"Two classes are separated by the line x<sub>1</sub> + x<sub>2</sub> = 3. Which model reproduces this boundary <b>most</b> economically?",
+ o:["A decision tree","Logistic regression","1-nearest neighbour","A decision stump"],a:1,
+ s:"The boundary is a single straight line not aligned with either axis, which is exactly what a linear model represents &mdash; two weights and a bias. A tree can only approximate the diagonal with a staircase of axis-parallel cuts, needing many splits to get close. A single stump makes just one cut and cannot do it at all."},
+
+{id:60,t:"clf",type:"mcq",d:3,m:2,
+ q:"Why is <b>cross-entropy</b> rather than squared error used to train logistic regression?",
+ o:["Cross-entropy is faster to compute","Squared error paired with a sigmoid gives a non-convex loss and vanishing gradients when the model is confidently wrong","Squared error cannot be computed for probabilities","Cross-entropy needs no derivatives"],a:1,
+ s:"With a sigmoid output, squared error is not convex in the weights, so gradient descent can settle into a poor local optimum. Worse, its gradient carries a factor of &sigma;'(z), which collapses to nearly zero exactly when the model is confidently wrong &mdash; the case that most needs a big correction. Cross-entropy cancels that factor, leaving a clean gradient proportional to (prediction &minus; target)."},
+
+/* ---------- Unit 5 · Evaluation and ensembles ----------
+   Q61-64 and Q74 all read from the same confusion matrix. */
+{id:61,t:"evl",type:"nat",d:2,m:2,
+ q:"A binary classifier gives TP = 40, FP = 10, FN = 20, TN = 30. What is its <b>precision</b>? Give two decimal places.",a:[0.79,0.81],
+ s:"Precision = TP / (TP + FP) = 40 / (40 + 10) = 40/50 = <b>0.80</b>.<br>Read it as: of everything the model flagged as positive, 80% really was. Precision is the metric that matters when a false alarm is expensive &mdash; blocking a legitimate transaction, say."},
+
+{id:62,t:"evl",type:"nat",d:2,m:1,
+ q:"For the same matrix (TP = 40, FP = 10, FN = 20, TN = 30), what is the <b>recall</b>? Give two decimal places.",a:[0.66,0.67],
+ s:"Recall = TP / (TP + FN) = 40 / (40 + 20) = 40/60 = <b>0.67</b>.<br>Of all the genuine positives that existed, the model caught 67%. Recall is what matters when a miss is expensive &mdash; a missed cancer diagnosis, say. The denominator is the only difference from precision: FP there, FN here."},
+
+{id:63,t:"evl",type:"nat",d:2,m:2,
+ q:"With precision 0.80 and recall 0.67, what is the <b>F1 score</b>? Give two decimal places.",a:[0.72,0.74],
+ s:"F1 = 2PR / (P + R) = 2(0.80)(0.6667) / (0.80 + 0.6667) = 1.0667 / 1.4667 = <b>0.73</b>.<br>F1 is the harmonic mean, which is deliberately unforgiving: it sits close to the smaller of the two, so a model cannot buy a good F1 by pushing precision to 1.0 while recall collapses."},
+
+{id:64,t:"evl",type:"nat",d:1,m:1,
+ q:"For the same matrix (TP = 40, FP = 10, FN = 20, TN = 30), what is the <b>accuracy</b>? Give two decimal places.",a:[0.69,0.71],
+ s:"Accuracy = (TP + TN) / total = (40 + 30) / 100 = <b>0.70</b>. Notice it hides the asymmetry completely: the model misses a third of all real positives, but accuracy still reads a comfortable 70%."},
+
+{id:65,t:"evl",type:"mcq",d:2,m:2,
+ q:"A fraud detector reports 99% accuracy on a dataset where 1% of transactions are fraudulent. The correct reaction is:",
+ o:["Deploy it, 99% is excellent","Suspect it may be predicting 'not fraud' every time, which alone scores 99%","Retrain with a higher learning rate","Conclude the data has been leaked"],a:1,
+ s:"The all-negative baseline already gets 99%, so the headline number carries no information at all. Check recall on the fraud class, the precision&ndash;recall curve, and the confusion matrix. Accuracy is only meaningful when the classes are roughly balanced <i>and</i> the two error types cost about the same."},
+
+{id:66,t:"evl",type:"mcq",d:2,m:2,
+ q:"<b>ROC AUC</b> can be interpreted as:",
+ o:["The fraction of predictions that are correct","The probability that a randomly chosen positive is scored higher than a randomly chosen negative","The area under the precision&ndash;recall curve","The model's calibration error"],a:1,
+ s:"AUC measures ranking quality and is therefore threshold-free. 0.5 means the ordering is no better than a coin flip, 1.0 means every positive outranks every negative. Because it is threshold-free it is a good summary for model comparison, but you still have to choose an operating threshold before deploying."},
+
+{id:67,t:"evl",type:"msq",d:3,m:2,
+ q:"When is a <b>precision&ndash;recall</b> curve more informative than an ROC curve? Select all that apply.",
+ o:["When the positive class is very rare","When the cost of a false positive is high and the negative class is huge","When the classes are perfectly balanced","When you care about performance on the positive class specifically"],a:[0,1,3],
+ s:"ROC's x-axis is the false-positive rate, FP/(FP+TN). With a huge negative class, TN dominates that denominator, so even a flood of false positives barely moves the curve and ROC looks flatteringly good. Precision uses FP/(TP+FP) and has no such cushion. With balanced classes the two curves tell much the same story."},
+
+{id:68,t:"evl",type:"mcq",d:1,m:1,
+ q:"In <b>k-fold cross-validation</b>:",
+ o:["The data is split once into train and test","Each fold serves as the validation set exactly once while the rest are used for training","Every fold is used for training only","The test set is reused for tuning"],a:1,
+ s:"The data is cut into k parts; the model is fitted k times, each time holding out a different part, and the k scores are averaged. Every row therefore contributes to both training and validation, which is why the estimate is far more stable than a single holdout &mdash; especially on small datasets."},
+
+{id:69,t:"evl",type:"nat",d:2,m:1,
+ q:"5-fold cross-validation is run on 1000 samples. How many samples does each model see during <b>training</b>?",a:[800,800],
+ s:"Each fold holds out 1000/5 = 200 samples, so training uses the other <b>800</b>. Five models are fitted in total and the five validation scores are averaged. More folds means more training data per model but more compute; k = 5 or 10 is the usual compromise."},
+
+{id:70,t:"evl",type:"mcq",d:2,m:2,
+ q:"The essential difference between <b>bagging</b> and <b>boosting</b> is:",
+ o:["Bagging trains learners in parallel to reduce variance; boosting trains them sequentially, each correcting the last, to reduce bias","Bagging works only on trees, boosting works on any model","Boosting trains in parallel, bagging sequentially","They are two names for the same procedure"],a:0,
+ s:"Bagging fits independent models on bootstrap resamples and averages them &mdash; averaging cancels out the noise, so variance falls. Boosting builds models one at a time, each focusing on what the current ensemble is getting wrong, which chips away at bias. That is also why boosting can overfit if run too long, while bagging essentially cannot."},
+
+{id:71,t:"evl",type:"msq",d:2,m:2,
+ q:"Which statements about <b>random forests</b> are correct? Select all that apply.",
+ o:["Each tree is fitted on a bootstrap sample of the rows","At each split only a random subset of features is considered","Individual trees are deliberately kept shallow to keep bias low","Out-of-bag samples give a validation estimate for free"],a:[0,1,3],
+ s:"Random forests deliberately grow <i>deep</i>, low-bias, high-variance trees and then average them &mdash; averaging is what kills the variance. C describes boosting, which uses shallow stumps. Feature subsampling is the ingredient that decorrelates the trees so averaging actually helps; the out-of-bag rows, about 37% per tree, double as a free validation set."},
+
+{id:72,t:"evl",type:"mcq",d:3,m:2,
+ q:"In <b>AdaBoost</b>, after each weak learner is fitted:",
+ o:["All training samples are reweighted equally","Misclassified samples get larger weights so the next learner focuses on them","The dataset is shuffled and the process restarts","The learning rate is doubled"],a:1,
+ s:"The reweighting is the whole mechanism: examples the current ensemble gets wrong become more expensive to get wrong again, so the next stump is forced to attend to them. Each learner also receives a vote &alpha; that grows with its accuracy, so weak learners get a quiet voice and strong ones a loud one."},
+
+{id:73,t:"evl",type:"mcq",d:2,m:2,
+ q:"<b>Stratified</b> k-fold cross-validation is used to:",
+ o:["Speed up training","Keep the class proportions of the full dataset in every fold","Remove outliers from each fold","Guarantee the folds are the same size"],a:1,
+ s:"With a rare class, plain random folds can end up with almost none &mdash; or none at all &mdash; of the minority class, making those fold scores unstable or undefined. Stratification samples within each class so the proportions are preserved. It should be the default for any imbalanced classification problem."},
+
+{id:74,t:"evl",type:"nat",d:3,m:2,
+ q:"For the matrix TP = 40, FP = 10, FN = 20, TN = 30, what is the <b>specificity</b> (true negative rate)? Give two decimal places.",a:[0.74,0.76],
+ s:"Specificity = TN / (TN + FP) = 30 / (30 + 10) = 30/40 = <b>0.75</b>.<br>It is recall measured on the negative class. The ROC curve plots recall (sensitivity) against 1 &minus; specificity, so specificity 0.75 puts this operating point at x = 0.25."},
+
+{id:75,t:"evl",type:"mcq",d:3,m:2,
+ q:"In <b>gradient boosting</b>, each new tree is fitted to:",
+ o:["The original target values","The negative gradient of the loss with respect to the current predictions &mdash; the residuals, for squared loss","A bootstrap sample of the rows","The misclassified rows only"],a:1,
+ s:"Gradient boosting is gradient descent performed in function space. At each round the model asks 'which direction would reduce the loss?', computes the negative gradient at every training point, and fits a small tree to <i>that</i>. With squared loss the negative gradient is exactly the residual y &minus; &#375;, which is why the classic description is 'fit the next tree to the residuals'."},
+
+/* ---------- Unit 6 · Unsupervised learning ---------- */
+{id:76,t:"uns",type:"mcq",d:1,m:1,
+ q:"The k-Means algorithm minimises:",
+ o:["The sum of squared distances from each point to its assigned centroid","The number of misclassified points","The entropy of the cluster labels","The distance between the two farthest points"],a:0,
+ s:"The objective is the within-cluster sum of squares, often called inertia. The two alternating steps &mdash; assign each point to the nearest centroid, then move each centroid to the mean of its members &mdash; each reduce this quantity, which is why the algorithm always converges."},
+
+{id:77,t:"uns",type:"nat",d:2,m:2,
+ q:"One-dimensional points 1, 2, 6, 7 are clustered with k = 2, starting from centroids at 1 and 7. After <b>one</b> full iteration, what is the new position of the first centroid? Give one decimal place.",a:[1.4,1.6],
+ s:"Assignment step: 1 and 2 are nearer to centroid 1; 6 and 7 are nearer to centroid 7.<br>Update step: new c<sub>1</sub> = (1 + 2)/2 = <b>1.5</b>, new c<sub>2</sub> = (6 + 7)/2 = 6.5.<br>A second iteration would reassign nothing, so the algorithm has already converged."},
+
+{id:78,t:"uns",type:"mcq",d:2,m:2,
+ q:"Which statement about k-Means is correct?",
+ o:["It always finds the globally optimal clustering","It converges to a local optimum that depends on the initial centroids","It requires labelled data","It can find clusters of any shape"],a:1,
+ s:"The objective is non-convex, so different starting points give different answers. That is why k-means++ seeds the centroids far apart, and why libraries repeat the whole run several times (<code>n_init</code>) and keep the best inertia. D is also false &mdash; because it assigns by Euclidean distance to a centre, k-Means can only carve out roughly spherical, equally-sized blobs."},
+
+{id:79,t:"uns",type:"mcq",d:2,m:2,
+ q:"In the <b>elbow method</b>, the chosen number of clusters is the point where:",
+ o:["Inertia is at its minimum","Adding another cluster stops producing a large drop in inertia","Inertia becomes zero","The silhouette score is at its lowest"],a:1,
+ s:"Inertia falls monotonically with k and reaches zero when k equals the number of points, so its minimum is useless as a criterion. The elbow is where the curve visibly flattens: past that point extra clusters are splitting hairs rather than finding structure. Because elbows are often ambiguous, the silhouette score is a useful cross-check."},
+
+{id:80,t:"uns",type:"nat",d:2,m:1,
+ q:"A point has mean intra-cluster distance a = 0.2 and mean distance to the nearest other cluster b = 0.6. What is its <b>silhouette</b> value? Give two decimal places.",a:[0.66,0.67],
+ s:"s = (b &minus; a) / max(a, b) = (0.6 &minus; 0.2) / 0.6 = 0.4 / 0.6 = <b>0.67</b>.<br>Silhouette runs from &minus;1 to +1. Near +1 the point sits comfortably inside its own cluster; near 0 it is on a boundary; negative means it is closer to a neighbouring cluster and has probably been assigned wrongly."},
+
+{id:81,t:"uns",type:"msq",d:2,m:2,
+ q:"Which statements about <b>agglomerative hierarchical clustering</b> are correct? Select all that apply.",
+ o:["It starts with every point as its own cluster and repeatedly merges the closest pair","The number of clusters need not be fixed in advance","The result is displayed as a dendrogram that can be cut at any height","It scales better than k-Means to very large datasets"],a:[0,1,2],
+ s:"D is false: computing and updating all pairwise distances costs O(n<sup>2</sup>) memory and worse in time, so hierarchical clustering becomes impractical well before k-Means does. Its advantage is the dendrogram &mdash; one fit gives you every granularity at once, and you choose where to cut afterwards."},
+
+{id:82,t:"uns",type:"mcq",d:3,m:2,
+ q:"Compared with k-Means, <b>DBSCAN</b> has the advantage that it:",
+ o:["Always runs faster","Finds arbitrarily shaped clusters and labels low-density points as noise, without being told the number of clusters","Needs no hyperparameters","Guarantees every point is assigned to a cluster"],a:1,
+ s:"DBSCAN grows clusters by density, so a crescent or a ring is no problem, and points in sparse regions are simply marked as noise instead of being forced into the nearest blob. It still has two hyperparameters &mdash; &epsilon; and minPts &mdash; and it struggles when different clusters have very different densities."},
+
+{id:83,t:"uns",type:"nat",d:2,m:2,
+ q:"The covariance matrix of a dataset has eigenvalues 4, 3, 2 and 1. What <b>fraction of the total variance</b> is captured by the first two principal components? Give two decimal places.",a:[0.69,0.71],
+ s:"Total variance = 4 + 3 + 2 + 1 = 10.<br>First two components = 4 + 3 = 7.<br>Fraction = 7/10 = <b>0.70</b>, that is 70%. Plotting the cumulative version of this ratio against the number of components is the standard way to choose how many to keep &mdash; often at a 90% or 95% threshold."},
+
+{id:84,t:"uns",type:"mcq",d:2,m:2,
+ q:"The first principal component is the direction that:",
+ o:["Maximises the variance of the projected data","Minimises the variance of the projected data","Best separates the classes","Is always the first original feature"],a:0,
+ s:"It is the top eigenvector of the covariance matrix, and its eigenvalue is the variance captured. Equivalently it minimises the sum of squared perpendicular distances from the points to the line &mdash; the two formulations are the same thing. C describes LDA, which is supervised; PCA never looks at the labels."},
+
+{id:85,t:"uns",type:"msq",d:3,m:2,
+ q:"Which statements about <b>PCA</b> are correct? Select all that apply.",
+ o:["The principal components are mutually orthogonal","PCA is a linear transformation","The components are ordered by decreasing variance explained","The components are always easy to interpret in terms of the original features"],a:[0,1,2],
+ s:"D is the standard complaint about PCA: each component is a weighted blend of every original feature, so 'PC1' rarely has a clean business meaning. That is the cost of the compression. The other three follow directly from the eigendecomposition of a symmetric covariance matrix."},
+
+{id:86,t:"uns",type:"mcq",d:1,m:1,
+ q:"Before running PCA on features measured in rupees, years and kilograms, you should:",
+ o:["Standardise the features","Shuffle the rows","One-hot encode the numeric columns","Nothing special is needed"],a:0,
+ s:"PCA chases variance, and variance is measured in the feature's own units. A column in rupees with values in the lakhs has an enormous numeric variance and will monopolise the first component no matter how uninformative it is. Standardising puts every feature on an equal footing first."},
+
+{id:87,t:"uns",type:"nat",d:3,m:2,
+ q:"At the very first step of agglomerative clustering on 5 points, how many <b>pairwise distances</b> must be computed?",a:[10,10],
+ s:"C(5, 2) = 5 &times; 4 / 2 = <b>10</b>. In general it is n(n &minus; 1)/2, which grows quadratically &mdash; 1000 points already require about half a million distances. That quadratic cost is the reason hierarchical clustering does not scale."},
+
+{id:88,t:"uns",type:"mcq",d:2,m:2,
+ q:"The main difference between k-Means and a <b>Gaussian mixture model</b> is that a GMM:",
+ o:["Cannot handle more than two clusters","Gives each point a probability of belonging to each cluster instead of a single hard label","Needs labelled data","Is always faster"],a:1,
+ s:"k-Means makes a hard assignment; a GMM fitted by EM returns soft responsibilities that sum to one. Because each component also has its own covariance matrix, a GMM can model elongated and tilted clusters, whereas k-Means is stuck with spheres. k-Means is in fact the limiting case of a GMM with equal spherical covariances shrunk to zero."},
+
+{id:89,t:"uns",type:"mcq",d:3,m:2,
+ q:"<b>Single-linkage</b> hierarchical clustering is prone to the <i>chaining</i> effect because it:",
+ o:["Measures cluster distance by the closest pair of points, so a thin bridge of intermediate points merges two otherwise distinct clusters","Measures cluster distance by the farthest pair of points","Uses centroids rather than individual points","Requires the number of clusters in advance"],a:0,
+ s:"Only the single nearest pair is consulted, so a trail of points can link two well-separated groups into one long straggly cluster. Complete linkage uses the farthest pair and produces compact, roughly equal-diameter clusters; Ward's method minimises the increase in within-cluster variance and is usually the safest default."},
+
+{id:90,t:"uns",type:"msq",d:2,m:2,
+ q:"Which of these are <b>unsupervised</b> tasks? Select all that apply.",
+ o:["Segmenting customers into groups with no predefined labels","Reducing 100 features to 10 with PCA","Predicting churn from historical labelled outcomes","Detecting anomalous server logs with no examples of past failures"],a:[0,1,3],
+ s:"A, B and D all work on inputs alone with no target column. C has a labelled outcome and is plain supervised classification. Note that anomaly detection can be framed either way; with no labelled failures to learn from, it is unsupervised."},
+
+/* ---------- Unit 7 · Neural networks ---------- */
+{id:91,t:"nn",type:"mcq",d:1,m:1,
+ q:"A single perceptron with a step activation <b>cannot</b> learn which function?",
+ o:["AND","OR","XOR","NOT"],a:2,
+ s:"A perceptron draws one straight line. AND, OR and NOT are linearly separable &mdash; one line suffices. XOR is not: its two positive cases sit on opposite corners of the square, so no single line can separate them. Minsky and Papert's 1969 observation on exactly this point stalled the field for a decade. One hidden layer fixes it."},
+
+{id:92,t:"nn",type:"nat",d:2,m:2,
+ q:"A fully connected network has 4 input units, one hidden layer of 5 units and 3 output units. Counting biases, how many <b>learnable parameters</b> are there?",a:[43,43],
+ s:"Input &rarr; hidden: 4 &times; 5 = 20 weights, plus 5 biases = 25.<br>Hidden &rarr; output: 5 &times; 3 = 15 weights, plus 3 biases = 18.<br>Total = 25 + 18 = <b>43</b>.<br>The general rule for a layer is (fan-in &times; fan-out) + fan-out. The input layer itself has no bias because it holds no units that compute."},
+
+{id:93,t:"nn",type:"mcq",d:2,m:2,
+ q:"Why must a multilayer network use a <b>non-linear</b> activation function?",
+ o:["To make training faster","Because a stack of linear layers collapses into a single linear layer, so depth would buy nothing","To keep the outputs bounded","To avoid exploding gradients"],a:1,
+ s:"If every layer computes W&middot;x + b, then two layers give W<sub>2</sub>(W<sub>1</sub>x + b<sub>1</sub>) + b<sub>2</sub> = (W<sub>2</sub>W<sub>1</sub>)x + (W<sub>2</sub>b<sub>1</sub> + b<sub>2</sub>), which is just another affine map. A hundred such layers is still equivalent to one. The non-linearity is what makes depth mean something."},
+
+{id:94,t:"nn",type:"nat",d:2,m:1,
+ q:"What is the output of a ReLU unit when its pre-activation value is &minus;3?",a:[0,0],
+ s:"ReLU(z) = max(0, z), so ReLU(&minus;3) = <b>0</b>. Its derivative there is also 0, which is the origin of the 'dying ReLU' problem: a unit pushed permanently negative stops receiving gradient and never recovers. Leaky ReLU allows a small negative slope to keep that path alive."},
+
+{id:95,t:"nn",type:"mcq",d:2,m:2,
+ q:"Sigmoid activations in a deep network cause the <b>vanishing gradient</b> problem because:",
+ o:["The sigmoid is not differentiable","Its derivative peaks at 0.25 and is far smaller in the saturated tails, so multiplying it across many layers drives the gradient toward zero","It produces negative outputs","It is slow to compute"],a:1,
+ s:"Backpropagation multiplies one derivative per layer. With a maximum of 0.25 each, ten layers already scale the gradient by at most 0.25<sup>10</sup> &asymp; 10<sup>&minus;6</sup>, so the early layers barely move. ReLU's derivative is exactly 1 on the positive side, which is why it became the default."},
+
+{id:96,t:"nn",type:"msq",d:2,m:2,
+ q:"Which of these help combat vanishing gradients in deep networks? Select all that apply.",
+ o:["Replacing sigmoid with ReLU","Batch normalisation","Residual (skip) connections","Simply adding more layers"],a:[0,1,2],
+ s:"ReLU keeps the derivative at 1 for positive inputs, batch norm keeps each layer's inputs in a healthy range so units do not saturate, and a skip connection gives the gradient a direct path that bypasses the multiplications entirely. D makes the problem worse &mdash; more layers means more small factors multiplied together."},
+
+{id:97,t:"nn",type:"nat",d:3,m:2,
+ q:"A sigmoid unit outputs 0.6. What is the value of its <b>derivative</b> at that point? Give two decimal places.",a:[0.23,0.25],
+ s:"For the sigmoid, &sigma;'(z) = &sigma;(z)(1 &minus; &sigma;(z)) = 0.6 &times; 0.4 = <b>0.24</b>.<br>This neat self-referential form is why sigmoid was popular &mdash; the backward pass reuses the forward output with no extra work. Its maximum is 0.25 at &sigma; = 0.5."},
+
+{id:98,t:"nn",type:"mcq",d:2,m:2,
+ q:"<b>Backpropagation</b> is essentially:",
+ o:["A different optimiser from gradient descent","The chain rule of calculus applied efficiently to compute the gradient of the loss with respect to every weight","A regularisation technique","A way to initialise weights"],a:1,
+ s:"Backprop is not the optimiser &mdash; it computes the gradient, and gradient descent or Adam then uses it. Its efficiency comes from reusing intermediate results: one backward sweep gets the derivative for every weight in the network, whereas differentiating each weight separately would cost a full forward pass apiece."},
+
+{id:99,t:"nn",type:"nat",d:2,m:2,
+ q:"A 32 &times; 32 input is convolved with a 5 &times; 5 filter using stride 1 and no padding. What is the <b>width</b> of the output feature map?",a:[28,28],
+ s:"Output size = (W &minus; F + 2P)/S + 1 = (32 &minus; 5 + 0)/1 + 1 = 27 + 1 = <b>28</b>.<br>Each convolution without padding shrinks the map by F &minus; 1. Using 'same' padding, here P = 2, would keep it at 32."},
+
+{id:100,t:"nn",type:"nat",d:3,m:2,
+ q:"A convolutional layer takes a 3-channel input and applies 16 filters of size 3 &times; 3, each with a bias. How many <b>parameters</b> does the layer have?",a:[448,448],
+ s:"Each filter spans all input channels: 3 &times; 3 &times; 3 = 27 weights.<br>16 filters &rarr; 16 &times; 27 = 432 weights, plus 16 biases.<br>Total = <b>448</b>.<br>Note the count does not depend on the image size at all &mdash; that is parameter sharing, and it is why a CNN needs vastly fewer weights than a dense layer over the same pixels."},
+
+{id:101,t:"nn",type:"mcq",d:2,m:2,
+ q:"<b>Dropout</b> regularises a network by:",
+ o:["Deleting unused neurons permanently after training","Randomly zeroing a fraction of activations during each training step, so no unit can rely on any particular partner","Reducing the learning rate over time","Removing training examples that are hard to fit"],a:1,
+ s:"Because any unit may vanish on any step, the network cannot build fragile co-adapted chains and must spread the representation across many units. It also behaves like cheaply averaging an exponential family of thinned networks. At test time dropout is switched off and activations are rescaled so the expected value matches."},
+
+{id:102,t:"nn",type:"mcq",d:1,m:1,
+ q:"The <b>softmax</b> output layer produces:",
+ o:["A single number between 0 and 1","A vector of non-negative values that sums to 1","A vector of values between &minus;1 and 1","The index of the predicted class"],a:1,
+ s:"softmax(z)<sub>i</sub> = e<sup>z<sub>i</sub></sup> / &Sigma;<sub>j</sub> e<sup>z<sub>j</sub></sup>. Exponentiating makes everything positive and dividing by the sum normalises, giving a proper distribution over the classes. For two classes it reduces exactly to the sigmoid."},
+
+{id:103,t:"nn",type:"msq",d:3,m:2,
+ q:"Which properties are true of a <b>convolutional</b> layer? Select all that apply.",
+ o:["The same filter weights are reused across every spatial position","Each unit responds only to a local region of the input","Shifting the input shifts the feature map correspondingly","Every output unit is connected to every input unit"],a:[0,1,2],
+ s:"D describes a dense layer and is the opposite of what a convolution does. Parameter sharing, local receptive fields and translation equivariance are the three structural priors that make CNNs so sample-efficient on images &mdash; they encode the fact that an edge is an edge wherever it appears."},
+
+{id:104,t:"nn",type:"mcq",d:3,m:2,
+ q:"<b>Mini-batch</b> gradient descent is usually preferred over both full-batch and single-sample updates because it:",
+ o:["Always reaches a lower final loss","Balances gradient-estimate stability against update frequency, and uses vectorised hardware efficiently","Removes the need for a learning rate","Guarantees convergence to the global minimum"],a:1,
+ s:"Full-batch gives a precise gradient but only one update per epoch. Pure stochastic descent updates constantly but the direction is noisy. A batch of 32&ndash;256 gets most of the noise reduction while still making many updates per epoch, and it maps neatly onto GPU matrix multiplication. The residual noise is a bonus &mdash; it helps escape sharp minima."},
+
+{id:105,t:"nn",type:"mcq",d:2,m:2,
+ q:"LSTMs improve on plain recurrent networks mainly because:",
+ o:["They have more layers","Gated cell state lets information and gradient flow across many time steps without repeated multiplicative shrinkage","They process the sequence in parallel","They need no training data"],a:1,
+ s:"A vanilla RNN multiplies by the same recurrent weight matrix at every step, so the gradient either vanishes or explodes over long sequences. The LSTM's cell state is carried forward through an additive path controlled by forget, input and output gates, which preserves the signal over hundreds of steps. C describes Transformers, not LSTMs."},
+
+/* ---------- Unit 8 · Model selection and tuning ---------- */
+{id:106,t:"tune",type:"mcq",d:1,m:1,
+ q:"Which of the following is a <b>hyperparameter</b> rather than a parameter?",
+ o:["The weights of a linear regression","The split thresholds inside a fitted decision tree","The number of neighbours k in k-NN","The centroid positions found by k-Means"],a:2,
+ s:"Parameters are learned <i>by</i> the fitting procedure; hyperparameters are set <i>before</i> it starts and control how it runs. Weights, thresholds and centroids all come out of training. k is chosen by you, usually by cross-validation."},
+
+{id:107,t:"tune",type:"mcq",d:2,m:2,
+ q:"Compared with grid search, <b>random search</b> over hyperparameters:",
+ o:["Always finds a better configuration","Explores more distinct values of the hyperparameters that actually matter, for the same budget","Requires no validation set","Can only tune one hyperparameter at a time"],a:1,
+ s:"A grid of 5 &times; 5 tries only 5 distinct values of each hyperparameter across 25 fits. Twenty-five random draws try 25 distinct values of each. Since usually only one or two hyperparameters matter much, the random scheme covers the important axis far more finely for the same cost &mdash; the Bergstra&ndash;Bengio result."},
+
+{id:108,t:"tune",type:"nat",d:2,m:2,
+ q:"A grid search tries 3 values of C and 4 values of &gamma;, evaluated by 5-fold cross-validation. How many <b>model fits</b> does the search perform?",a:[60,60],
+ s:"Combinations = 3 &times; 4 = 12. Each is scored with 5 folds, so 12 &times; 5 = <b>60</b> fits.<br>Add a final refit on the whole training set and scikit-learn's <code>GridSearchCV</code> with <code>refit=True</code> performs 61. This multiplication is why grid search gets expensive so quickly."},
+
+{id:109,t:"tune",type:"msq",d:2,m:2,
+ q:"Which of these are <b>hyperparameters</b>? Select all that apply.",
+ o:["The learning rate of gradient descent","The maximum depth of a decision tree","The regularisation strength &lambda;","The fitted coefficient on a feature"],a:[0,1,2],
+ s:"A, B and C are all dials you set before training that shape the search. D is an output of training. A useful test: if changing it requires refitting the model, and the fitting procedure would never change it on its own, it is a hyperparameter."},
+
+{id:110,t:"tune",type:"mcq",d:2,m:2,
+ q:"A learning curve shows training and validation error both plateauing at a high value, with almost no gap between them. This indicates:",
+ o:["High variance &mdash; collect more data","High bias &mdash; the model is too simple","Data leakage","A learning rate that is too high"],a:1,
+ s:"No gap means the model is not memorising, and a high plateau means it is not fitting either &mdash; classic underfitting. More data will not help, because the curves have already flattened. Increase capacity, add features or interactions, or weaken the regularisation. A large gap would be the opposite diagnosis."},
+
+{id:111,t:"tune",type:"nat",d:3,m:2,
+ q:"<b>Nested</b> cross-validation uses 5 outer folds and 4 inner folds, with a hyperparameter grid of 6 combinations. How many model fits happen in the <b>inner</b> loops in total?",a:[120,120],
+ s:"Each outer fold runs its own inner search: 4 folds &times; 6 combinations = 24 fits.<br>Across 5 outer folds: 5 &times; 24 = <b>120</b>.<br>Plus 5 refits and 5 outer evaluations. Nested CV is expensive, but it is the only honest way to report performance when hyperparameters were tuned &mdash; a single CV score is optimistic because the same data chose the settings."},
+
+{id:112,t:"tune",type:"mcq",d:2,m:2,
+ q:"<b>Early stopping</b> halts training when:",
+ o:["The training loss stops decreasing","The validation loss stops improving and begins to rise","A fixed number of epochs has passed","The learning rate reaches zero"],a:1,
+ s:"Training loss almost always keeps falling &mdash; that is the model memorising. The validation curve is the one that turns around, and that turning point marks where generalisation starts degrading. In practice you set a patience of several epochs and restore the weights from the best epoch, not the last."},
+
+{id:113,t:"tune",type:"mcq",d:3,m:2,
+ q:"<b>Bayesian optimisation</b> beats random search on expensive tuning problems because it:",
+ o:["Tries every combination systematically","Builds a probabilistic model of the score surface and picks the next point that best trades off exploration against exploitation","Needs no validation data","Runs all evaluations in parallel"],a:1,
+ s:"Each evaluation is used to update a surrogate &mdash; typically a Gaussian process or a tree-based estimator &mdash; over the hyperparameter space. An acquisition function then picks the next point to try, balancing regions that look promising against regions still unexplored. When a single fit takes hours, that sample-efficiency is worth a great deal. The catch is that it is inherently sequential."},
+
+{id:114,t:"tune",type:"msq",d:2,m:2,
+ q:"Which observations suggest <b>high variance</b> rather than high bias? Select all that apply.",
+ o:["Training error is very low but validation error is much higher","Both errors are high and close together","Validation error falls steadily as more training data is added","The model's predictions change a lot when it is refitted on a different random subsample"],a:[0,2,3],
+ s:"B is the signature of high bias. The other three are all variance symptoms: a large train&ndash;validation gap, a validation curve that is still improving with more data, and instability across resamples. That last one is the literal definition &mdash; variance is how much the fitted model moves when the training sample changes."},
+
+{id:115,t:"tune",type:"nat",d:2,m:1,
+ q:"A search tries learning rates 0.001, 0.01, 0.1 and momentum values 0.9, 0.95, scored with 5-fold cross-validation. How many model fits are performed?",a:[30,30],
+ s:"3 learning rates &times; 2 momentum values = 6 combinations, each with 5 folds: 6 &times; 5 = <b>30</b> fits. Learning rates are searched on a logarithmic scale because what matters is the order of magnitude, not the linear spacing."},
+
+{id:116,t:"tune",type:"mcq",d:3,m:2,
+ q:"After cross-validation has identified the best hyperparameters, why is the model usually <b>refitted on the entire training set</b>?",
+ o:["To make the cross-validation score valid","Because each CV model saw only a fraction of the data, and more data generally gives a better final model","To reduce the number of hyperparameters","Because the CV models are discarded automatically"],a:1,
+ s:"With 5 folds each candidate model trained on only 80% of the data. Once the settings are chosen, nothing stops you from using all 100% for the model you actually ship. The CV score is kept as the performance <i>estimate</i>; the refitted model is the artefact you deploy."},
+
+{id:117,t:"tune",type:"msq",d:3,m:2,
+ q:"Which techniques reduce overfitting in a neural network? Select all that apply.",
+ o:["Dropout","Weight decay (L2 penalty)","Data augmentation","Increasing the number of hidden units"],a:[0,1,2],
+ s:"Dropout prevents co-adaptation, weight decay keeps the weights small and the function smooth, and augmentation manufactures new plausible training examples so the model cannot memorise. Adding hidden units raises capacity, which pushes in the opposite direction &mdash; though with heavy regularisation a wider network can still generalise well."},
+
+{id:118,t:"tune",type:"mcq",d:2,m:2,
+ q:"After trying 500 hyperparameter configurations and reporting the best validation score, that score is likely to be:",
+ o:["An unbiased estimate of test performance","Optimistic, because the validation set has effectively been fitted by the selection process","Pessimistic","Exactly equal to the training score"],a:1,
+ s:"Pick the maximum of 500 noisy estimates and you have partly selected for lucky noise, not just genuine quality. The validation set has been used 500 times and is no longer clean. This is why a truly untouched test set &mdash; or nested cross-validation &mdash; is needed for the number you report."},
+
+{id:119,t:"tune",type:"nat",d:3,m:2,
+ q:"For a given model, bias<sup>2</sup> = 0.09, variance = 0.16 and irreducible noise = 0.05. What is the expected <b>total test error</b>? Give two decimal places.",a:[0.29,0.31],
+ s:"Expected error = bias<sup>2</sup> + variance + noise = 0.09 + 0.16 + 0.05 = <b>0.30</b>.<br>Variance is the largest contributor here, so the productive move is regularisation, more data or bagging &mdash; not a richer model, which would trade away the smaller bias term and inflate the larger variance one."},
+
+{id:120,t:"tune",type:"mcq",d:2,m:1,
+ q:"Increasing k in k-fold cross-validation from 5 to 20:",
+ o:["Reduces computation","Gives each model more training data but costs roughly four times as much compute","Removes the need for a test set","Always lowers the estimated error"],a:1,
+ s:"With k = 20 each model trains on 95% of the data rather than 80%, so the estimate is less pessimistically biased &mdash; but you fit twenty models instead of five. Leave-one-out is the extreme: nearly unbiased, expensive, and often high-variance because the n models are almost identical to one another."},
+
+/* ---------- Unit 9 · Applied machine learning ---------- */
+{id:121,t:"app",type:"mcq",d:1,m:1,
+ q:"The main limitation of a <b>bag-of-words</b> representation is that it:",
+ o:["Cannot handle long documents","Discards word order, so 'dog bites man' and 'man bites dog' are identical","Requires labelled data","Only works for English"],a:1,
+ s:"A bag of words records how often each term appears and nothing else. Meaning that depends on arrangement is lost. Character or word n-grams recover a little local order, and sequence models &mdash; RNNs, Transformers &mdash; keep it properly."},
+
+{id:122,t:"app",type:"nat",d:2,m:2,
+ q:"A term appears in 10 out of 1000 documents. Using IDF = log<sub>10</sub>(N / df), what is its inverse document frequency?",a:[1.99,2.01],
+ s:"IDF = log<sub>10</sub>(1000 / 10) = log<sub>10</sub>(100) = <b>2</b>.<br>A term in every document would score log<sub>10</sub>(1) = 0 and contribute nothing. The rarer the term, the larger the weight &mdash; which is exactly the behaviour you want, since rare terms are the discriminating ones."},
+
+{id:123,t:"app",type:"mcq",d:2,m:2,
+ q:"TF-IDF improves on raw term counts mainly because it:",
+ o:["Is faster to compute","Down-weights terms that appear in nearly every document and so carry little discriminating power","Preserves word order","Removes the need for tokenisation"],a:1,
+ s:"'The' may be the most frequent word in every document, and raw counts would make it the dominant feature everywhere. Multiplying by IDF crushes such terms toward zero and lets genuinely distinctive vocabulary come through. It is a cheap, unsupervised approximation to 'how informative is this word?'."},
+
+{id:124,t:"app",type:"msq",d:2,m:2,
+ q:"Which are standard steps when preparing raw text for a classical model? Select all that apply.",
+ o:["Lowercasing and tokenisation","Removing stopwords","Stemming or lemmatisation","Sorting the documents alphabetically"],a:[0,1,2],
+ s:"A, B and C all shrink the vocabulary so that surface variants collapse onto one feature &mdash; 'Running', 'running' and 'runs' become one token. D changes nothing about the content. Note that stopword removal can hurt in sentiment tasks, where 'not' carries the whole meaning."},
+
+{id:125,t:"app",type:"mcq",d:2,m:2,
+ q:"Compared with one-hot vectors, learned <b>word embeddings</b>:",
+ o:["Are higher-dimensional","Are dense and place semantically related words close together in the space","Require no training corpus","Are unique to each document"],a:1,
+ s:"A one-hot vector is enormous, sparse, and equidistant from every other word &mdash; 'king' is exactly as far from 'queen' as from 'bicycle'. An embedding compresses to a few hundred dense dimensions where distance encodes meaning, learned from which words share contexts."},
+
+{id:126,t:"app",type:"nat",d:2,m:1,
+ q:"What is the <b>cosine similarity</b> between the vectors [1, 0] and [1, 1]? Give two decimal places.",a:[0.70,0.71],
+ s:"Dot product = 1(1) + 0(1) = 1.<br>Magnitudes: |a| = 1, |b| = &radic;2 &asymp; 1.414.<br>cos&theta; = 1 / (1 &times; 1.414) = <b>0.71</b>, the cosine of 45&deg;.<br>Cosine ignores length and compares direction only, which is why it is the standard similarity for text: a long document and a short one on the same topic still match."},
+
+{id:127,t:"app",type:"mcq",d:2,m:2,
+ q:"A recommender that suggests films because <i>users similar to you</i> liked them is using:",
+ o:["Content-based filtering","Collaborative filtering","Supervised regression on film metadata","Reinforcement learning"],a:1,
+ s:"Collaborative filtering works purely from the interaction matrix &mdash; who rated what &mdash; and needs no knowledge of the items themselves. Content-based filtering would instead recommend films sharing genre, director or cast with ones you already liked. Production systems usually blend both."},
+
+{id:128,t:"app",type:"mcq",d:3,m:2,
+ q:"The <b>cold-start</b> problem in recommender systems refers to:",
+ o:["Slow model loading at server startup","Having no interaction history for a new user or a new item, so collaborative filtering has nothing to work with","Overfitting to popular items","Numerical instability in matrix factorisation"],a:1,
+ s:"With no ratings, a new user has no neighbours and a new item has no co-rating signal. Typical fixes fall back on content features, ask a few onboarding questions, or serve popularity-based recommendations until enough interactions accumulate."},
+
+{id:129,t:"app",type:"msq",d:2,m:2,
+ q:"Which are legitimate engineered features for a next-day sales forecast? Select all that apply.",
+ o:["Sales on the previous day (lag-1)","A 7-day rolling mean of sales","Day of week and holiday indicator","Next week's actual sales"],a:[0,1,2],
+ s:"A, B and C are all computable at prediction time from information already available. D is a future value &mdash; including it is target leakage, and the model would score beautifully in backtesting and be useless in production. The test for any time-series feature is simple: would I actually know this on the morning I make the prediction?"},
+
+{id:130,t:"app",type:"mcq",d:2,m:2,
+ q:"With only 2000 labelled images, the most effective approach is usually to:",
+ o:["Train a deep CNN from random initialisation","Fine-tune a network pretrained on a large image corpus","Use logistic regression on raw pixels","Collect no more data and accept the result"],a:1,
+ s:"The early layers of a pretrained network have already learned edges, textures and shapes, which transfer to almost any visual domain. Freezing most of them and retraining the final layers on 2000 images typically beats training from scratch by a wide margin, because the from-scratch model has far too many parameters for that much data."},
+
+{id:131,t:"app",type:"nat",d:3,m:2,
+ q:"A recommender predicts ratings 3, 3, 4 where the true ratings are 4, 3, 5. What is the <b>RMSE</b>? Give two decimal places.",a:[0.81,0.82],
+ s:"Errors: 4 &minus; 3 = 1, 3 &minus; 3 = 0, 5 &minus; 4 = 1.<br>Squared: 1, 0, 1 &rarr; sum = 2.<br>MSE = 2/3 = 0.6667, RMSE = &radic;0.6667 = <b>0.82</b>.<br>RMSE is reported rather than MSE because it is back in the original units &mdash; here, rating stars."},
+
+{id:132,t:"app",type:"mcq",d:2,m:2,
+ q:"Which augmentation would be <b>inappropriate</b> for a handwritten-digit classifier?",
+ o:["Small rotations of a few degrees","Slight translations","Vertical flipping","Mild elastic distortion"],a:2,
+ s:"Augmentation must preserve the label. Flipping a 6 vertically does not produce a valid 6 &mdash; it produces something closer to a 9, or nothing legible at all. Small rotations, shifts and distortions all leave the digit recognisably itself. Horizontal flips are fine for natural photographs of cats, and wrong for text."},
+
+{id:133,t:"app",type:"msq",d:3,m:2,
+ q:"A categorical feature has 50,000 distinct values (say, product IDs). Which are sensible approaches? Select all that apply.",
+ o:["Group rare categories into a single 'other' bucket","Target encoding with smoothing, fitted inside the cross-validation folds","A learned embedding layer","Plain one-hot encoding into 50,000 columns"],a:[0,1,2],
+ s:"D produces an unusably wide, sparse matrix in which most columns fire a handful of times. Bucketing rare levels, smoothed target encoding (computed inside each fold, or it leaks), and learned embeddings are the three standard answers. Gradient-boosting libraries such as CatBoost and LightGBM handle high-cardinality columns natively."},
+
+{id:134,t:"app",type:"mcq",d:2,m:1,
+ q:"A time series is <b>stationary</b> when:",
+ o:["Its values never change","Its statistical properties such as mean and variance do not change over time","It has no seasonality by construction","It is measured at regular intervals"],a:1,
+ s:"Classical models such as ARIMA assume stationarity because they estimate a fixed relationship between a point and its recent past. A trending or seasonal series breaks that, so it is differenced or seasonally adjusted first &mdash; the 'I' in ARIMA is exactly this differencing step."},
+
+{id:135,t:"app",type:"mcq",d:3,m:2,
+ q:"Adding <b>bigrams</b> to a bag-of-words model helps mainly because:",
+ o:["It reduces the size of the vocabulary","It captures short local phrases such as 'not good', whose meaning is lost when the words are counted separately","It removes the need for TF-IDF","It makes the model linear"],a:1,
+ s:"Unigrams see 'not' and 'good' independently, and 'good' pulls the prediction positive. The bigram 'not good' is a single feature carrying the correct sentiment. The cost is a much larger vocabulary and sparser counts, so bigrams are usually kept only above a minimum document frequency."},
+
+/* ---------- Unit 10 · Deployment, MLOps and responsible AI ---------- */
+{id:136,t:"dep",type:"mcq",d:1,m:1,
+ q:"A deployed model's accuracy decays steadily over six months although the code has not changed. The most likely cause is:",
+ o:["The model file has become corrupted","Drift &mdash; the live data distribution has moved away from the training distribution","The server is too slow","The test set was too small"],a:1,
+ s:"Models are snapshots of a world that keeps moving: prices change, fraud tactics evolve, user behaviour shifts. Nothing about the model degrades, but its assumptions age. The remedy is monitoring for drift and retraining on a schedule or on a trigger."},
+
+{id:137,t:"dep",type:"mcq",d:2,m:2,
+ q:"The difference between <b>data drift</b> and <b>concept drift</b> is:",
+ o:["Data drift is the input distribution P(x) changing; concept drift is the relationship P(y | x) changing","They are the same thing","Data drift affects only categorical features","Concept drift happens only during training"],a:0,
+ s:"If your customers get younger, the inputs have shifted but the rule 'younger customers churn more' may still hold &mdash; data drift. If a competitor launches and the very meaning of a churn signal changes, the mapping itself has changed &mdash; concept drift, which is harder to spot because you cannot detect it from inputs alone. It needs labels."},
+
+{id:138,t:"dep",type:"msq",d:2,m:2,
+ q:"What should be monitored for a model running in production? Select all that apply.",
+ o:["Input feature distributions compared with training","Prediction distribution over time","Latency and error rates of the serving endpoint","Accuracy on the original training set"],a:[0,1,2],
+ s:"A, B and C can all be computed live, without waiting for ground truth. D is static &mdash; the training score cannot change and tells you nothing about today. Once labels eventually arrive, live accuracy should of course be tracked too, but the leading indicators are the distributional ones."},
+
+{id:139,t:"dep",type:"mcq",d:2,m:2,
+ q:"<b>Batch</b> inference is preferable to real-time serving when:",
+ o:["Predictions are needed within milliseconds of a user action","Predictions for a known set of entities can be computed on a schedule and looked up later","The model is very small","The features change every second"],a:1,
+ s:"Nightly churn scores for every customer is the archetype: compute them all at once, write them to a table, and the application just reads a row. It is cheaper and far simpler operationally. Real-time serving is only necessary when the input is not known in advance &mdash; a fraud check on a transaction happening right now."},
+
+{id:140,t:"dep",type:"nat",d:2,m:2,
+ q:"A model takes 20 milliseconds per prediction and a worker handles requests one at a time. How many requests per second can a single worker serve?",a:[50,50],
+ s:"1000 ms / 20 ms = <b>50</b> requests per second per worker.<br>Meeting 500 requests per second therefore needs at least 10 workers, before any headroom for traffic spikes. This back-of-envelope calculation is what turns a latency figure into a capacity plan."},
+
+{id:141,t:"dep",type:"mcq",d:2,m:2,
+ q:"In a <b>shadow deployment</b>, the new model:",
+ o:["Replaces the old model immediately for all users","Receives live traffic and its predictions are logged and compared, but they are not shown to users","Runs only on historical data","Is served to a random 50% of users"],a:1,
+ s:"Shadow mode answers 'how would this behave on real traffic?' at zero user risk, and catches the problems offline evaluation misses &mdash; feature pipeline mismatches, latency spikes, unexpected input values. D describes an A/B test, which does expose users and comes later."},
+
+{id:142,t:"dep",type:"msq",d:3,m:2,
+ q:"What is needed to make a training run <b>reproducible</b>? Select all that apply.",
+ o:["A versioned snapshot of the training data","Pinned library versions and a recorded environment","Fixed random seeds","A faster GPU"],a:[0,1,2],
+ s:"Data, code, environment and seed are the four things that together determine the output. Miss any one and the run cannot be recreated six months later when someone asks why the model behaves as it does. Hardware affects speed, not the result &mdash; though note that some GPU operations are non-deterministic unless explicitly configured otherwise."},
+
+{id:143,t:"dep",type:"mcq",d:3,m:2,
+ q:"<b>Training&ndash;serving skew</b> occurs when:",
+ o:["The training set is imbalanced","Features are computed differently in the training pipeline and the serving pipeline, so the model sees inputs it was never trained on","The model is too large to serve","Training takes longer than inference"],a:1,
+ s:"A classic instance: training computes a 30-day average from a warehouse table, while the production service computes it from a slightly different window in a different language. The model is fine; the inputs no longer mean the same thing. A shared feature store, or reusing exactly the same transformation code in both paths, is the structural fix."},
+
+{id:144,t:"dep",type:"mcq",d:2,m:2,
+ q:"A hiring model selects 30% of male and 15% of female applicants. Which fairness criterion does this most directly violate?",
+ o:["Demographic parity","Equalised odds","Calibration","Individual fairness"],a:0,
+ s:"Demographic parity asks that the selection rate be equal across groups, and 30% against 15% plainly is not. Equalised odds is a different requirement &mdash; equal true-positive and false-positive rates &mdash; and it can hold even when selection rates differ, if the underlying qualification rates differ. These criteria are provably impossible to satisfy all at once, so which one applies is a decision about values, not mathematics."},
+
+{id:145,t:"dep",type:"msq",d:2,m:2,
+ q:"Which are genuine sources of bias in a machine learning system? Select all that apply.",
+ o:["Historical bias already present in the labels","Under-representation of a group in the training sample","A proxy feature such as postcode standing in for a protected attribute","Using cross-validation instead of a single holdout"],a:[0,1,2],
+ s:"Bias enters through the data and through the framing, not through the validation scheme. Labels recording past human decisions carry those decisions forward; a group with few samples gets a worse fit; and dropping a protected attribute achieves nothing if a correlated proxy remains in the feature set."},
+
+{id:146,t:"dep",type:"mcq",d:2,m:1,
+ q:"<b>SHAP</b> values are used to:",
+ o:["Speed up inference","Attribute a single prediction to the contributions of individual features","Compress the model","Detect data drift"],a:1,
+ s:"SHAP borrows the Shapley value from cooperative game theory and splits a prediction's departure from the baseline among the features, with the attractive property that the contributions sum exactly to that gap. It gives a local explanation &mdash; why <i>this</i> loan was declined &mdash; which is often what a regulator or a customer is actually asking for."},
+
+{id:147,t:"dep",type:"nat",d:3,m:2,
+ q:"Group A has a selection rate of 0.30 and group B a selection rate of 0.15. What is the <b>disparate impact ratio</b> (unprivileged over privileged)? Give two decimal places.",a:[0.49,0.51],
+ s:"Ratio = 0.15 / 0.30 = <b>0.50</b>.<br>Under the widely used four-fifths rule, a ratio below 0.80 is treated as evidence of adverse impact, so 0.50 would fail it decisively. Treat the threshold as a screening signal that prompts investigation, not as a legal verdict on its own."},
+
+{id:148,t:"dep",type:"mcq",d:2,m:2,
+ q:"An online <b>A/B test</b> is run after offline evaluation because:",
+ o:["Offline metrics are always wrong","Offline gains do not always translate into the business outcome that matters, and only live traffic can measure that","It is cheaper than offline evaluation","It removes the need for a test set"],a:1,
+ s:"A recommender may improve offline ranking accuracy while reducing actual clicks, because the offline data was itself collected under the old policy. Only a randomised live experiment measures the effect on the metric the business cares about, with real users reacting to real changes."},
+
+{id:149,t:"dep",type:"mcq",d:3,m:2,
+ q:"Shipping a model as a bare pickle file, with no environment specification, is fragile because:",
+ o:["Pickle files are always large","Unpickling depends on the exact library versions and class definitions present at load time, so a version bump can break or silently alter the model","Pickle cannot store numeric arrays","It makes inference slower"],a:1,
+ s:"A pickle stores references to classes, not their code. Load it under a different scikit-learn version and it may raise an error &mdash; or worse, load successfully with changed internal behaviour. Pin the versions, containerise the runtime, or export to a stable format such as ONNX or PMML."},
+
+{id:150,t:"dep",type:"msq",d:2,m:2,
+ q:"Which practices belong to responsible deployment of an ML system? Select all that apply.",
+ o:["Documenting the intended use and known limitations of the model","Evaluating performance separately for each affected subgroup","Providing a route for people to contest an automated decision","Keeping the training data secret so the model cannot be copied"],a:[0,1,2],
+ s:"A, B and C map onto model cards, disaggregated evaluation and meaningful human review &mdash; the practical core of responsible AI. D is a commercial consideration, not an ethical safeguard; secrecy about training data usually works against accountability rather than for it."},
+
+/*--QEND--*/
+];
+
+/* Flashcards: f = front (prompt), b = back (answer), t = topic key */
+const CARDS = [
+/* ---------- Unit 1 · Foundations ---------- */
+{t:"found",f:"Supervised vs unsupervised vs reinforcement &mdash; in one line each.",
+ b:"<b>Supervised:</b> learn a mapping from inputs to known labels.<br><b>Unsupervised:</b> find structure in inputs with no labels.<br><b>Reinforcement:</b> an agent takes actions and learns from delayed reward."},
+{t:"found",f:"What is <b>inductive bias</b>?",
+ b:"The set of assumptions a learner uses to pick one hypothesis out of the many that fit the training data. Without it, generalising to unseen inputs is impossible. Example: k-NN assumes nearby points share a label."},
+{t:"found",f:"Write the <b>bias&ndash;variance decomposition</b> of expected test error.",
+ b:"E[error] = bias<sup>2</sup> + variance + irreducible noise.<br>Bias falls with a richer model, variance falls with more data or regularisation, noise never falls."},
+{t:"found",f:"Overfitting vs underfitting &mdash; how do you tell them apart from the errors?",
+ b:"<b>Overfitting:</b> low training error, much higher test error (big gap).<br><b>Underfitting:</b> both errors high and close together.<br>The <i>gap</i> is the diagnostic, not either number alone."},
+{t:"found",f:"Why do we need a separate validation set as well as a test set?",
+ b:"Any set used to make a choice stops being an unbiased estimator. Hyperparameters are chosen on validation; the test set is opened exactly once, at the end, to report."},
+{t:"found",f:"<b>Curse of dimensionality</b> &mdash; state it in one sentence.",
+ b:"As dimensions grow the space expands exponentially, data becomes sparse, and distances lose contrast &mdash; so distance-based methods degrade and the sample size needed for the same density explodes."},
+
+/* ---------- Unit 2 · Preprocessing ---------- */
+{t:"prep",f:"Standardisation vs min&ndash;max scaling &mdash; formula and when to use each.",
+ b:"<b>Standardise:</b> z = (x &minus; &mu;)/&sigma; &rarr; mean 0, sd 1. Safe default; robust to outliers relative to min&ndash;max.<br><b>Min&ndash;max:</b> (x &minus; min)/(max &minus; min) &rarr; [0, 1]. Use when a bounded range is needed; one outlier ruins it."},
+{t:"prep",f:"What is <b>data leakage</b>, in one sentence, plus the commonest example?",
+ b:"Information that would not be available at prediction time creeping into training. Commonest case: fitting a scaler or imputer on the full dataset before the train/test split."},
+{t:"prep",f:"Which transformers must be fitted on the training split only?",
+ b:"Every one that learns a number from the data &mdash; scaler means and variances, imputer medians, encoder category lists, the PCA rotation. Wrap them in a <code>Pipeline</code> so cross-validation refits them per fold."},
+{t:"prep",f:"Ordinal vs one-hot encoding &mdash; when does each apply?",
+ b:"<b>Ordinal:</b> the categories have a real order (Low &lt; Medium &lt; High) worth preserving.<br><b>One-hot:</b> nominal categories with no order (city, colour), where integers would invent a false relationship."},
+{t:"prep",f:"State the <b>1.5 &times; IQR</b> outlier rule.",
+ b:"IQR = Q<sub>3</sub> &minus; Q<sub>1</sub>. Flag anything below Q<sub>1</sub> &minus; 1.5&nbsp;IQR or above Q<sub>3</sub> + 1.5&nbsp;IQR. Values exactly on a fence are not outliers."},
+{t:"prep",f:"Three ways to handle <b>class imbalance</b>.",
+ b:"Oversample the minority (SMOTE synthesises new points rather than duplicating), undersample the majority, or reweight the loss via <code>class_weight</code>. Always pair with stratified folds and a metric other than accuracy."},
+
+/* ---------- Unit 3 · Regression ---------- */
+{t:"reg",f:"Least-squares slope and intercept for simple linear regression.",
+ b:"slope = S<sub>xy</sub> / S<sub>xx</sub> = &Sigma;(x&minus;x&#772;)(y&minus;y&#772;) / &Sigma;(x&minus;x&#772;)<sup>2</sup><br>intercept = y&#772; &minus; slope &times; x&#772;<br>The fitted line always passes through (x&#772;, y&#772;)."},
+{t:"reg",f:"MSE, RMSE, MAE, R<sup>2</sup> &mdash; one line each.",
+ b:"<b>MSE</b> = mean squared residual; punishes big misses hardest.<br><b>RMSE</b> = &radic;MSE; back in the target's units.<br><b>MAE</b> = mean absolute residual; robust to outliers.<br><b>R<sup>2</sup></b> = 1 &minus; SS<sub>res</sub>/SS<sub>tot</sub>; share of variance explained."},
+{t:"reg",f:"Ridge vs Lasso &mdash; penalty and effect.",
+ b:"<b>Ridge (L2):</b> &lambda;&Sigma;w<sub>j</sub><sup>2</sup>. Shrinks all coefficients smoothly, keeps everything, handles collinearity.<br><b>Lasso (L1):</b> &lambda;&Sigma;|w<sub>j</sub>|. Corner at zero drives coefficients exactly to zero &rarr; feature selection."},
+{t:"reg",f:"Which way does raising &lambda; move bias and variance?",
+ b:"Up-&lambda; &rarr; more constraint &rarr; <b>bias rises, variance falls</b>. &lambda; = 0 recovers ordinary least squares; &lambda; &rarr; &infin; drives every coefficient to zero."},
+{t:"reg",f:"Give the gradient-descent update rule.",
+ b:"w &larr; w &minus; &eta; &middot; &part;L/&part;w<br>Too large an &eta; diverges to NaN; too small crawls. Search &eta; on a log scale: 0.001, 0.01, 0.1."},
+{t:"reg",f:"When does the normal equation fail, and what fixes it?",
+ b:"When X<sup>T</sup>X is singular &mdash; perfectly collinear features, or d &gt; n. Ridge fixes it: (X<sup>T</sup>X + &lambda;I) is invertible for any &lambda; &gt; 0."},
+
+/* ---------- Unit 4 · Classification ---------- */
+{t:"clf",f:"Sigmoid formula, and what logistic regression's decision boundary looks like.",
+ b:"&sigma;(z) = 1/(1 + e<sup>&minus;z</sup>), with z = w&middot;x + b.<br>The boundary is the set where z = 0 &mdash; a <b>hyperplane</b>, i.e. straight in the original feature space."},
+{t:"clf",f:"Entropy and Gini for a node with class proportions p<sub>k</sub>.",
+ b:"H = &minus;&Sigma; p<sub>k</sub> log<sub>2</sub> p<sub>k</sub> &nbsp;(max 1 bit for two balanced classes)<br>Gini = 1 &minus; &Sigma; p<sub>k</sub><sup>2</sup> &nbsp;(max 0.5 for two balanced classes)<br>Both are 0 for a pure node and almost always pick the same split."},
+{t:"clf",f:"What is <i>naive</i> about Naive Bayes, and why does it still work?",
+ b:"It assumes features are conditionally independent given the class. Usually false, but the classifier only has to <i>rank</i> the classes correctly &mdash; and errors in the factorisation often cancel in the ranking even when the probabilities are badly calibrated."},
+{t:"clf",f:"SVM: what is a support vector, and what does C control?",
+ b:"A <b>support vector</b> is a training point on or inside the margin &mdash; only these determine the boundary.<br><b>Large C:</b> heavy penalty for violations &rarr; narrow margin, risk of overfitting. <b>Small C:</b> wider, more tolerant margin."},
+{t:"clf",f:"State the <b>kernel trick</b>.",
+ b:"Algorithms that touch the data only through inner products can replace x<sub>i</sub>&middot;x<sub>j</sub> with K(x<sub>i</sub>, x<sub>j</sub>), computing an inner product in a much richer space without ever constructing the features there."},
+{t:"clf",f:"How does k affect a k-NN classifier?",
+ b:"<b>k = 1:</b> zero training error, jagged boundary, high variance.<br><b>Large k:</b> smoother boundary, higher bias; at k = n it predicts the majority class everywhere.<br>Always scale the features first, and use odd k to avoid ties."},
+
+/* ---------- Unit 5 · Evaluation and ensembles ---------- */
+{t:"evl",f:"Precision, recall, F1 &mdash; formulas and when each matters.",
+ b:"<b>Precision</b> = TP/(TP+FP): of what I flagged, how much was right. Matters when false alarms are costly.<br><b>Recall</b> = TP/(TP+FN): of what existed, how much I caught. Matters when misses are costly.<br><b>F1</b> = 2PR/(P+R), the harmonic mean."},
+{t:"evl",f:"Why is accuracy misleading on imbalanced data?",
+ b:"With 1% positives, always predicting 'negative' scores 99% and detects nothing. Use precision, recall, F1, the PR curve, and read the confusion matrix directly."},
+{t:"evl",f:"ROC AUC &mdash; what does it actually measure?",
+ b:"The probability that a randomly chosen positive is scored above a randomly chosen negative. 0.5 = random, 1.0 = perfect ranking. It is threshold-free, so you must still pick an operating threshold separately."},
+{t:"evl",f:"ROC curve or PR curve &mdash; which, and when?",
+ b:"Use <b>PR</b> when positives are rare or the negative class is huge: ROC's false-positive rate is diluted by an enormous TN count and looks flatteringly good. Use <b>ROC</b> when classes are roughly balanced."},
+{t:"evl",f:"Bagging vs boosting &mdash; the essential difference.",
+ b:"<b>Bagging:</b> independent models on bootstrap samples, averaged &rarr; cuts <b>variance</b>. Parallel. Random forest.<br><b>Boosting:</b> sequential models, each fixing the last one's errors &rarr; cuts <b>bias</b>. Can overfit if run too long. AdaBoost, gradient boosting."},
+{t:"evl",f:"What makes a random forest better than one deep tree?",
+ b:"Bootstrap rows plus a random feature subset at each split decorrelate the trees; averaging decorrelated high-variance trees cancels their noise. Out-of-bag rows (~37% per tree) give a free validation estimate."},
+
+/* ---------- Unit 6 · Unsupervised learning ---------- */
+{t:"uns",f:"The two alternating steps of k-Means, and what it minimises.",
+ b:"<b>Assign</b> each point to the nearest centroid, then <b>update</b> each centroid to the mean of its members. Repeat. It minimises the within-cluster sum of squares (inertia) and converges to a <i>local</i> optimum."},
+{t:"uns",f:"How do you choose k?",
+ b:"<b>Elbow:</b> plot inertia against k and take the bend &mdash; inertia alone always falls, so its minimum is useless.<br><b>Silhouette:</b> take the k with the highest mean score.<br>Plus whatever the domain actually needs."},
+{t:"uns",f:"Silhouette formula and how to read it.",
+ b:"s = (b &minus; a)/max(a, b), where a = mean distance within its own cluster, b = mean distance to the nearest other cluster.<br>Near +1 well placed, near 0 on a boundary, negative probably in the wrong cluster."},
+{t:"uns",f:"What can DBSCAN do that k-Means cannot?",
+ b:"Find arbitrarily shaped clusters, label sparse points as noise instead of forcing them in, and work without being told k. Its own cost: two hyperparameters (&epsilon;, minPts) and trouble with clusters of differing density."},
+{t:"uns",f:"What is the first principal component?",
+ b:"The direction of maximum variance &mdash; the top eigenvector of the covariance matrix, with its eigenvalue equal to the variance captured. Equivalently, the line minimising squared perpendicular distances."},
+{t:"uns",f:"Two things to remember before running PCA.",
+ b:"<b>Standardise first</b> when units differ, or the largest-scaled feature monopolises PC1. And accept that the components are dense mixtures of the originals, so they rarely have a clean interpretation."},
+
+/* ---------- Unit 7 · Neural networks ---------- */
+{t:"nn",f:"How many parameters does a dense layer have?",
+ b:"(fan-in &times; fan-out) + fan-out &mdash; weights plus one bias per output unit. Example: 4 &rarr; 5 &rarr; 3 gives (20+5) + (15+3) = 43."},
+{t:"nn",f:"Why is a non-linear activation essential?",
+ b:"Stacked affine maps compose into a single affine map, so without a non-linearity a hundred layers has exactly the representational power of one."},
+{t:"nn",f:"Sigmoid, tanh, ReLU, softmax &mdash; range and use.",
+ b:"<b>Sigmoid</b> (0,1): binary output.<br><b>tanh</b> (&minus;1,1): zero-centred hidden units.<br><b>ReLU</b> [0,&infin;): default hidden activation, derivative 1 on the positive side.<br><b>Softmax</b>: multi-class output, sums to 1."},
+{t:"nn",f:"Vanishing gradients &mdash; cause and three fixes.",
+ b:"Backprop multiplies one derivative per layer; sigmoid's peaks at 0.25, so deep stacks shrink to nothing. Fix with <b>ReLU</b>, <b>batch normalisation</b>, and <b>residual (skip) connections</b>."},
+{t:"nn",f:"Convolution output size, and a conv layer's parameter count.",
+ b:"Output = (W &minus; F + 2P)/S + 1.<br>Parameters = (F &times; F &times; C<sub>in</sub> &times; C<sub>out</sub>) + C<sub>out</sub> &mdash; independent of image size, because the filter weights are shared across every position."},
+{t:"nn",f:"What does dropout do, and what changes at test time?",
+ b:"During training it randomly zeroes a fraction of activations so no unit can depend on a specific partner. At test time it is switched off and activations are rescaled so expectations match."},
+
+/* ---------- Unit 8 · Model selection and tuning ---------- */
+{t:"tune",f:"Parameter or hyperparameter?",
+ b:"<b>Parameter:</b> learned by fitting &mdash; weights, split thresholds, centroids.<br><b>Hyperparameter:</b> set before fitting &mdash; k, max depth, &lambda;, learning rate. Changing it means refitting."},
+{t:"tune",f:"How many fits does a grid search perform?",
+ b:"(product of the grid sizes) &times; k folds, plus one final refit on the whole training set. A 3 &times; 4 grid with 5-fold CV is 60 fits, 61 with the refit."},
+{t:"tune",f:"Why does random search often beat grid search?",
+ b:"Only one or two hyperparameters usually matter. For the same budget, n random draws explore n distinct values along each axis, whereas a grid reuses the same few values over and over."},
+{t:"tune",f:"Reading a learning curve.",
+ b:"<b>Both high, flat, no gap</b> &rarr; high bias: add capacity or features; more data will not help.<br><b>Large gap, validation still falling</b> &rarr; high variance: more data, regularisation, or simplify."},
+{t:"tune",f:"Why nested cross-validation?",
+ b:"Tuning on a validation split makes that split's score optimistic &mdash; it was used to choose. An inner loop tunes, an outer loop estimates, so the reported figure is honest. Cost: outer &times; inner &times; grid fits."},
+{t:"tune",f:"What does early stopping monitor, and why not the training loss?",
+ b:"The <b>validation</b> loss &mdash; it turns upward when generalisation starts degrading. Training loss almost always keeps falling, because that is the model memorising. Use patience, and restore the best epoch's weights."},
+
+/* ---------- Unit 9 · Applied ML ---------- */
+{t:"app",f:"TF-IDF &mdash; formula and purpose.",
+ b:"TF-IDF = tf(t, d) &times; log(N / df(t)). It rewards terms frequent in this document but rare across the corpus, so ubiquitous words like 'the' collapse toward zero weight."},
+{t:"app",f:"Cosine similarity &mdash; formula and why it suits text.",
+ b:"cos&theta; = (a&middot;b)/(|a||b|). It compares direction and ignores magnitude, so a long document and a short one on the same topic still score as similar."},
+{t:"app",f:"Collaborative vs content-based filtering.",
+ b:"<b>Collaborative:</b> uses the interaction matrix &mdash; people like you liked this. Needs no item features, but suffers cold start.<br><b>Content-based:</b> uses item attributes &mdash; similar to what you already liked. Handles new items."},
+{t:"app",f:"Which features are safe in a time-series model?",
+ b:"Anything computable at prediction time: lags, rolling statistics, calendar and holiday flags. <b>Never</b> a future value &mdash; that is target leakage, and it backtests beautifully while being useless in production."},
+{t:"app",f:"When should you reach for transfer learning?",
+ b:"Small labelled dataset, large pretrained model available in the same modality. Freeze the early layers (generic edges and textures), retrain the head. Almost always beats training from scratch on a few thousand images."},
+{t:"app",f:"Handling a categorical feature with tens of thousands of levels.",
+ b:"Bucket rare levels into 'other', use smoothed target encoding fitted <i>inside</i> each CV fold, or learn an embedding. Plain one-hot would produce an unusable sparse matrix."},
+
+/* ---------- Unit 10 · Deployment and responsible AI ---------- */
+{t:"dep",f:"Data drift vs concept drift.",
+ b:"<b>Data drift:</b> P(x) moves &mdash; detectable from inputs alone.<br><b>Concept drift:</b> P(y|x) moves &mdash; the rule itself changed, so it needs labels to detect. Harder and more dangerous."},
+{t:"dep",f:"What do you monitor on a live model?",
+ b:"Input feature distributions against the training reference, the prediction distribution over time, latency and error rates, and &mdash; once labels arrive &mdash; live accuracy. The training score is static and tells you nothing."},
+{t:"dep",f:"What is training&ndash;serving skew?",
+ b:"The same feature computed differently in the training pipeline and the serving pipeline. The model is fine; the inputs no longer mean the same thing. Fix by sharing the transformation code or using a feature store."},
+{t:"dep",f:"Shadow deployment vs canary vs A/B test.",
+ b:"<b>Shadow:</b> new model sees live traffic, output logged, never shown &mdash; zero user risk.<br><b>Canary:</b> served to a small slice, watched, then rolled out.<br><b>A/B:</b> randomised split to measure the business metric."},
+{t:"dep",f:"Four ingredients of a reproducible training run.",
+ b:"Versioned <b>data</b>, versioned <b>code</b>, a pinned <b>environment</b>, and a fixed <b>random seed</b>. Miss any one and the run cannot be recreated when someone asks why the model behaves as it does."},
+{t:"dep",f:"Demographic parity vs equalised odds.",
+ b:"<b>Demographic parity:</b> equal selection rate across groups.<br><b>Equalised odds:</b> equal true-positive and false-positive rates across groups.<br>They generally cannot both hold. Choosing between them is a values decision, not a mathematical one."},
+
+/*--CEND--*/
+];
+</script>
+
+<script>
+/* ============================================================
+   State, storage and helpers
+   ============================================================ */
+const TOPICS = {
+  found:   { n:"Foundations of ML",            u:"Unit 1" },
+  prep:    { n:"Workflow & data preparation",  u:"Unit 2" },
+  reg:     { n:"Regression",                   u:"Unit 3" },
+  clf:     { n:"Classification algorithms",    u:"Unit 4" },
+  evl:     { n:"Evaluation & ensembles",       u:"Unit 5" },
+  uns:     { n:"Unsupervised learning",        u:"Unit 6" },
+  nn:      { n:"Neural networks",              u:"Unit 7" },
+  tune:    { n:"Model selection & tuning",     u:"Unit 8" },
+  app:     { n:"Applied machine learning",     u:"Unit 9" },
+  dep:     { n:"Deployment & responsible AI",  u:"Unit 10" }
+};
+const TKEYS = Object.keys(TOPICS);
+const DIFF  = { 1:"Easy", 2:"Medium", 3:"Hard" };
+
+/* Persists to localStorage when available, otherwise keeps everything
+   in memory for the session so the app still works in any viewer. */
+const Store = (function () {
+  var mem = {}, ok = false;
+  try { localStorage.setItem("__p", "1"); localStorage.removeItem("__p"); ok = true; } catch (e) { ok = false; }
+  return {
+    ok: ok,
+    get: function (k, d) {
+      try { var v = ok ? localStorage.getItem(k) : mem[k]; return v == null ? d : JSON.parse(v); }
+      catch (e) { return d; }
+    },
+    set: function (k, v) {
+      try { var s = JSON.stringify(v); if (ok) localStorage.setItem(k, s); else mem[k] = s; } catch (e) {}
+    }
+  };
+})();
+
+var P = Store.get("gateml", null) || {};
+/* Fill in any key a saved-but-older progress object might be missing,
+   so an upgrade never lands us on an undefined property. */
+["res","att","bm","cards"].forEach(function (k) { if (!P[k] || typeof P[k] !== "object") P[k] = {}; });
+if (!Array.isArray(P.mocks)) P.mocks = [];
+function save() { Store.set("gateml", P); }
+
+var S = { mode:"home", list:[], i:0, ans:{}, mark:{}, shown:{}, mock:null, tab:"wrong", flip:false, tf:"all" };
+var timerId = null;
+
+const view  = document.getElementById("view");
+const clock = document.getElementById("clock");
+const modesEl = document.getElementById("modes");
+
+const MODES = [
+  { k:"home",     n:"Home" },
+  { k:"practice", n:"Practice" },
+  { k:"mock",     n:"Mock test" },
+  { k:"review",   n:"Review" },
+  { k:"cards",    n:"Flashcards" }
+];
+
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" })[c]; }); }
+function byId(id) { return document.getElementById(id); }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function pad(n) { return n < 10 ? "0" + n : "" + n; }
+function fmtTime(s) {
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
+  return h > 0 ? h + ":" + pad(m) + ":" + pad(x) : pad(m) + ":" + pad(x);
+}
+function letter(i) { return "ABCDEFGH"[i]; }
+
+/* ============================================================
+   Answer checking and GATE marking
+   ============================================================ */
+function answered(a) {
+  if (a == null) return false;
+  if (Array.isArray(a)) return a.length > 0;
+  return String(a).trim() !== "";
+}
+function isCorrect(q, a) {
+  if (!answered(a)) return false;
+  if (q.type === "mcq") return a === q.a;
+  if (q.type === "msq") {
+    if (!Array.isArray(a)) return false;
+    return a.slice().sort().join(",") === q.a.slice().sort().join(",");
+  }
+  var v = parseFloat(a);
+  return !isNaN(v) && v >= q.a[0] - 1e-9 && v <= q.a[1] + 1e-9;
+}
+/* MCQ carries negative marking (1/3 of the question's marks).
+   MSQ and NAT do not, which matches the real paper. */
+function marksFor(q, a) {
+  if (!answered(a)) return 0;
+  if (isCorrect(q, a)) return q.m;
+  return q.type === "mcq" ? -(q.m / 3) : 0;
+}
+function answerText(q) {
+  if (q.type === "mcq") return "Option " + letter(q.a);
+  if (q.type === "msq") return q.a.map(function (i) { return "Option " + letter(i); }).join(", ");
+  return q.a[0] === q.a[1] ? String(q.a[0]) : q.a[0] + " to " + q.a[1];
+}
+
+function record(q, a) {
+  P.att[q.id] = (P.att[q.id] || 0) + 1;
+  P.res[q.id] = isCorrect(q, a) ? 1 : 0;
+  save();
+}
+
+/* ============================================================
+   Shared question renderer
+   opts.instant  reveal the solution as soon as an answer is given
+   opts.locked   read-only, always show the solution
+   ============================================================ */
+function questionHTML(q, n, total, a, opts) {
+  var reveal = opts.locked || (opts.instant && S.shown[q.id]);
+  var label = n === "" ? "Warm-up" : "Q" + n + (total ? '<span class="faint" style="font-weight:400"> / ' + total + '</span>' : '');
+  var h = '<div class="qmeta">' +
+    '<span class="qno">' + label + '</span>' +
+    '<span class="tag t-' + q.type + '">' + q.type.toUpperCase() + '</span>' +
+    '<span class="tag">' + q.m + ' mark' + (q.m > 1 ? 's' : '') + '</span>' +
+    '<span class="tag' + (q.d === 3 ? ' d-hard' : '') + '">' + DIFF[q.d] + '</span>' +
+    '<span class="tag">' + esc(TOPICS[q.t].n) + '</span>' +
+    '<span class="spacer"></span>' +
+    '<button class="btn sm bm" id="bmBtn" aria-pressed="' + (P.bm[q.id] ? "true" : "false") + '">' +
+      (P.bm[q.id] ? "Bookmarked" : "Bookmark") + '</button>' +
+    '</div>';
+
+  h += '<div class="qstem">' + q.q + '</div>';
+
+  if (q.type === "nat") {
+    var cls = "";
+    if (reveal) cls = isCorrect(q, a) ? " right" : (answered(a) ? " wrong" : "");
+    h += '<div class="natwrap">' +
+      '<input id="natIn" type="text" inputmode="decimal" autocomplete="off" placeholder="Your answer" ' +
+      'value="' + (a == null ? "" : esc(a)) + '"' + (opts.locked ? " disabled" : "") + ' class="' + cls.trim() + '">' +
+      '<span class="faint">Numerical answer — no negative marking</span></div>';
+  } else {
+    h += '<div class="opts">';
+    for (var i = 0; i < q.o.length; i++) {
+      var sel = q.type === "msq" ? (Array.isArray(a) && a.indexOf(i) > -1) : a === i;
+      var c = "opt";
+      if (reveal) {
+        var correct = q.type === "msq" ? q.a.indexOf(i) > -1 : q.a === i;
+        if (correct && sel) c += " right";
+        else if (correct) c += " missed";
+        else if (sel) c += " wrong";
+      } else if (sel) c += " sel";
+      h += '<button class="' + c + '" data-opt="' + i + '"' + (reveal || opts.locked ? " disabled" : "") + '>' +
+        '<span class="olet">' + letter(i) + '</span><span>' + q.o[i] + '</span></button>';
+    }
+    h += '</div>';
+    if (q.type === "msq") h += '<p class="faint" style="font-size:13px;margin-top:-8px">Select every option that applies. No negative marking.</p>';
+  }
+  return h;
+}
+
+function solutionHTML(q, a) {
+  var v, cls, txt;
+  if (!answered(a)) { cls = "skip"; txt = "Not answered"; }
+  else if (isCorrect(q, a)) { cls = "ok"; txt = "Correct"; }
+  else { cls = "no"; txt = "Incorrect"; }
+  v = '<div class="verdict ' + cls + '">' + txt +
+      '<span class="spacer"></span><span style="font-weight:500">Answer: ' + esc(answerText(q)) + '</span></div>';
+  return v + '<div class="sol"><h3>Why</h3><div class="body">' + q.s + '</div></div>';
+}
+
+/* ============================================================
+   Router
+   ============================================================ */
+function renderModes() {
+  modesEl.innerHTML = MODES.map(function (m) {
+    return '<button data-mode="' + m.k + '" aria-current="' + (S.mode === m.k ? "true" : "false") + '">' + m.n + '</button>';
+  }).join("");
+}
+modesEl.addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-mode]");
+  if (!b) return;
+  if (S.mock && !S.mock.submitted && b.dataset.mode !== "mock") {
+    if (!confirm("Leaving now abandons the test in progress. Continue?")) return;
+    endMock();
+  }
+  go(b.dataset.mode);
+});
+
+function go(mode) {
+  S.mode = mode;
+  if (mode !== "mock") { clock.hidden = true; stopTimer(); }
+  renderModes();
+  window.scrollTo(0, 0);
+  ({ home:viewHome, practice:viewPractice, mock:viewMock, review:viewReview, cards:viewCards })[mode]();
+}
+
+/* ============================================================
+   Home
+   ============================================================ */
+var warmup = null;
+function viewHome() {
+  var ids = Object.keys(P.res), att = ids.length;
+  var right = ids.filter(function (k) { return P.res[k] === 1; }).length;
+  var wrong = att - right;
+  var acc = att ? Math.round(right / att * 100) : 0;
+  var bm = Object.keys(P.bm).filter(function (k) { return P.bm[k]; }).length;
+
+  if (!warmup) {
+    var pool = QUESTIONS.filter(function (q) { return q.d === 1 && !P.res[q.id]; });
+    if (!pool.length) pool = QUESTIONS;
+    warmup = pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  var last = P.mocks.length ? P.mocks[P.mocks.length - 1] : null;
+
+  view.innerHTML =
+    '<div class="card hero">' +
+      '<div class="herotop"><h1>Answer one before you plan anything.</h1></div>' +
+      '<p class="lede">' + QUESTIONS.length + ' questions in the real GATE pattern — single-correct with negative marking, ' +
+        'multiple-select, and numerical answer — across all ten topics of your study guide.</p>' +
+      '<div id="warm"></div>' +
+    '</div>' +
+
+    '<div class="strip">' +
+      '<div class="stat"><b>' + att + '</b><span>attempted</span></div>' +
+      '<div class="stat"><b>' + acc + '%</b><span>accuracy</span></div>' +
+      '<div class="stat"><b>' + wrong + '</b><span>to revisit</span></div>' +
+      '<div class="stat"><b>' + bm + '</b><span>bookmarked</span></div>' +
+      '<div class="stat"><b>' + (last ? last.score + "/" + last.max : "—") + '</b><span>last mock</span></div>' +
+    '</div>' +
+
+    '<div class="tiles">' +
+      '<button class="tile" data-go="practice"><b>Practice by topic</b><span>Pick a topic and difficulty. The worked explanation appears the moment you answer.</span></button>' +
+      '<button class="tile" data-go="mock"><b>Timed mock test</b><span>Countdown clock, question palette, negative marking, topic-wise score report.</span></button>' +
+      '<button class="tile" data-go="review"><b>Review mistakes</b><span>' +
+        (wrong + bm ? 'Every question you got wrong or bookmarked, collected here.' : 'Fills up automatically as you practise.') +
+        '</span></button>' +
+      '<button class="tile" data-go="cards"><b>Flashcards</b><span>' + CARDS.length +
+        ' cards on formulas, definitions and which algorithm to reach for.</span></button>' +
+    '</div>' +
+
+    '<p class="faint" style="font-size:12.6px">' +
+      (Store.ok ? 'Your progress is saved in this browser.' : 'Progress is kept for this session only — this viewer blocks storage.') +
+      ' <button class="btn sm" id="reset" style="margin-left:6px">Reset progress</button></p>';
+
+  view.querySelectorAll("[data-go]").forEach(function (b) {
+    b.addEventListener("click", function () { go(b.dataset.go); });
+  });
+  byId("reset").addEventListener("click", function () {
+    if (!confirm("Clear all progress, bookmarks and mock history?")) return;
+    P = { res:{}, att:{}, bm:{}, cards:{}, mocks:[] }; save(); warmup = null; viewHome();
+  });
+
+  drawWarm();
+}
+
+function drawWarm() {
+  var q = warmup, box = byId("warm");
+  if (!box) return;
+  var key = "w" + q.id, a = S.ans[key];
+  box.innerHTML = questionHTML(q, "", "", a, { instant:true }) +
+    (S.shown[q.id] ? solutionHTML(q, a) +
+      '<div class="row" style="margin-top:14px"><button class="btn" id="wnext">Another question</button>' +
+      '<button class="btn primary" data-go="practice">Practise properly</button></div>'
+      : checkBarHTML(q, key));
+  wireQuestion(box, q, key, { instant:true, after:drawWarm });
+  wireCheck(box, q, key, drawWarm);
+  var n = byId("wnext");
+  if (n) n.addEventListener("click", function () { warmup = null; viewHome(); });
+  var g = box.querySelector("[data-go]");
+  if (g) g.addEventListener("click", function () { go("practice"); });
+}
+
+/* ============================================================
+   Wiring shared by every question view
+   ============================================================ */
+function wireQuestion(box, q, key, opts) {
+  opts = opts || {};
+  var bm = box.querySelector("#bmBtn");
+  if (bm) bm.addEventListener("click", function () {
+    P.bm[q.id] = !P.bm[q.id]; save();
+    bm.setAttribute("aria-pressed", P.bm[q.id] ? "true" : "false");
+    bm.textContent = P.bm[q.id] ? "Bookmarked" : "Bookmark";
+  });
+
+  box.querySelectorAll("[data-opt]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var i = parseInt(b.dataset.opt, 10);
+      if (q.type === "msq") {
+        var cur = Array.isArray(S.ans[key]) ? S.ans[key].slice() : [];
+        var at = cur.indexOf(i);
+        if (at > -1) cur.splice(at, 1); else cur.push(i);
+        S.ans[key] = cur;
+      } else {
+        S.ans[key] = i;
+        if (opts.instant) { S.shown[q.id] = true; record(q, i); }
+      }
+      (opts.after || function () {})();
+    });
+  });
+
+  var nat = box.querySelector("#natIn");
+  if (nat) {
+    nat.addEventListener("input", function () { S.ans[key] = nat.value; });
+    nat.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && opts.instant) {
+        S.shown[q.id] = true; record(q, nat.value); (opts.after || function () {})();
+      }
+    });
+  }
+}
+
+/* A shared "check" button for MSQ and NAT in instant-feedback modes. */
+function checkBarHTML(q, key) {
+  if (S.shown[q.id]) return "";
+  if (q.type === "mcq") return "";
+  return '<div class="row"><button class="btn primary" id="checkBtn">Check answer</button>' +
+         '<span class="kbd"><i>Enter</i></span></div>';
+}
+function wireCheck(box, q, key, after) {
+  var c = box.querySelector("#checkBtn");
+  if (c) c.addEventListener("click", function () {
+    S.shown[q.id] = true; record(q, S.ans[key]); after();
+  });
+}
+/* ============================================================
+   Question palette rail
+   ============================================================ */
+function paletteHTML(list, cur, stateFn, extra) {
+  var counts = { done:0, seen:0, mark:0, none:0 };
+  var chips = list.map(function (q, i) {
+    var st = stateFn(q, i);
+    if (st.indexOf("mark") > -1) counts.mark++;
+    else if (st.indexOf("done") > -1) counts.done++;
+    else if (st.indexOf("seen") > -1) counts.seen++;
+    else counts.none++;
+    return '<button class="pchip ' + st + (i === cur ? " cur" : "") + '" data-jump="' + i +
+           '" title="Question ' + (i + 1) + '">' + (i + 1) + '</button>';
+  }).join("");
+
+  return '<div class="card">' +
+      '<div class="railhead">Question palette</div>' +
+      '<div class="pal">' + chips + '</div>' +
+      '<div class="legend">' +
+        '<div><span class="dot done"></span>Answered <b style="margin-left:auto">' + counts.done + '</b></div>' +
+        '<div><span class="dot seen"></span>Seen, not answered <b style="margin-left:auto">' + counts.seen + '</b></div>' +
+        (stateFn.marks ? '<div><span class="dot mark"></span>Marked for review <b style="margin-left:auto">' + counts.mark + '</b></div>' : '') +
+        '<div><span class="dot none"></span>Not visited <b style="margin-left:auto">' + counts.none + '</b></div>' +
+      '</div>' +
+    '</div>' + (extra || "");
+}
+function wireJump(after) {
+  view.querySelectorAll("[data-jump]").forEach(function (b) {
+    b.addEventListener("click", function () { S.i = parseInt(b.dataset.jump, 10); after(); });
+  });
+}
+
+/* ============================================================
+   Practice by topic
+   ============================================================ */
+function practiceList() {
+  return QUESTIONS.filter(function (q) {
+    return (S.tf === "all" || q.t === S.tf) && (S.df === 0 || q.d === S.df);
+  });
+}
+function viewPractice() {
+  if (S.df == null) S.df = 0;
+  S.list = practiceList();
+  if (S.i >= S.list.length) S.i = 0;
+  drawPractice();
+}
+function drawPractice() {
+  var chips = '<div class="pick">' +
+    '<button data-t="all" aria-pressed="' + (S.tf === "all") + '">All topics</button>' +
+    TKEYS.map(function (k) {
+      return '<button data-t="' + k + '" aria-pressed="' + (S.tf === k) + '">' + esc(TOPICS[k].n) + '</button>';
+    }).join("") + '</div>' +
+    '<div class="pick">' +
+    [[0,"Any difficulty"],[1,"Easy"],[2,"Medium"],[3,"Hard"]].map(function (d) {
+      return '<button data-d="' + d[0] + '" aria-pressed="' + (S.df === d[0]) + '">' + d[1] + '</button>';
+    }).join("") + '</div>';
+
+  if (!S.list.length) {
+    view.innerHTML = chips + '<div class="card empty"><b>No questions match that combination.</b>' +
+      'Try a different difficulty, or widen it to all topics.</div>';
+    wirePicks();
+    return;
+  }
+
+  var q = S.list[S.i], key = "p" + q.id, a = S.ans[key];
+  var stateFn = function (qq) {
+    if (!S.shown[qq.id]) return "";
+    return P.res[qq.id] === 1 ? "done" : "seen";
+  };
+
+  view.innerHTML = chips + '<div class="shell"><div>' +
+      '<div class="card qwrap" id="qbox"></div>' +
+      '<div class="row" style="margin-top:14px">' +
+        '<button class="btn" id="prev"' + (S.i === 0 ? " disabled" : "") + '>Previous</button>' +
+        '<button class="btn primary" id="next"' + (S.i === S.list.length - 1 ? " disabled" : "") + '>Next question</button>' +
+        '<span class="kbd"><i>A</i><i>B</i><i>C</i><i>D</i> answer <i>Enter</i> check <i>N</i> next <i>F</i> flag</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="rail">' + paletteHTML(S.list, S.i, stateFn) + '</div></div>';
+
+  var box = byId("qbox");
+  box.innerHTML = questionHTML(q, S.i + 1, S.list.length, a, { instant:true }) +
+    (S.shown[q.id] ? solutionHTML(q, a) : checkBarHTML(q, key));
+  wireQuestion(box, q, key, { instant:true, after:drawPractice });
+  wireCheck(box, q, key, drawPractice);
+
+  byId("prev").addEventListener("click", function () { if (S.i > 0) { S.i--; drawPractice(); } });
+  byId("next").addEventListener("click", function () { if (S.i < S.list.length - 1) { S.i++; drawPractice(); } });
+  wirePicks();
+  wireJump(drawPractice);
+}
+function wirePicks() {
+  view.querySelectorAll("[data-t]").forEach(function (b) {
+    b.addEventListener("click", function () { S.tf = b.dataset.t; S.i = 0; viewPractice(); });
+  });
+  view.querySelectorAll("[data-d]").forEach(function (b) {
+    b.addEventListener("click", function () { S.df = parseInt(b.dataset.d, 10); S.i = 0; viewPractice(); });
+  });
+}
+
+/* ============================================================
+   Timed mock test
+   ============================================================ */
+const PAPERS = [
+  { n:20, mins:30,  t:"Quick set",        d:"20 questions in 30 minutes. Good for a daily warm-up." },
+  { n:35, mins:75,  t:"Half paper",       d:"35 questions in 75 minutes. Long enough to feel the clock." },
+  { n:65, mins:180, t:"Full GATE paper",  d:"65 questions in 3 hours, the real thing end to end." }
+];
+function viewMock() {
+  if (!S.mock) return drawMockSetup();
+  if (S.mock.submitted) return drawReport();
+  drawMock();
+}
+function drawMockSetup() {
+  clock.hidden = true;
+  var hist = P.mocks.slice(-5).reverse();
+  view.innerHTML =
+    '<h1>Sit a timed paper.</h1>' +
+    '<p class="lede">Questions are drawn at random across all ten topics. Single-correct questions carry ' +
+      'negative marking of one third; multiple-select and numerical questions do not.</p>' +
+    '<div class="tiles">' + PAPERS.map(function (p, i) {
+      return '<button class="tile" data-paper="' + i + '"><b>' + p.t + '</b><span>' + p.d + '</span></button>';
+    }).join("") + '</div>' +
+    (hist.length ? '<div class="card" style="padding:17px 19px"><h2>Recent attempts</h2><table><thead><tr>' +
+      '<th>When</th><th>Paper</th><th>Score</th><th>Accuracy</th></tr></thead><tbody>' +
+      hist.map(function (m) {
+        return '<tr><td>' + esc(m.when) + '</td><td>' + m.n + ' questions</td><td>' + m.score + ' / ' + m.max +
+               '</td><td>' + m.acc + '%</td></tr>';
+      }).join("") + '</tbody></table></div>' : "");
+
+  view.querySelectorAll("[data-paper]").forEach(function (b) {
+    b.addEventListener("click", function () { startMock(PAPERS[parseInt(b.dataset.paper, 10)]); });
+  });
+}
+function startMock(p) {
+  var n = Math.min(p.n, QUESTIONS.length);
+  S.mock = { list:shuffle(QUESTIONS).slice(0, n), mins:p.mins, title:p.t,
+             endsAt:Date.now() + p.mins * 60000, submitted:false, visited:{} };
+  S.ans = {}; S.mark = {}; S.i = 0;
+  clock.hidden = false;
+  startTimer();
+  drawMock();
+}
+function startTimer() {
+  stopTimer();
+  timerId = setInterval(tick, 500);
+  tick();
+}
+function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+function tick() {
+  if (!S.mock || S.mock.submitted) return stopTimer();
+  var left = Math.max(0, Math.round((S.mock.endsAt - Date.now()) / 1000));
+  clock.textContent = fmtTime(left);
+  clock.className = "clock" + (left <= 60 ? " crit" : left <= 300 ? " warn" : "");
+  if (left <= 0) { submitMock(true); }
+}
+function endMock() { stopTimer(); S.mock = null; clock.hidden = true; }
+
+function drawMock() {
+  var L = S.mock.list, q = L[S.i], key = "m" + q.id, a = S.ans[key];
+  S.mock.visited[q.id] = true;
+
+  var stateFn = function (qq) {
+    var an = answered(S.ans["m" + qq.id]);
+    if (S.mark[qq.id]) return an ? "mark done" : "mark";
+    if (an) return "done";
+    return S.mock.visited[qq.id] ? "seen" : "";
+  };
+  stateFn.marks = true;
+
+  view.innerHTML = '<div class="shell"><div>' +
+      '<div class="card qwrap" id="qbox"></div>' +
+      '<div class="row" style="margin-top:14px">' +
+        '<button class="btn" id="prev"' + (S.i === 0 ? " disabled" : "") + '>Previous</button>' +
+        '<button class="btn violet" id="markBtn">' + (S.mark[q.id] ? "Unmark" : "Mark for review") + ' &amp; next</button>' +
+        '<button class="btn" id="clr">Clear response</button>' +
+        '<button class="btn primary" id="next">Save &amp; next</button>' +
+        '<span class="kbd"><i>M</i> mark <i>F</i> flag <i>Enter</i> save</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="rail">' + paletteHTML(L, S.i, stateFn,
+        '<div class="card" style="padding:14px"><button class="btn danger" id="submit" style="width:100%">Submit test</button>' +
+        '<p class="faint" style="font-size:12px;margin:9px 0 0;text-align:center">' + S.mock.title + ' · ' + L.length + ' questions</p></div>') +
+    '</div></div>';
+
+  var box = byId("qbox");
+  box.innerHTML = questionHTML(q, S.i + 1, L.length, a, {});
+  wireQuestion(box, q, key, { after:drawMock });
+
+  byId("prev").addEventListener("click", function () { if (S.i > 0) { S.i--; drawMock(); } });
+  byId("next").addEventListener("click", nextMock);
+  byId("clr").addEventListener("click", function () { delete S.ans[key]; drawMock(); });
+  byId("markBtn").addEventListener("click", function () {
+    S.mark[q.id] = !S.mark[q.id];
+    nextMock();
+  });
+  byId("submit").addEventListener("click", function () { submitMock(false); });
+  wireJump(drawMock);
+}
+function nextMock() {
+  if (S.i < S.mock.list.length - 1) { S.i++; drawMock(); } else { drawMock(); }
+}
+function submitMock(auto) {
+  var L = S.mock.list;
+  if (!auto) {
+    var un = L.filter(function (q) { return !answered(S.ans["m" + q.id]); }).length;
+    var msg = un ? un + " question" + (un > 1 ? "s are" : " is") + " unanswered. Submit anyway?" : "Submit the test?";
+    if (!confirm(msg)) return;
+  }
+  stopTimer();
+  clock.hidden = true;
+  S.mock.submitted = true;
+
+  var score = 0, max = 0, right = 0, wrong = 0, skip = 0;
+  L.forEach(function (q) {
+    var a = S.ans["m" + q.id];
+    max += q.m;
+    score += marksFor(q, a);
+    if (!answered(a)) skip++;
+    else if (isCorrect(q, a)) right++;
+    else wrong++;
+    if (answered(a)) record(q, a);
+  });
+  S.mock.score = Math.round(score * 100) / 100;
+  S.mock.max = max; S.mock.right = right; S.mock.wrong = wrong; S.mock.skip = skip;
+
+  P.mocks.push({
+    when: new Date().toLocaleDateString(undefined, { day:"numeric", month:"short" }),
+    n: L.length, score: S.mock.score, max: max,
+    acc: (right + wrong) ? Math.round(right / (right + wrong) * 100) : 0
+  });
+  if (P.mocks.length > 40) P.mocks = P.mocks.slice(-40);
+  save();
+  drawReport();
+}
+function drawReport() {
+  var M = S.mock, L = M.list;
+  var pct = M.max ? Math.round(M.score / M.max * 100) : 0;
+  var byT = {};
+  L.forEach(function (q) {
+    var a = S.ans["m" + q.id];
+    var r = byT[q.t] || (byT[q.t] = { n:0, c:0, m:0, got:0 });
+    r.n++; r.m += q.m; r.got += marksFor(q, a);
+    if (isCorrect(q, a)) r.c++;
+  });
+  var rows = Object.keys(byT).sort(function (x, y) {
+    return (byT[x].c / byT[x].n) - (byT[y].c / byT[y].n);
+  }).map(function (k) {
+    var r = byT[k], p = Math.round(r.c / r.n * 100);
+    return '<tr><td>' + esc(TOPICS[k].n) + '</td><td>' + r.c + ' / ' + r.n + '</td><td>' +
+      (Math.round(r.got * 100) / 100) + ' / ' + r.m + '</td>' +
+      '<td><div class="bar" style="display:inline-block;vertical-align:middle"><i style="width:' + p + '%' +
+      (p < 50 ? ';background:var(--crimson)' : p < 75 ? ';background:var(--amber)' : '') + '"></i></div> ' + p + '%</td></tr>';
+  }).join("");
+
+  var lost = Math.round(L.reduce(function (s, q) {
+    var a = S.ans["m" + q.id];
+    return s + (answered(a) && !isCorrect(q, a) && q.type === "mcq" ? q.m / 3 : 0);
+  }, 0) * 100) / 100;
+
+  view.innerHTML =
+    '<div class="card" style="padding:24px 26px;margin-bottom:18px">' +
+      '<div class="score"><b>' + M.score + '</b><span>out of ' + M.max + ' &nbsp;·&nbsp; ' + pct + '%</span></div>' +
+      '<p class="muted" style="margin-bottom:0">' + M.right + ' correct, ' + M.wrong + ' wrong, ' + M.skip +
+      ' unattempted. Negative marking cost you ' + lost + ' mark' + (lost === 1 ? '' : 's') + '.</p>' +
+    '</div>' +
+
+    '<div class="card" style="padding:19px 22px;margin-bottom:18px">' +
+      '<h2>Weakest topics first</h2>' +
+      '<table><thead><tr><th>Topic</th><th>Correct</th><th>Marks</th><th>Accuracy</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table>' +
+    '</div>' +
+
+    '<div class="row">' +
+      '<button class="btn primary" id="goRev">Go through the answers</button>' +
+      '<button class="btn" id="again">Take another paper</button>' +
+    '</div>';
+
+  byId("again").addEventListener("click", function () { endMock(); S.ans = {}; drawMockSetup(); });
+  byId("goRev").addEventListener("click", function () {
+    S.revList = L.slice(); S.revKey = "m"; S.i = 0; S.tab = "mock"; go("review");
+  });
+}
+
+/* ============================================================
+   Review: mistakes, bookmarks, and the last paper
+   ============================================================ */
+function reviewList() {
+  if (S.tab === "mock" && S.revList) return S.revList;
+  if (S.tab === "bm") return QUESTIONS.filter(function (q) { return P.bm[q.id]; });
+  return QUESTIONS.filter(function (q) { return P.res[q.id] === 0; });
+}
+function viewReview() {
+  var L = reviewList();
+  if (S.i >= L.length) S.i = 0;
+  drawReview();
+}
+function drawReview() {
+  var L = reviewList();
+  var tabs = '<div class="pick">' +
+    '<button data-tab="wrong" aria-pressed="' + (S.tab === "wrong") + '">Got wrong</button>' +
+    '<button data-tab="bm" aria-pressed="' + (S.tab === "bm") + '">Bookmarked</button>' +
+    (S.revList ? '<button data-tab="mock" aria-pressed="' + (S.tab === "mock") + '">Last paper</button>' : "") +
+    '</div>';
+
+  if (!L.length) {
+    view.innerHTML = tabs + '<div class="card empty"><b>Nothing here yet.</b>' +
+      (S.tab === "bm" ? 'Bookmark a question while practising and it will show up here.'
+                      : 'Questions you answer incorrectly are collected here automatically.') + '</div>';
+    wireTabs();
+    return;
+  }
+
+  var q = L[S.i];
+  var key = (S.tab === "mock" ? "m" : "p") + q.id;
+  var a = S.ans[key];
+  var stateFn = function (qq) { return P.res[qq.id] === 1 ? "done" : P.res[qq.id] === 0 ? "seen" : ""; };
+
+  view.innerHTML = tabs + '<div class="shell"><div>' +
+      '<div class="card qwrap" id="qbox"></div>' +
+      '<div class="row" style="margin-top:14px">' +
+        '<button class="btn" id="prev"' + (S.i === 0 ? " disabled" : "") + '>Previous</button>' +
+        '<button class="btn primary" id="next"' + (S.i === L.length - 1 ? " disabled" : "") + '>Next</button>' +
+        (S.tab === "wrong" ? '<button class="btn" id="clear">Remove from this list</button>' : '') +
+      '</div>' +
+    '</div>' +
+    '<div class="rail">' + paletteHTML(L, S.i, stateFn) + '</div></div>';
+
+  var box = byId("qbox");
+  box.innerHTML = questionHTML(q, S.i + 1, L.length, a, { locked:true }) + solutionHTML(q, a);
+  wireQuestion(box, q, key, { locked:true });
+
+  byId("prev").addEventListener("click", function () { if (S.i > 0) { S.i--; drawReview(); } });
+  byId("next").addEventListener("click", function () { if (S.i < L.length - 1) { S.i++; drawReview(); } });
+  var c = byId("clear");
+  if (c) c.addEventListener("click", function () { delete P.res[q.id]; save(); if (S.i > 0) S.i--; drawReview(); });
+  wireTabs();
+  wireJump(drawReview);
+}
+function wireTabs() {
+  view.querySelectorAll("[data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () { S.tab = b.dataset.tab; S.i = 0; drawReview(); });
+  });
+}
+
+/* ============================================================
+   Flashcards
+   ============================================================ */
+function viewCards() {
+  if (!S.q || !S.q.length) buildCardQueue();
+  drawCards();
+}
+function buildCardQueue() {
+  var pool = CARDS.map(function (c, i) { return i; })
+    .filter(function (i) { return S.cf === "all" || !S.cf || CARDS[i].t === S.cf; });
+  S.q = shuffle(pool);
+  S.flip = false;
+}
+function drawCards() {
+  if (!S.cf) S.cf = "all";
+  var chips = '<div class="pick">' +
+    '<button data-cf="all" aria-pressed="' + (S.cf === "all") + '">All cards</button>' +
+    TKEYS.map(function (k) {
+      return '<button data-cf="' + k + '" aria-pressed="' + (S.cf === k) + '">' + esc(TOPICS[k].n) + '</button>';
+    }).join("") + '</div>';
+
+  if (!S.q.length) {
+    view.innerHTML = chips + '<div class="card empty"><b>Deck finished.</b>Every card in this set has been cleared.' +
+      '<div class="row" style="justify-content:center;margin-top:16px"><button class="btn primary" id="again">Shuffle and go again</button></div></div>';
+    view.querySelectorAll("[data-cf]").forEach(function (b) {
+      b.addEventListener("click", function () { S.cf = b.dataset.cf; buildCardQueue(); drawCards(); });
+    });
+    byId("again").addEventListener("click", function () { buildCardQueue(); drawCards(); });
+    return;
+  }
+
+  var c = CARDS[S.q[0]];
+  view.innerHTML = chips +
+    '<div style="max-width:720px">' +
+      '<div class="bigrow"><h2 style="margin:0">' + esc(TOPICS[c.t].n) + '</h2>' +
+        '<span class="faint">' + S.q.length + ' left in this pass</span></div>' +
+      '<div class="fc" id="card">' +
+        (S.flip
+          ? '<div class="side">Answer</div><div class="back">' + c.b + '</div>'
+          : '<div class="side">Prompt</div><div class="front">' + c.f + '</div>' +
+            '<div class="hint">Click the card or press Space to reveal</div>') +
+      '</div>' +
+      (S.flip
+        ? '<div class="row" style="margin-top:14px"><button class="btn" id="again2">Show again later</button>' +
+          '<button class="btn primary" id="got">Got it</button>' +
+          '<span class="kbd"><i>1</i> again <i>2</i> got it</span></div>'
+        : '<div class="row" style="margin-top:14px"><button class="btn primary" id="rev">Reveal</button>' +
+          '<span class="kbd"><i>Space</i></span></div>') +
+    '</div>';
+
+  view.querySelectorAll("[data-cf]").forEach(function (b) {
+    b.addEventListener("click", function () { S.cf = b.dataset.cf; buildCardQueue(); drawCards(); });
+  });
+  byId("card").addEventListener("click", function () { S.flip = !S.flip; drawCards(); });
+  var r = byId("rev"); if (r) r.addEventListener("click", function () { S.flip = true; drawCards(); });
+  var g = byId("got"); if (g) g.addEventListener("click", function () { rate(true); });
+  var a2 = byId("again2"); if (a2) a2.addEventListener("click", function () { rate(false); });
+}
+function rate(ok) {
+  var id = S.q.shift();
+  P.cards[id] = (P.cards[id] || 0) + (ok ? 1 : 0);
+  save();
+  if (!ok) S.q.splice(Math.min(4, S.q.length), 0, id);
+  S.flip = false;
+  drawCards();
+}
+
+/* ============================================================
+   Keyboard
+   ============================================================ */
+document.addEventListener("keydown", function (e) {
+  var tag = (e.target.tagName || "").toUpperCase();
+  if (tag === "INPUT" || tag === "TEXTAREA" || e.metaKey || e.ctrlKey || e.altKey) return;
+
+  if (S.mode === "cards") {
+    if (e.key === " " || e.key === "Enter") { e.preventDefault(); S.flip = !S.flip; drawCards(); }
+    else if (S.flip && e.key === "1") rate(false);
+    else if (S.flip && e.key === "2") rate(true);
+    return;
+  }
+  if (S.mode !== "practice" && S.mode !== "mock" && S.mode !== "review" && S.mode !== "home") return;
+
+  var draw = S.mode === "practice" ? drawPractice : S.mode === "mock" ? drawMock : S.mode === "review" ? drawReview : drawWarm;
+  var L = S.mode === "practice" ? S.list : S.mode === "mock" ? (S.mock ? S.mock.list : []) : S.mode === "review" ? reviewList() : [];
+  if (S.mode === "mock" && (!S.mock || S.mock.submitted)) return;
+
+  var k = e.key.toLowerCase();
+  var idx = "abcdefgh".indexOf(k);
+  if (idx === -1 && /^[1-8]$/.test(k) && !(S.mode === "cards")) idx = parseInt(k, 10) - 1;
+
+  var q = L[S.i];
+  if (!q && S.mode === "home") q = warmup;
+  if (!q) return;
+  var key = (S.mode === "mock" ? "m" : S.mode === "home" ? "w" : "p") + q.id;
+
+  if (idx > -1 && q.type !== "nat" && idx < q.o.length && S.mode !== "review") {
+    if (S.mode !== "mock" && S.shown[q.id]) return;
+    e.preventDefault();
+    var btn = view.querySelector('[data-opt="' + idx + '"]');
+    if (btn && !btn.disabled) btn.click();
+    return;
+  }
+  /* 'f' flags the question. It cannot be 'b', because b is already option B. */
+  if (k === "f") { var bm = view.querySelector("#bmBtn"); if (bm) { e.preventDefault(); bm.click(); } return; }
+  if (k === "m" && S.mode === "mock") { var mk = byId("markBtn"); if (mk) { e.preventDefault(); mk.click(); } return; }
+  if (e.key === "Enter") {
+    e.preventDefault();
+    var c = byId("checkBtn") || byId("next");
+    if (c && !c.disabled) c.click();
+    return;
+  }
+  if (k === "n" || e.key === "ArrowRight") { var n = byId("next"); if (n && !n.disabled) { e.preventDefault(); n.click(); } }
+  if (k === "p" || e.key === "ArrowLeft") { var p = byId("prev"); if (p && !p.disabled) { e.preventDefault(); p.click(); } }
+});
+
+window.addEventListener("beforeunload", function (e) {
+  if (S.mock && !S.mock.submitted) { e.preventDefault(); e.returnValue = ""; }
+});
+
+/* ============================================================
+   Boot
+
+   Deep links, so the landing page can jump straight into a topic:
+     ?t=reg          practice mode, filtered to Regression
+     ?m=mock         open the mock-test setup screen
+     ?t=nn&m=cards   flashcards, Neural networks
+   ============================================================ */
+renderModes();
+
+(function boot() {
+  var qs = {};
+  (location.search || "").replace(/^\?/, "").split("&").forEach(function (part) {
+    if (!part) return;
+    var i = part.indexOf("=");
+    var k = i < 0 ? part : part.slice(0, i);
+    var v = i < 0 ? "" : part.slice(i + 1);
+    try { qs[decodeURIComponent(k)] = decodeURIComponent(v.replace(/\+/g, " ")); } catch (err) {}
+  });
+
+  var t = qs.t, m = qs.m, start = "home";
+  if (t && TOPICS[t]) { S.tf = t; start = "practice"; }
+  if (m && MODES.some(function (x) { return x.k === m; })) { start = m; }
+  go(start);
+})();
+</script>
+
+</body>
+</html>
