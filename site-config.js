@@ -5,7 +5,7 @@
    ============================================================ */
 window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {
   /* Canonical production origin (no trailing slash). */
-  SITE_URL: "https://gate-ml.vercel.app",
+  SITE_URL: "https://hellogaurav.me",
 
   /* Google Search Console verification token (meta name=
      "google-site-verification"). Empty = tag omitted. */
@@ -15,9 +15,9 @@ window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {
      Empty = analytics disabled. Respects Do-Not-Track. */
   GA_ID: "",
 
-  /* Google AdSense publisher ID, e.g. "ca-pub-1234567890123456".
-     Placeholder only — real ID is added after approval. */
-  ADSENSE_CLIENT: "ca-pub-XXXXXXXXXXXXXXXX",
+  /* Google AdSense publisher ID — verified for hellogaurav.me / gate-ml.
+     Live ID enables Auto Ads + verification snippet in <head>. */
+  ADSENSE_CLIENT: "ca-pub-7955473428553830",
 
   /* Per-slot AdSense ad-slot IDs (empty = slot renders a
      reserved, labelled house placeholder, never a fake ad). */
@@ -29,3 +29,4 @@ window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {
     results: ""
   }
 };
+

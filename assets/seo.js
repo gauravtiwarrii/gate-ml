@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var cfg = (window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {});
-  cfg.SITE_URL = cfg.SITE_URL || "https://gate-ml.vercel.app";
+  cfg.SITE_URL = cfg.SITE_URL || "https://hellogaurav.me";
   cfg.AD_SLOTS = cfg.AD_SLOTS || {};
   var path = window.location.pathname || "/index.html";
   var isFile = window.location.protocol === "file:";
@@ -25,7 +25,12 @@
       "/privacy-policy": "/privacy-policy/index.html",
       "/terms": "/terms/index.html",
       "/disclaimer": "/disclaimer/index.html",
-      "/cookie-policy": "/cookie-policy/index.html"
+      "/cookie-policy": "/cookie-policy/index.html",
+      "/product": "/product/index.html",
+      "/claude": "/claude/index.html",
+      "/faq": "/faq/index.html",
+      "/changelog": "/changelog/index.html",
+      "/readiness": "/readiness/index.html"
     };
     if (map[p]) p = map[p];
     return cfg.SITE_URL.replace(/\/$/, "") + (p.charAt(0) === "/" ? p : "/" + p);

@@ -21,6 +21,8 @@
   function loadAdSense() {
     if (!cfg.ADSENSE_CLIENT || cfg.ADSENSE_CLIENT.indexOf("XXXX") !== -1) return false;
     if (isFile || window.__gateMlNoindex) return false;
+    /* Verification snippet in <head> is the single loader — never inject a second copy. */
+    if (document.querySelector('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]')) return true;
     if (document.querySelector("script[data-gate-ml-adsense]")) return true;
     var s = document.createElement("script");
     s.async = true;
