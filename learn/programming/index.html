@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Programming & DSA in Python — GATE DA 2027</title><meta name="description" content="Python, stacks/queues/lists/trees/hashtables, search, sorts, divide-conquer, graphs for GATE DA."><link rel="canonical" href="https://hellogaurav.me/learn/programming"><link rel="stylesheet" href="../../assets/seo.css"><style>body{font-family:Georgia,serif;max-width:820px;margin:0 auto;padding:24px 18px 60px;background:#f5f3ee;color:#141310;line-height:1.65}h1,h2{font-family:Arial,sans-serif}a{color:#b34a12}pre{background:#111;color:#eee;padding:12px;border-radius:10px;overflow:auto}</style></head><body><nav><a href="../../index.html">Home</a><a href="../../syllabus">Syllabus</a><a href="../../practice-da">Practice</a></nav><h1>Programming, DS & Algorithms (DA §4)</h1><p><b>Official:</b> Programming in Python; stacks, queues, linked lists, trees, hash tables; linear/binary search; selection/bubble/insertion sort; mergesort, quicksort; graph theory basics; traversals and shortest path.</p><h2>Objectives</h2><p>Trace Python code; compare sort/search complexities; run BFS/DFS and Dijkstra by hand on small graphs.</p><h2>Complexities</h2><p>Linear O(n), binary O(log n); selection/bubble/insertion O(n²); mergesort/quicksort-avg O(n log n); BFS/DFS O(V+E); Dijkstra O((V+E) log V) with heap.</p><h2>Worked trace</h2><pre>def binary_search(a,x):
+ lo,hi=0,len(a)-1
+ while lo&lt;=hi:
+  m=(lo+hi)//2
+  if a[m]==x: return m
+  if a[m]&lt;x: lo=m+1
+  else: hi=m-1
+ return -1
+# a=[2,5,9,14], x=9 → m=1 (5&lt;9, lo=2) → m=2 → return 2</pre><h2>Traps</h2><p>Quicksort worst O(n²) on sorted input with naive pivot; stable vs unstable sorts; BFS uses queue, DFS uses stack.</p><p>Practice: <a href="../../practice-da?subject=prog">Programming set</a> (Practice Questions).</p></body></html>

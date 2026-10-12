@@ -24,7 +24,21 @@
     { "source": "/claude", "destination": "/claude/index.html" },
     { "source": "/faq", "destination": "/faq/index.html" },
     { "source": "/changelog", "destination": "/changelog/index.html" },
-    { "source": "/readiness", "destination": "/readiness/index.html" }
+    { "source": "/readiness", "destination": "/readiness/index.html" },
+    { "source": "/syllabus", "destination": "/syllabus/index.html" },
+    { "source": "/dashboard", "destination": "/dashboard/index.html" },
+    { "source": "/practice-da", "destination": "/practice-da/index.html" },
+    { "source": "/mock-da", "destination": "/mock-da/index.html" },
+    { "source": "/pyq", "destination": "/pyq/index.html" },
+    { "source": "/revision", "destination": "/revision/index.html" },
+    { "source": "/planner", "destination": "/planner/index.html" },
+    { "source": "/tutor", "destination": "/tutor/index.html" },
+    { "source": "/learn/calculus", "destination": "/learn/calculus/index.html" },
+    { "source": "/learn/programming", "destination": "/learn/programming/index.html" },
+    { "source": "/learn/dbms", "destination": "/learn/dbms/index.html" },
+    { "source": "/learn/ai", "destination": "/learn/ai/index.html" },
+    { "source": "/learn/aptitude", "destination": "/learn/aptitude/index.html" },
+    { "source": "/coverage", "destination": "/coverage/index.html" }
   ],
   "headers": [
     {

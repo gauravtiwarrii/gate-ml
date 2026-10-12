@@ -30,7 +30,15 @@
       "/claude": "/claude/index.html",
       "/faq": "/faq/index.html",
       "/changelog": "/changelog/index.html",
-      "/readiness": "/readiness/index.html"
+      "/readiness": "/readiness/index.html",
+      "/syllabus": "/syllabus/index.html",
+      "/dashboard": "/dashboard/index.html",
+      "/practice-da": "/practice-da/index.html",
+      "/mock-da": "/mock-da/index.html",
+      "/pyq": "/pyq/index.html",
+      "/revision": "/revision/index.html",
+      "/planner": "/planner/index.html",
+      "/tutor": "/tutor/index.html"
     };
     if (map[p]) p = map[p];
     return cfg.SITE_URL.replace(/\/$/, "") + (p.charAt(0) === "/" ? p : "/" + p);
