@@ -60,23 +60,27 @@
     var questions=[];
     var idToQ={};
     bank.questions.forEach(function(q){idToQ[q.id]=q;});
-    picks.forEach(function(id){questions.push(idToQ[id]);});
-    // Fallback: ensure we have enough
-    while(questions.length<total){
-      var extra=bank.questions.filter(function(q){return picks.indexOf(q.id)<0;})[0];
-      if(!extra)break;
-      questions.push(extra);
+    var usedIds={};
+    picks.forEach(function(id){ if(idToQ[id] && !usedIds[id]){ questions.push(idToQ[id]); usedIds[id]=true; } });
+    // Fallback: fill remaining slots with any UNUSED questions only.
+    // Never duplicate a question. If the bank is smaller than `total`,
+    // the paper is honestly capped at the available unique questions.
+    for(var fi=0; fi<bank.questions.length && questions.length<total; fi++){
+      var bq=bank.questions[fi];
+      if(!usedIds[bq.id]){ questions.push(bq); usedIds[bq.id]=true; }
     }
+    var actualTotal=questions.length;
     var ga=questions.filter(function(q){return q.subject==='ga';});
     var gate={
-      total: total,
+      total: actualTotal,
+      requested: total,
       gaQuestions: ga.length,
       gaMarks: cfg.gaMarks||15,
-      techQuestions: total-ga.length,
+      techQuestions: actualTotal-ga.length,
       techMarks: cfg.techMarks||85,
       durationMin: cfg.durationMin||180
     };
     return {questions: questions, gate: gate};
   }
-  window.GateDAMock={buildMock: buildMock};
+  window.GateDAMock={buildMock: buildMock, build: buildMock};
 })();
