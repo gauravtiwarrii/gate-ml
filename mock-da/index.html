@@ -49,256 +49,285 @@
 <script src="../assets/gateda-score.js"></script>
 <script src="../assets/app-shell.js" defer></script>
 <script>
-/* GATE DA mock centre — UI layer over GateDAMock + GateDAScore.
- * Scoring engine (gateda-score.js) is UNCHANGED: MCQ 1m -1/3, 2m -2/3;
- * MSQ/NAT no negative. Exam config UNCHANGED: 65Q / 100 marks / 180 min.
- * This file only fixes the UI wiring: real answer capture (previously the
- * submit handler scored an empty map => always 0), question-by-question
- * navigation, palette, mark-for-review, confirm dialog and results. */
+/* DA Mock centre — one-question-at-a-time exam UI.
+ * Scoring engine (GateDAScore) and exam configuration are UNCHANGED.
+ * Official DA marking: MCQ 1m -1/3, 2m -2/3; MSQ/NAT no negative.
+ * Answers, marks and timer persist to localStorage and survive refresh. */
 (function () {
-  "use strict";
-  var ANS = "mock.ans.v1";        // {qid: answer} map
-  var REV = "mock.rev.v1";        // {qid: true} marked-for-review
-  var CUR = "mock.cur.v1";        // current question index
-  var LEFT = "mock.left.v1";      // seconds remaining (timer)
-  var CFG = "mockrun";            // stored built paper (via GateDA)
+  var TOTAL = 65, DUR = 180;
+  var CFG = {
+    totalQuestions: TOTAL,
+    subjectWeights: { ga: 15, calc: 9, prob: 10, prog: 8, dbms: 8, linalg: 9, ml: 10, ai: 8 },
+    gaMarks: 15, techMarks: 85, durationMin: DUR
+  };
+  var K_ANS = "gateda.v1.mockans", K_LEFT = "gateda.v1.mockleft",
+      K_MARK = "gateda.v1.mockmark", K_Q = "gateda.v1.mockq";
 
-  var TOTAL = 65, DUR = 180; // 180 minutes
-  var Q = [];                // built questions
-  var ansMap = {}, revMap = {}, cur = 0, deadline = 0, submitted = false;
+  var Q = [], ans = {}, marked = {}, idx = 0, submitted = false, tickTimer = null, bank = null;
 
   function $(id) { return document.getElementById(id); }
-  function readJSON(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
-  function writeJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-
-  function fmtTime(s) {
-    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
-    return (h ? h + "h " : "") + m + "m " + (ss < 10 ? "0" : "") + ss + "s";
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
   }
-
-  /* ---------- timer (restores saved value; never adds time on refresh) ---------- */
-  function restoreTimer() {
-    var saved = readJSON(LEFT, null);
-    var secs = DUR * 60;
-    if (typeof saved === "number" && saved > 0 && saved <= DUR * 60) secs = saved;
-    deadline = Date.now() + secs * 1000;
+  function load(key, d) {
+    try { var v = JSON.parse(localStorage.getItem(key)); return v == null ? d : v; } catch (e) { return d; }
   }
+  function save(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) {} }
+
+  /* Timer: restore remaining seconds, never add on refresh. */
+  var deadline = 0;
   function startTimer() {
-    var el = $("timer");
-    function tick() {
-      if (submitted) return;
-      var left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
-      el.textContent = fmtTime(left);
-      el.classList.toggle("warn", left <= 300);
-      writeJSON(LEFT, left);
-      if (left <= 0) { el.textContent = "Time up"; autoSubmit(); return; }
-      setTimeout(tick, 1000);
-    }
+    var left = load(K_LEFT, DUR * 60);
+    if (typeof left !== "number" || left <= 0 || left > DUR * 60) left = DUR * 60;
+    deadline = Date.now() + left * 1000;
     tick();
   }
+  function tick() {
+    if (submitted) return;
+    var left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+    var el = $("timer");
+    if (el) {
+      el.textContent = Math.floor(left / 60) + "m " + (left % 60) + "s";
+      if (left <= 300) el.classList.add("warn");
 
-
-  /* ---------- question stage ---------- */
-  function typeLabel(t) { return t === "mcq" ? "MCQ" : t === "msq" ? "MSQ" : "NAT"; }
-
-  function renderStage() {
-    var q = Q[cur];
-    var stage = $("stage");
-    var html = '<div class="meta">' +
-      '<span class="pill pill--accent">Q' + (cur + 1) + " of " + Q.length + "</span>" +
-      '<span class="pill">' + typeLabel(q.type) + "</span>" +
-      '<span class="pill">' + q.marks + " mark" + (q.marks > 1 ? "s" : "") + "</span>" +
-      '<span class="pill">' + esc(q.subject.toUpperCase()) + " · " + esc(q.topic) + "</span>" +
-      "</div>" +
-      '<div class="stem">' + esc(q.q) + "</div>";
-
-    var saved = ansMap[q.id];
-    if (q.type === "nat") {
-      var val = saved == null ? "" : saved;
-      html += '<div class="nat-row"><label for="nat">Your answer</label>' +
-        '<input id="nat" type="number" step="any" inputmode="decimal" value="' + esc(String(val)) + '" placeholder="Enter a number" style="width:180px"></div>';
-    } else {
-      html += '<div class="opts" role="group">';
-      (q.o || []).forEach(function (o, i) {
-        var isSel = q.type === "mcq" ? saved === i : (Array.isArray(saved) && saved.indexOf(i) !== -1);
-        var id = "opt-" + q.id + "-" + i;
-        html += '<label class="opt' + (isSel ? " selected" : "") + '" for="' + id + '">' +
-          '<span class="key">' + "ABCDEFGH"[i] + "</span>" +
-          '<span>' + esc(o) + "</span>" +
-          '<input id="' + id + '" type="' + (q.type === "mcq" ? "radio" : "checkbox") + '" name="' + esc(q.id) + '" value="' + i + '"' + (isSel ? " checked" : "") + ' style="position:absolute;opacity:0;pointer-events:none">' +
-          "</label>";
-      });
-      html += "</div>";
+  /* Answer collection (scoring input shape unchanged: index | [indices] | number). */
+  function currentAnswer() {
+    var q = Q[idx]; if (!q) return undefined;
+    if (q.type === "mcq") {
+      var r = document.querySelector('input[name="mcq_' + idx + '"]:checked');
+      return r ? parseInt(r.value, 10) : undefined;
     }
-    stage.innerHTML = html;
-
-    // wire answer inputs
-    if (q.type === "nat") {
-      var nat = $("nat");
-      if (nat) nat.addEventListener("input", function () {
-        ansMap[q.id] = nat.value === "" ? undefined : parseFloat(nat.value);
-        writeJSON(ANS, ansMap); paintPalette();
-      });
-    } else {
-      stage.querySelectorAll('.opt input').forEach(function (inp) {
-        inp.addEventListener("change", function () {
-          var idx = parseInt(inp.value, 10);
-          if (q.type === "mcq") ansMap[q.id] = idx;
-          else { var s = Array.isArray(ansMap[q.id]) ? ansMap[q.id].slice() : []; var p = s.indexOf(idx); if (p === -1) s.push(idx); else s.splice(p, 1); ansMap[q.id] = s; }
-          writeJSON(ANS, ansMap); paintPalette(); renderStage();
-        });
-      });
+    if (q.type === "msq") {
+      var picked = [];
+      document.querySelectorAll('input[name="msq_' + idx + '"]:checked').forEach(function (c) { picked.push(parseInt(c.value, 10)); });
+      return picked.length ? picked.sort() : undefined;
     }
-    renderMarkButton();
-    $("prev").disabled = cur === 0;
-    $("next").textContent = cur === Q.length - 1 ? "Review →" : "Next →";
-    writeJSON(CUR, cur);
-    paintPalette();
+    if (q.type === "nat") {
+      var inp = document.querySelector('input[name="nat_' + idx + '"]');
+      var v = inp ? inp.value : "";
+      return v === "" ? undefined : parseFloat(v);
+    }
+    return undefined;
+  }
+  function saveCurrent() {
+    var a = currentAnswer();
+    if (a === undefined) delete ans[Q[idx].id]; else ans[Q[idx].id] = a;
+    save(K_ANS, ans);
+    paintPal();
+  }
+  function isChecked(q, i) {
+    var a = ans[q.id];
+    if (q.type === "mcq") return a === i;
+    if (Array.isArray(a)) return a.indexOf(i) >= 0;
+    return false;
   }
 
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function render() {
+    if (!Q.length) return;
+    var q = Q[idx];
+    var typeLabel = q.type.toUpperCase();
+    $("stage").innerHTML =
+      '<div class="meta">' +
+      '<span class="pill pill--accent">Q' + (idx + 1) + " / " + Q.length + "</span>" +
+      '<span class="pill">' + esc(q.subject.toUpperCase()) + " / " + esc(q.topic) + "</span>" +
+      '<span class="pill">' + q.marks + (q.marks === 1 ? " mark" : " marks") + "</span>" +
+      '<span class="pill pill--info">' + typeLabel + "</span>" +
+      (marked[q.id] ? '<span class="pill pill--warn">Marked</span>' : "") +
+      "</div>" +
+      '<p class="stem">' + esc(q.q) + "</p>" +
+      '<div class="opts" id="optbox"></div>';
 
-  /* ---------- palette ---------- */
-  function buildPalette() {
-    var pal = $("pal");
-    pal.innerHTML = "";
+    var box = $("optbox");
+    if (q.type === "nat") {
+      var row = document.createElement("div");
+      row.className = "nat-row";
+      row.innerHTML = '<label for="natin">Your numeric answer</label>';
+      var inp = document.createElement("input");
+      inp.type = "number"; inp.step = "any"; inp.name = "nat_" + idx; inp.id = "natin";
+      inp.placeholder = "Enter a number"; inp.style.maxWidth = "220px";
+      if (ans[q.id] !== undefined) inp.value = ans[q.id];
+      inp.addEventListener("input", saveCurrent);
+      row.appendChild(inp);
+      box.appendChild(row);
+    } else {
+      var multi = q.type === "msq";
+      (q.o || []).forEach(function (o, i) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt" + (isChecked(q, i) ? " selected" : "");
+        btn.setAttribute("role", multi ? "checkbox" : "radio");
+        btn.setAttribute("aria-checked", isChecked(q, i) ? "true" : "false");
+
+  /* Palette */
+  function buildPal() {
+    var pal = $("pal"); pal.innerHTML = "";
     Q.forEach(function (q, i) {
       var b = document.createElement("button");
-      b.type = "button";
-      b.textContent = String(i + 1);
-      b.setAttribute("aria-label", "Question " + (i + 1) + (answered(q) ? ", answered" : ", not answered"));
-      b.addEventListener("click", function () { cur = i; renderStage(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+      b.type = "button"; b.textContent = String(i + 1); b.dataset.i = String(i);
+      b.setAttribute("aria-label", "Go to question " + (i + 1));
+      b.addEventListener("click", function () { goto(i); });
       pal.appendChild(b);
     });
-    paintPalette();
+    paintPal();
   }
-  function answered(q) { var v = ansMap[q.id]; return v !== undefined && v !== null && !(Array.isArray(v) && v.length === 0) && v !== ""; }
-  function paintPalette() {
-    var btns = $("pal").children;
-    Q.forEach(function (q, i) {
-      var b = btns[i]; if (!b) return;
-      b.classList.toggle("ans", answered(q));
-      b.classList.toggle("rev", !!revMap[q.id]);
-      b.classList.toggle("current", i === cur);
+  function paintPal() {
+    var pal = $("pal");
+    Array.prototype.forEach.call(pal.children, function (b, i) {
+      var qid = Q[i].id;
+      b.className = "";
+      var answered = ans[qid] !== undefined && !(Array.isArray(ans[qid]) && ans[qid].length === 0);
+      if (i === idx) b.classList.add("cur");
+      if (answered) b.classList.add("ans");
+      if (marked[qid]) b.classList.add("rev");
+      b.style.opacity = answered || marked[qid] ? "" : "0.6";
     });
   }
-  function renderMarkButton() {
-    var on = !!revMap[Q[cur].id];
-    var b = $("mark");
-    b.textContent = on ? "★ Marked for review" : "☆ Mark for review";
-    b.classList.toggle("btn--ghost", !on);
-    b.classList.toggle("btn--line", on);
+
+  function nav(step) {
+    saveCurrent();
+    var next = idx + step;
+    if (next < 0) return;
+    if (next >= Q.length) { showConfirm(); return; }
+    idx = next; render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function goto(i) { saveCurrent(); idx = i; render(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+  /* Submission + confirmation */
+  function showConfirm() {
+    saveCurrent();
+    var answered = Object.keys(ans).length;
+    var el = $("res");
+    el.innerHTML =
+      '<div class="card"><h2>Ready to submit?</h2>' +
+      '<p class="muted">You have answered <b>' + answered + "</b> of <b>" + Q.length + "</b> questions. " +
+      "You cannot change answers after submitting. Unanswered questions score 0.</p>" +
+      '<div class="row" style="margin-top:16px">' +
+      '<button class="btn btn--primary" id="confirmYes" type="button">Yes, submit &amp; score</button>' +
+      '<button class="btn btn--ghost" id="confirmNo" type="button">Keep working</button>' +
+      "</div></div>";
+    $("confirmYes").addEventListener("click", doSubmit);
+    $("confirmNo").addEventListener("click", function () { el.innerHTML = ""; });
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
+        btn.innerHTML = '<span class="key">' + String.fromCharCode(65 + i) + "</span><span>" + esc(o) + "</span>";
+        btn.addEventListener("click", function () {
+          if (!multi) { ans[q.id] = i; }
+          else {
+            var arr = Array.isArray(ans[q.id]) ? ans[q.id].slice() : [];
+            var at = arr.indexOf(i);
+            if (at >= 0) arr.splice(at, 1); else arr.push(i);
+            arr.sort();
+            if (arr.length) ans[q.id] = arr; else delete ans[q.id];
+          }
+          saveCurrent();
+          render();
+        });
+        box.appendChild(btn);
+      });
+    }
+    $("mark").innerHTML = marked[q.id] ? "★ Marked" : "☆ Mark for review";
+    $("prev").disabled = idx === 0;
+    $("next").textContent = idx === Q.length - 1 ? "Finish" : "Next →";
+    paintPal();
+  }
 
-  /* ---------- build / start ---------- */
+    }
+    save(K_LEFT, left);
+    if (left <= 0) { doSubmit(); return; }
+    tickTimer = setTimeout(tick, 1000);
+  }
+
   function loadBank() {
-    return fetch("../data/practice-da.json").then(function (r) { if (!r.ok) throw new Error("bank"); return r.json(); });
-  }
-  function applyBuilt(r) {
-    Q = r.questions;
-    var cfg = $("cfg-row");
-    cfg.textContent = r.gate.total + " questions · " + r.gate.gaQuestions + " GA · " + r.gate.techQuestions +
-      " technical · " + (r.gate.gaMarks + r.gate.techMarks) + " marks · " + (r.gate.durationMin || DUR) + " min";
-    GateDA.set(CFG, { questions: Q, gate: r.gate });
-    $("exam").hidden = false; $("setup").hidden = true;
-    buildPalette(); restoreTimer(); startTimer();
-  }
-  function startFresh() {
-    loadBank().then(function (bank) {
-      return GateDAMock.buildMock(bank, {
-        totalQuestions: TOTAL,
-        subjectWeights: { ga: 10, calc: 9, prob: 10, prog: 8, dbms: 8, linalg: 9, ml: 10, ai: 8 },
-        gaMarks: 15, techMarks: 85, durationMin: DUR
-      }, new Date().getTime());
-    }).then(applyBuilt).catch(function (e) {
-      $("res").innerHTML = '<div class="warnbox">Could not build the mock: ' + esc(e.message) + ". Please retry.</div>";
-    });
-  }
-  function resumeOrStart() {
-    var saved = GateDA.get(CFG, null);
-    if (saved && saved.questions && saved.questions.length) {
-      ansMap = readJSON(ANS, {}) || {};
-      revMap = readJSON(REV, {}) || {};
-      cur = readJSON(CUR, 0) || 0;
-      if (cur >= saved.questions.length) cur = 0;
-      Q = saved.questions;
-      var gate = saved.gate || {};
-      $("cfg-row").textContent = (gate.total || Q.length) + " questions · resumed · " + (gate.durationMin || DUR) + " min";
-      $("exam").hidden = false; $("setup").hidden = true;
-      buildPalette(); restoreTimer(); startTimer(); renderStage();
-    } else { startFresh(); }
+    if (bank) return Promise.resolve(bank);
+    return fetch("../data/practice-da.json", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("bank"); return r.json(); })
+      .then(function (d) { bank = d; return d; });
   }
 
 
-  /* ---------- submit ---------- */
-  function computeScore() {
-    var map = {};
-    Q.forEach(function (q) {
-      var v = ansMap[q.id];
-      if (v !== undefined && v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)) map[q.id] = v;
-    });
-    return GateDAScore.paper(Q, map);
-  }
-  function confirmSubmit() {
-    var a = Q.filter(function (q) { return answered(q); }).length;
-    var un = Q.length - a;
-    var msg = "You have answered " + a + " of " + Q.length + " questions." +
-      (un ? " " + un + " question" + (un > 1 ? "s are" : " is") + " unanswered." : "") +
-      " Unanswered questions score 0. Submit now?";
-    if (window.confirm(msg)) doSubmit(false);
-  }
-  function autoSubmit() { if (!submitted) doSubmit(true); }
-  function doSubmit(automatic) {
+  function doSubmit() {
     if (submitted) return;
     submitted = true;
-    var score = computeScore();
+    clearTimeout(tickTimer);
+    save(K_LEFT, 0);
+    var score = GateDAScore.paper(Q, ans);
     GateDA.logMock({
-      score: score.score, total: score.total, gaScore: score.score, techScore: score.score,
-      correct: score.correct, wrong: score.wrong, unanswered: score.unanswered,
+      score: score.score, total: score.total, correct: score.correct,
+      wrong: score.wrong, unanswered: score.unanswered,
       submitted: new Date().toISOString()
     });
     var pct = score.total ? Math.round(100 * score.score / score.total) : 0;
-    $("res").innerHTML =
-      '<div class="card result">' +
-      "<h2>Result" + (automatic ? " (auto-submitted — time up)" : "") + "</h2>" +
-      '<div class="result__score">' + score.score + " / " + score.total + ' <span class="muted" style="font-size:1.2rem">(' + pct + "%)</span></div>" +
-      '<div class="result__grid">' + cell(score.correct, "Correct", "ok") + cell(score.wrong, "Wrong", "err") + cell(score.unanswered, "Unanswered", "muted") + "</div>" +
-      '<p class="muted" style="margin:0">Official DA marking applied: MCQ 1-mark −⅓, 2-mark −⅔; MSQ/NAT no negative. Saved to your dashboard.</p>' +
-      '<div class="row" style="margin-top:8px"><a class="btn btn--primary" href="../dashboard">Go to dashboard</a><a class="btn btn--ghost" href="../practice-da">Practise more</a></div>' +
-      "</div>";
     $("exam").hidden = true;
+    $("setup").hidden = true;
+    var verdict = pct >= 60 ? "Strong — keep this pace." : pct >= 40 ? "Solid — tighten the weak topics." : "Keep going — review the misses below.";
+    $("res").innerHTML =
+      '<div class="card result"><h2>Test submitted</h2>' +
+      '<div class="result__score">' + score.score + " <span class='muted' style='font-size:1.2rem'>/ " + score.total + "</span></div>" +
+      '<p class="muted">' + pct + "% of available marks — " + verdict + "</p>" +
+      '<div class="result__grid">' +
+      '<div class="result__cell"><div class="n ok">' + score.correct + '</div><div class="lbl muted">Correct</div></div>' +
+      '<div class="result__cell"><div class="n err">' + score.wrong + '</div><div class="lbl muted">Wrong</div></div>' +
+      '<div class="result__cell"><div class="n muted">' + score.unanswered + '</div><div class="lbl muted">Unanswered</div></div>' +
+      "</div>" +
+      '<p class="muted" style="margin:14px 0 0">Official marking applied: MCQ 1-mark \u2212\u2153 / 2-mark \u2212\u2154; MSQ and NAT no negative marking. Saved to your <a class="link" href="../dashboard">dashboard</a>.</p>' +
+      '<div class="row" style="margin-top:16px">' +
+      '<a class="btn btn--ghost" href="../practice-da">Practise weak topics</a>' +
+      '<button class="btn btn--primary" id="again" type="button">New mock</button>' +
+      "</div></div>";
+    $("timer").textContent = "Submitted";
+    var again = $("again");
+    if (again) again.addEventListener("click", reset);
     $("res").scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  function cell(n, label, cls) { return '<div class="result__cell"><div class="n ' + cls + '">' + n + "</div><div class='lbl muted'>" + label + "</div></div>"; }
 
-  /* ---------- wiring ---------- */
-  $("next").addEventListener("click", function () { if (cur < Q.length - 1) { cur++; renderStage(); } else confirmSubmit(); });
-  $("prev").addEventListener("click", function () { if (cur > 0) { cur--; renderStage(); } });
-  $("clear").addEventListener("click", function () { delete ansMap[Q[cur].id]; writeJSON(ANS, ansMap); renderStage(); paintPalette(); });
-  $("mark").addEventListener("click", function () {
-    if (revMap[Q[cur].id]) delete revMap[Q[cur].id]; else revMap[Q[cur].id] = true;
-    writeJSON(REV, revMap); renderMarkButton(); paintPalette();
-  });
-  $("submit").addEventListener("click", confirmSubmit);
-  $("restart").addEventListener("click", function () {
-    if (!window.confirm("Discard this attempt and generate a fresh mock?")) return;
-    [ANS, REV, CUR, LEFT].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
-    GateDA.set(CFG, { questions: [], gate: {} });
-    submitted = false; Q = []; ansMap = {}; revMap = {}; cur = 0;
-    $("res").innerHTML = ""; $("exam").hidden = true; $("setup").hidden = false;
-  });
-  $("start").addEventListener("click", function () {
-    [ANS, REV, CUR, LEFT].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
-    ansMap = {}; revMap = {}; cur = 0; submitted = false; startFresh();
-  });
-  document.addEventListener("keydown", function (e) {
-    if ($("exam").hidden) return;
-    var t = e.target.tagName; if (t === "INPUT" || t === "TEXTAREA") return;
-    if (e.key === "ArrowRight") $("next").click();
-    else if (e.key === "ArrowLeft") $("prev").click();
-  });
-  resumeOrStart();
+  function reset() {
+    try { [K_ANS, K_LEFT, K_MARK, K_Q].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
+    location.reload();
+  }
+
+  /* Boot */
+  function begin(savedQuestions) {
+    Q = savedQuestions;
+    ans = load(K_ANS, {}); if (!ans || typeof ans !== "object") ans = {};
+    marked = load(K_MARK, {}); if (!marked || typeof marked !== "object") marked = {};
+    $("exam").hidden = false;
+    $("setup").hidden = true;
+    var ga = Q.filter(function (q) { return q.subject === "ga"; }).length;
+    var marks = Q.reduce(function (a, q) { return a + q.marks; }, 0);
+    $("cfg-row").textContent = "Built from practice bank · " + Q.length + " questions (" + ga + " GA) · " + marks + " marks · " + DUR + " min";
+    buildPal(); render(); startTimer();
+  }
+
+  function start() {
+    loadBank().then(function (b) {
+      return GateDAMock.buildMock(b, CFG, new Date().getTime()).then(function (r) {
+        save(K_Q, { questions: r.questions });
+        idx = 0; ans = {}; marked = {};
+        begin(r.questions);
+      });
+    }).catch(function () {
+      $("cfg-row").textContent = "Could not load the question bank. Please refresh.";
+    });
+  }
+
+  function wire() {
+    $("start").addEventListener("click", start);
+    $("restart").addEventListener("click", reset);
+    $("prev").addEventListener("click", function () { nav(-1); });
+    $("next").addEventListener("click", function () { nav(1); });
+    $("clear").addEventListener("click", function () { delete ans[Q[idx].id]; save(K_ANS, ans); render(); });
+    $("mark").addEventListener("click", function () { marked[Q[idx].id] = !marked[Q[idx].id]; save(K_MARK, marked); render(); });
+    $("submit").addEventListener("click", showConfirm);
+  }
+
+  wire();
+  var savedQ = load(K_Q, null);
+  if (savedQ && savedQ.questions && savedQ.questions.length) begin(savedQ.questions);
+  else startTimer();
 })();
 </script>
 </body></html>

@@ -95,12 +95,11 @@
   var subCounts = {};
   subIds.forEach(s => { subCounts[s] = official.filter(o => o.subId === s).length; });
 
-  var html = '<div class="summary-row">';
+  var sumHtml = '';
   subIds.forEach(s => {
-    html += '<div class="summary-cell"><div class="num" style="font-size:20px;color:#e2601f">'+subCounts[s]+'</div><div class="lbl">'+subNames[s]+' topics</div></div>';
+    sumHtml += '<div class="summary-cell"><div class="num">'+subCounts[s]+'</div><div class="lbl">'+subNames[s]+' topics</div></div>';
   });
-  html += '</div><div id="table"></div>';
-  $('table').innerHTML = html;
+  $('sub-summary').innerHTML = sumHtml;
 
   $('n-topics').textContent = official.length;
   $('n-qs').textContent = bank.questions.length;
@@ -120,7 +119,7 @@
   }
 
   var rows = official.filter(matches);
-  var html2 = '<table><tr><th>Subj</th><th>Topic</th><th>Official definition</th><th>Practice Qs</th><th>Lesson page</th></tr>';
+  var html2 = '<div class="table-wrap"><table><thead><tr><th>Subject</th><th>Topic ID</th><th>Official definition</th><th class="num">Practice Qs</th><th>Lesson page</th></tr></thead><tbody>';
   rows.forEach(o => {
     var qs = map[o.subId+':'+o.topicId] || [];
     var src = null;
@@ -134,13 +133,11 @@
     var hasLesson = src ? '<a href="'+src+'">yes</a>' : '<span class="no-questions">no</span>';
     html2 += "<tr><td>"+o.subTitle+"</td><td><b>"+o.topicId+"</b></td><td>"+o.officialDef+"</td><td class='"+ (qs.length?'ok':'no-questions') +"'>"+qs.length+"</td><td style='font-size:12px'>"+hasLesson+"</td></tr>";
   });
-  html2 += '</table>';
+  html2 += '</tbody></table></div>';
   $('table').innerHTML = html2;
 
-  $('sub-summary').innerHTML = html;
+  $('sub-summary').innerHTML = sumHtml;
 })();
 </script>
 <script src="../assets/app-shell.js" defer></script>
 </div></main></body></html>
-
-</div>
