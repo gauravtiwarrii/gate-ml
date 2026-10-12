@@ -91,6 +91,11 @@
     if (el) {
       el.textContent = Math.floor(left / 60) + "m " + (left % 60) + "s";
       if (left <= 300) el.classList.add("warn");
+    }
+    save(K_LEFT, left);
+    if (left <= 0) { doSubmit(); return; }
+    tickTimer = setTimeout(tick, 1000);
+  }
 
   /* Answer collection (scoring input shape unchanged: index | [indices] | number). */
   function currentAnswer() {
@@ -160,6 +165,28 @@
         btn.setAttribute("role", multi ? "checkbox" : "radio");
         btn.setAttribute("aria-checked", isChecked(q, i) ? "true" : "false");
 
+        btn.innerHTML = '<span class="key">' + String.fromCharCode(65 + i) + "</span><span>" + esc(o) + "</span>";
+        btn.addEventListener("click", function () {
+          if (!multi) { ans[q.id] = i; }
+          else {
+            var arr = Array.isArray(ans[q.id]) ? ans[q.id].slice() : [];
+            var at = arr.indexOf(i);
+            if (at >= 0) arr.splice(at, 1); else arr.push(i);
+            arr.sort();
+            if (arr.length) ans[q.id] = arr; else delete ans[q.id];
+          }
+          saveCurrent();
+          render();
+        });
+        box.appendChild(btn);
+      });
+    }
+    $("mark").innerHTML = marked[q.id] ? "★ Marked" : "☆ Mark for review";
+    $("prev").disabled = idx === 0;
+    $("next").textContent = idx === Q.length - 1 ? "Finish" : "Next →";
+    paintPal();
+  }
+
   /* Palette */
   function buildPal() {
     var pal = $("pal"); pal.innerHTML = "";
@@ -211,34 +238,6 @@
     $("confirmYes").addEventListener("click", doSubmit);
     $("confirmNo").addEventListener("click", function () { el.innerHTML = ""; });
     el.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-        btn.innerHTML = '<span class="key">' + String.fromCharCode(65 + i) + "</span><span>" + esc(o) + "</span>";
-        btn.addEventListener("click", function () {
-          if (!multi) { ans[q.id] = i; }
-          else {
-            var arr = Array.isArray(ans[q.id]) ? ans[q.id].slice() : [];
-            var at = arr.indexOf(i);
-            if (at >= 0) arr.splice(at, 1); else arr.push(i);
-            arr.sort();
-            if (arr.length) ans[q.id] = arr; else delete ans[q.id];
-          }
-          saveCurrent();
-          render();
-        });
-        box.appendChild(btn);
-      });
-    }
-    $("mark").innerHTML = marked[q.id] ? "★ Marked" : "☆ Mark for review";
-    $("prev").disabled = idx === 0;
-    $("next").textContent = idx === Q.length - 1 ? "Finish" : "Next →";
-    paintPal();
-  }
-
-    }
-    save(K_LEFT, left);
-    if (left <= 0) { doSubmit(); return; }
-    tickTimer = setTimeout(tick, 1000);
   }
 
   function loadBank() {

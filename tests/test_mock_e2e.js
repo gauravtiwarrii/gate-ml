@@ -133,3 +133,46 @@ test('S8: NAT rejects a value outside tolerance and non-numeric input', () => {
   assert.strictEqual(GateDAScore.paper([q], { n: 2.7 }).score, 0);
   assert.strictEqual(GateDAScore.paper([q], { n: 'xyz' }).score, 0);
 });
+
+// Regression guard for a misplaced-brace defect found in mock-da during QA: the
+// exam helpers (render/buildPal/nav/showConfirm/...) were accidentally nested
+// inside tick()'s `if (el)` block and inside render()'s forEach callback, which
+// made them unreachable from begin()/wire() — a ReferenceError on exam start.
+// Function declarations hoist to their TRUE enclosing scope, so probing `typeof`
+// at the very top of the IIFE (before any statement runs) reports 'function'
+// only when the helper is genuinely IIFE-scoped.
+test('mock-da: exam helpers are IIFE-scoped, not nested inside tick()/render()', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'mock-da', 'index.html'), 'utf8');
+  const m = html.match(/<script>([\s\S]*?)<\/script>/);
+  assert.ok(m, 'mock-da must contain an inline <script>');
+  const helpers = ['tick', 'startTimer', 'currentAnswer', 'saveCurrent', 'isChecked',
+    'render', 'buildPal', 'paintPal', 'nav', 'goto', 'showConfirm',
+    'loadBank', 'doSubmit', 'reset', 'begin', 'start', 'wire'];
+  const probe = 'window.__scope = {' + helpers.map(h => h + ': typeof ' + h).join(', ') + '};';
+  const injected = m[1].replace('(function () {', '(function () {\n  ' + probe);
+  assert.notStrictEqual(injected, m[1], 'probe must inject into the IIFE opener');
+
+  const sandbox = {
+    window: null, console, Math, Date, JSON, Object, Array, Set, String, Number,
+    parseInt, parseFloat, isNaN, Promise, Error,
+    setTimeout: () => 1, clearTimeout() {},
+    location: { reload() {} },
+    fetch: () => Promise.resolve({ ok: true, json: () => Promise.resolve({ questions: [] }) }),
+    document: {
+      getElementById: () => null, createElement: () => ({}),
+      querySelector: () => null, querySelectorAll: () => [],
+      addEventListener() {}, dispatchEvent() {},
+    },
+    localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+  };
+  sandbox.window = sandbox;
+  vm.createContext(sandbox);
+  try { vm.runInContext(injected, sandbox, { filename: 'mock-da' }); }
+  catch (e) { /* boot may throw on the stub DOM; the top-of-IIFE probe already ran */ }
+
+  const scope = sandbox.window.__scope;
+  assert.ok(scope, 'probe captured scope at the top of the IIFE');
+  const nested = helpers.filter(h => scope[h] !== 'function');
+  assert.deepStrictEqual(nested, [],
+    'helpers not visible at IIFE scope (nested in another function): ' + nested.join(', '));
+});
