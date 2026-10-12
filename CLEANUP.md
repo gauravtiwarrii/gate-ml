@@ -1,0 +1,1 @@
+cleanup: rm all _audit*.py _bank*.py _fix*.py _chk.py _diag.py _validate_bank.py

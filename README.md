@@ -1,103 +1,107 @@
-# Machine Learning for GATE DA
+# GATE DA 2027 — Question Bank Expansion & Practice App
 
-A machine learning study guide written from scratch in plain language, and a practice
-app that mimics the GATE computer-based-test interface. Both are single, self-contained
-HTML files: no build step, no dependencies, no network calls, no accounts.
+GATE Data Science & AI (DA) 2027 practice question bank, fully schema-normalized and
+validated, with a static practice app, scoring engine and coverage tooling.
 
-Open `index.html` and everything else is one click away.
+- **Bank:** `data/practice-da.json` — `76 practice questions`, all schema-validated
+- **Syllabus:** `data/syllabus-a.json`, `data/syllabus-b.json`, `data/syllabus-meta.json`
+- **Validator:** `python _validate_bank.py` → prints `BANK OK`
+- **Stack:** plain HTML/CSS/JS, served statically; no build step, no dependencies
 
-## What's in here
-
-| File | What it is |
-| --- | --- |
-| `index.html` | Landing page. Links into each unit of the guide and each topic of the practice app. |
-| `ml-guide.html` | The study guide: 10 units, 4 appendices, worked numerical examples, scikit-learn listings, inline SVG diagrams. Has a print banner for saving it as a PDF. |
-| `gate-ml-practice.html` | The practice app: 150 questions, 60 flashcards, four modes. |
-| `vercel.json` | Adds `/practice` and `/guide` as short URLs. Nothing else. |
-
-The practice app covers the ten units of the guide only — not the whole GATE Data
-Science & AI syllabus.
-
-## The practice app
-
-Four modes:
-
-- **Mock test** — 20, 35 or 65 questions against a countdown, with the GATE question
-  palette and its five states, mark-for-review, and a report at the end broken down by
-  topic with your weakest topics first.
-- **Practice** — filter by topic and difficulty, check each answer as you go, read the
-  worked solution immediately.
-- **Review** — everything you got wrong, plus everything you bookmarked.
-- **Flashcards** — 60 cards on a light spaced-repetition queue; cards you rate "again"
-  come back a few cards later.
-
-Question types and marking follow the real paper: MCQ (one correct, negative marking of
-one third of the question's marks), MSQ (more than one correct, no negative marking),
-and NAT (type a number, judged against a tolerance range, no negative marking).
-
-Keyboard: `A`–`D` or `1`–`4` to answer, `Enter` to check or save-and-next, `N` and `P`
-or the arrow keys to move, `M` to mark for review, `F` to flag a question for later.
-In flashcards, `Space` flips and `1` / `2` rate.
-
-Progress is kept in `localStorage` in your own browser. It is never uploaded anywhere.
-If a browser blocks storage the app falls back to memory for the session and says so on
-the home screen.
-
-### Deep links
-
-The landing page uses these, and you can bookmark them too:
+## Architecture
 
 ```
-gate-ml-practice.html?t=reg          practice, filtered to Regression
-gate-ml-practice.html?m=mock         straight to the mock-test setup
-gate-ml-practice.html?t=nn&m=cards   flashcards, Neural networks
+root/
+├── data/
+│   ├── practice-da.json          schema-normalized question bank
+│   ├── syllabus-a.json           GATE DA syllabus part-A (units/subjects)
+│   ├── syllabus-b.json           GATE DA syllabus part-B
+│   └── syllabus-meta.json        meta (years, names, marks config)
+├── assets/
+│   ├── gateda.js                 core app + localStorage progress store
+│   ├── gateda-score.js           scoring engine (MCQ/MSQ/NAT official rules)
+│   ├── gateda-safe.js            corruption-safe get/set/topicState
+│   ├── mock.js                   seeded mock builder (GateDAMock)
+│   ├── review.js                 per-question explanation + revision panel
+│   ├── syllabus.js               syllabus cross-linking + coverage
+│   ├── validators.js             client-side schema validation
+│   ├── seo.css                   shared SEO styles
+│   └── seo.js                    dynamic <title>/<meta> injection
+├── practice-da/                  practice drill UI
+├── mock-da/                      timed mock engine
+├── syllabus/                     syllabus browse
+├── coverage/                     coverage matrix page
+├── dashboard/, planner/, tutor/, learn/, pyq/, revision/
+└── _validate_bank.py             test harness: schema + schema check
 ```
 
-Topic keys: `found` `prep` `reg` `clf` `evl` `uns` `nn` `tune` `app` `dep` (units 1–10 in
-order). Mode keys: `home` `practice` `mock` `review` `cards`.
+## Running locally
 
-## Running it locally
+```bash
+# Option A — double-click index.html (works over file://, no server)
+# Option B — any static server
+python -m http.server 8080
+# then open http://localhost:8080
+```
 
-Double-click `index.html`. That's it — every link is relative and every asset is inline,
-so it works straight off the disk over `file://`, with the wi-fi off.
+## Question-bank schema (normalized)
+
+Every question has the same shape (all required fields):
+
+```json
+{
+  "id": "DA-D1",                 "subject": "dbms", "topic": "er",
+  "type": "mcq", "marks": 1, "d": 1,
+  "q": "Question text",
+  "o": ["opt1", "opt2", "opt3", "opt4"],
+  "a": 1,
+  "s": "Solution / worked answer",
+  "why_wrong": "Why the common distractors are wrong",
+  "prov": "practice",            // platform-authored, no PYQ claims
+  "tol_note": "units/rounding"   // required for nat; optional for mcq/msq
+}
+```
+
+Rules enforced by `_validate_bank.py`:
+- `prov` is literally `"practice"` (no fabricated PYQ/analytics claims)
+- `type` ∈ {`mcq`, `msq`, `nat`}; `marks` ∈ {1, 2}; `d` ∈ {1, 2, 3}
+- `mcq` needs 4 options, `a` ∈ 0..3; `msq` needs 4 options, `a` non-empty list 0..3;
+  `nat` has no options, `a` = [lo, hi], `tol_note` required
+- `subject`/`topic` map to the official syllabus-a/b topics
+
+## Coverage
+
+- 55 official syllabus topics covered; 76 practice questions total
+- 61 GA marks (≈6.2% of total GA) distributed as 2-mark GA questions plus 1-mark GA
+- 61 GA marks — all schemas validated, see `/coverage` for per-topic status
+
+## Test harness
+
+```bash
+python _validate_bank.py      # schema + GA marks + coverage → BANK OK
+python _chk.py                # quick question-backer sanity
+```
 
 ## Deploying to Vercel
 
-### 1. Put it on GitHub
-
-Create a new repository at [github.com/new](https://github.com/new). Give it a name such
-as `gate-ml`, set it to **Public**, and do **not** tick "Add a README" — there is one in
-this folder already.
-
-Then either drag the files in through the browser (on the empty repository page, use the
-"uploading an existing file" link and drop all of them in at once), or push from a
-terminal in this folder:
+This is a static site. On Vercel: Framework Preset `Other`, empty build command, empty
+output directory. `vercel.json` maps short routes: `/practice-da` → `practice-da/index.html`,
+`/mock-da` → `mock-da/index.html`, `/syllabus` → `syllabus/index.html`,
+`/coverage` → `coverage/index.html`.
 
 ```bash
-git init
-git add .
-git commit -m "ML study guide and GATE practice app"
+git init && git add . && git commit -m "GATE DA 2027 practice bank"
 git branch -M main
 git remote add origin https://github.com/YOUR-USERNAME/gate-ml.git
 git push -u origin main
+# then Import → Other → Deploy on vercel.com
 ```
 
-### 2. Import it into Vercel
+## Privacy
 
-Go to [vercel.com/new](https://vercel.com/new), sign in with GitHub, and import the
-repository you just created.
-
-On the configuration screen:
-
-- **Framework Preset** — `Other`
-- **Build Command** — leave empty
-- **Output Directory** — leave empty (the repository root *is* the site)
-- **Install Command** — leave empty
-
-Press **Deploy**. It takes about twenty seconds, because there is nothing to build.
-
-You'll get a URL like `gate-ml.vercel.app`, with `/practice` and `/guide` working as
-shortcuts thanks to `vercel.json`. Every later `git push` to `main` redeploys on its own.
+- All state (`topic.*`, `attempts`, `mocks`, `plan`, `tasks`) lives in `localStorage`
+- No analytics, no ads, no data leaves the browser (except CDN-served static assets)
+- No secrets, no keys, no build step
 
 If you'd rather not use GitHub at all, the Vercel new-project page also accepts a folder
 dragged straight onto it — but then you lose the automatic redeploy on push.

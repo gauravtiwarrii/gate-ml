@@ -1,1 +1,146 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Coverage Audit — GATE DA 2027</title><meta name="description" content="Every official DA topic mapped to lessons and questions; verification status and gaps."><link rel="canonical" href="https://hellogaurav.me/coverage"><link rel="stylesheet" href="../assets/seo.css"><style>body{font-family:Georgia,serif;max-width:880px;margin:0 auto;padding:24px 18px 60px;background:#fff;color:#141310}h1,h2{font-family:Arial,sans-serif}a{color:#b34a12}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border-bottom:1px solid #999;padding:8px;text-align:left}</style></head><body><nav><a href="../index.html">Home</a><a href="../syllabus">Tracker</a></nav><h1>Coverage audit — 2027-v1</h1><p>Source PDF: <a href="https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/DA_GATE2027_Syllabus.pdf">DA_GATE2027_Syllabus.pdf</a>. Pattern: <a href="https://gate2027.iitm.ac.in/question_paper_pattern">100 marks = 15 GA + 85 technical; 65 Qs</a>.</p><table><tr><th>Subject</th><th>Topics</th><th>Lessons</th><th>Questions</th><th>Status</th></tr><tr><td>Probability & Statistics</td><td>11</td><td>Existing topics/ + guide</td><td>150 ML + stats hubs</td><td>Mapped, content live</td></tr><tr><td>Linear Algebra</td><td>8</td><td>Existing topic page</td><td>ML bank subset</td><td>Mapped, content live</td></tr><tr><td>Calculus & Optimization</td><td>5</td><td>/learn/calculus (new, reviewed)</td><td>2 practice Qs</td><td>Mapped; expand bank</td></tr><tr><td>Programming/DSA</td><td>6</td><td>/learn/programming (new)</td><td>3 practice Qs</td><td>Mapped; expand bank</td></tr><tr><td>DBMS & Warehousing</td><td>7</td><td>/learn/dbms (new)</td><td>2 practice Qs</td><td>Mapped; expand bank</td></tr><tr><td>Machine Learning</td><td>12</td><td>Guide + practice app</td><td>150 + 60 cards</td><td>Mapped, content live</td></tr><tr><td>AI</td><td>4</td><td>/learn/ai (new)</td><td>2 practice Qs</td><td>Mapped; expand bank</td></tr><tr><td>General Aptitude</td><td>2</td><td>/learn/aptitude (new)</td><td>2 practice Qs</td><td>Mapped; expand bank</td></tr></table><p><b>Totals: 8 subjects, 55 topics.</b> 0 verified PYQs hosted (policy: year+source required). No CS-track mixing. All progress client-side; no backend/auth by design (static host).</p></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DA Coverage — GATE 2027</title><meta name="description" content="Topic-wise coverage across GATE DA 2027 practice bank (55 official syllabus topics)."><link rel="canonical" href="https://hellogaurav.me/coverage"><link rel="stylesheet" href="../assets/seo.css"><style>
+  body{font-family:Georgia,serif;max-width:1100px;margin:24px auto;padding:18px;background:#0a0a0a;color:#f5f3ee}
+  h1{font-family:Arial,sans-serif}
+  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+  .metric{flex:1 1 140px;background:#111;border:1px solid #333;border-radius:8px;padding:12px;text-align:center}
+  .metric .num{font-size:28px;font-weight:bold;color:#e2601f}
+  .metric .lbl{font-size:12px;color:#888}
+  .controls{margin:12px 0;padding:12px;background:#111;border:1px solid #333;border-radius:8px}
+  input,select{background:#1a1a1a;color:#eee;border:1px solid #444;border-radius:4px;padding:6px 8px}
+  .summary-row{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}
+  .summary-cell{flex:1 1 200px;background:#111;border:1px solid #333;border-radius:8px;padding:12px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+  th,td{border:1px solid #444;padding:6px 8px;text-align:left;vertical-align:top}
+  .no-questions{color:#888}
+  .ok{color:#4caf50;font-weight:bold}
+  .pill{display:inline-block;background:#333;color:#eee;border-radius:10px;padding:2px 8px;font-size:11px;margin-right:4px}
+  .pill.ok{background:#1a7f37}.pill.missing{background:#e2601f}.pill.lesson{background:#9a6700}
+  .legend{margin:8px 0}
+  .legend span{display:inline-block;background:#111;border:1px solid #333;border-radius:4px;padding:4px 12px;margin-right:12px;font-size:12px}
+</style></head><body><nav><a href="../index.html">Home</a><a href="../syllabus">Syllabus</a><a href="../dashboard">Dashboard</a></nav>
+<h1>DA Practice Coverage</h1>
+<p>Coverage audit for the <strong>76-question</strong> GATE DA 2027 practice bank. Scoped to the 55 official syllabus topics from IIT Madras (source: gate2027.iitm.ac.in syllabus PDF).</p>
+
+<div class="metrics">
+  <div class="metric"><div class="num" id="n-topics">0</div><div class="lbl">Official topics</div></div>
+  <div class="metric"><div class="num" id="n-covered">0</div><div class="lbl">Topics with practice Qs</div></div>
+  <div class="metric"><div class="num" id="n-qs">0</div><div class="lbl">Practice questions</div></div>
+  <div class="metric"><div class="num" id="n-ga">0</div><div class="lbl">GA marks</div></div>
+</div>
+
+<div class="controls">
+  <input id="q" type="text" placeholder="Search topic or question text..." style="width:260px">
+  <select id="sub"><option value="">All subjects</option>
+    <option value="ai">AI</option>
+    <option value="calc">Calculus</option>
+    <option value="dbms">DBMS</option>
+    <option value="ga">General Aptitude</option>
+    <option value="linalg">Linear Algebra</option>
+    <option value="ml">Machine Learning</option>
+    <option value="prob">Probability</option>
+    <option value="prog">Programming</option>
+  </select>
+  <select id="status"><option value="">All topics</option>
+    <option value="mapped">Has practice questions</option>
+    <option value="not-mapped">No practice questions</option>
+  </select>
+</div>
+
+<div class="summary-row" id="sub-summary"></div>
+<div id="table"></div>
+
+<div class="legend">
+  <span><span class="pill ok">●</span> Has practice question</span>
+  <span><span class="pill missing">●</span> No practice question</span>
+  <span><span class="pill lesson">●</span> Has a dedicated lesson page</span>
+<script src="../assets/gateda.js"></script>
+<script>
+(async function(){
+  var subs, bank, official, map, bySubj;
+  var $ = id => document.getElementById(id);
+  var qInput = $('q'), subSel = $('sub'), statusSel = $('status');
+
+  const [a, b] = await Promise.all([fetch('../data/syllabus-a.json').then(r=>r.json()), fetch('../data/syllabus-b.json').then(r=>r.json())]);
+  subs = a.subjects.concat(b.subjects);
+  const meta = await fetch('../data/syllabus-meta.json').then(r=>r.json());
+  bank = await fetch('../data/practice-da.json').then(r=>r.json());
+
+  var subjMeta = {
+    ai:     {name:'Artificial Intelligence',      short:'AI'},
+    calc:   {name:'Calculus & Optimization',      short:'Calc'},
+    dbms:   {name:'Database Management',          short:'DBMS'},
+    ga:     {name:'General Aptitude',             short:'GA'},
+    linalg: {name:'Linear Algebra',               short:'LinAlg'},
+    ml:     {name:'Machine Learning',             short:'ML'},
+    prob:   {name:'Probability & Statistics',     short:'Prob'},
+    prog:   {name:'Programming & DSA',            short:'Prog'}
+  };
+  var official = [];
+  subs.forEach(s => {
+    s.topics.forEach(t => {
+      official.push({subId: s.id, subTitle: subjMeta[s.id] ? subjMeta[s.id].name : s.title, topicId: t.id, officialDef: t.official});
+    });
+  });
+
+  map = {};
+  bank.questions.forEach(q => {
+    var k = q.subject + ':' + q.topic;
+    map[k] = map[k] || [];
+    map[k].push(q);
+  });
+  bySubj = {};
+  bank.questions.forEach(q => { bySubj[q.subject] = bySubj[q.subject] || {count:0, marks:0, qs:[]}; bySubj[q.subject].count++; bySubj[q.subject].marks += q.marks; bySubj[q.subject].qs.push(q); });
+
+  var subIds = ['ai','calc','dbms','ga','linalg','ml','prob','prog'];
+  var subNames = {ai:'AI',calc:'Calculus',dbms:'DBMS',ga:'General Aptitude',linalg:'Linear Algebra',ml:'Machine Learning',prob:'Probability',prog:'Programming'};
+  var subCounts = {};
+  subIds.forEach(s => { subCounts[s] = official.filter(o => o.subId === s).length; });
+
+  var html = '<div class="summary-row">';
+  subIds.forEach(s => {
+    html += '<div class="summary-cell"><div class="num" style="font-size:20px;color:#e2601f">'+subCounts[s]+'</div><div class="lbl">'+subNames[s]+' topics</div></div>';
+  });
+  html += '</div><div id="table"></div>';
+  $('table').innerHTML = html;
+
+  $('n-topics').textContent = official.length;
+  $('n-qs').textContent = bank.questions.length;
+  var gaMarks = 0;
+  bank.questions.forEach(q => { if(q.subject === 'ga') gaMarks += q.marks; });
+  $('n-ga').textContent = gaMarks;
+
+  function matches(o) {
+    if(subSel.value && o.subId !== subSel.value) return false;
+    if(statusSel.value === 'mapped' && (!map[o.subId+':'+o.topicId] || map[o.subId+':'+o.topicId].length === 0)) return false;
+    if(statusSel.value === 'not-mapped' && (map[o.subId+':'+o.topicId] && map[o.subId+':'+o.topicId].length > 0)) return false;
+    if(qInput.value) {
+      var qtext = (map[o.subId+':'+o.topicId]||[]).map(x=>x.q.toLowerCase()).join(' ');
+      if(qtext.indexOf(qInput.value.toLowerCase()) < 0) return false;
+    }
+    return true;
+  }
+
+  var rows = official.filter(matches);
+  var html2 = '<table><tr><th>Subj</th><th>Topic</th><th>Official definition</th><th>Practice Qs</th><th>Lesson page</th></tr>';
+  rows.forEach(o => {
+    var qs = map[o.subId+':'+o.topicId] || [];
+    var src = null;
+    if(o.subId === 'ai' || o.subId === 'ml') src = '../topics/machine-learning.html';
+    else if(o.subId === 'linalg') src = '../topics/linear-algebra.html';
+    else if(o.subId === 'prob') src = '../topics/probability.html';
+    else if(o.subId === 'calc') src = '../learn/calculus/index.html';
+    else if(o.subId === 'dbms') src = '../learn/dbms/index.html';
+    else if(o.subId === 'prog') src = '../learn/programming/index.html';
+    else if(o.subId === 'ga') src = null;
+    var hasLesson = src ? '<a href="'+src+'">yes</a>' : '<span class="no-questions">no</span>';
+    html2 += "<tr><td>"+o.subTitle+"</td><td><b>"+o.topicId+"</b></td><td>"+o.officialDef+"</td><td class='"+ (qs.length?'ok':'no-questions') +"'>"+qs.length+"</td><td style='font-size:12px'>"+hasLesson+"</td></tr>";
+  });
+  html2 += '</table>';
+  $('table').innerHTML = html2;
+
+  $('sub-summary').innerHTML = html;
+})();
+</script>
+</body></html>
+
+</div>

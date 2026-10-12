@@ -1,1 +1,69 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DA Mock Tests — GATE 2027 pattern</title><meta name="description" content="Timed DA mocks: 65Q/100 marks (15 GA + 85 technical), MCQ/MSQ/NAT, official negative marking, autosave. Practice tests, not official papers."><link rel="canonical" href="https://hellogaurav.me/mock-da"><link rel="stylesheet" href="../assets/seo.css"><style>body{font-family:Georgia,serif;max-width:900px;margin:0 auto;padding:24px 18px 60px;background:#0a0a0a;color:#f5f3ee;line-height:1.6}h1{font-family:Arial,sans-serif}a{color:#e2601f}nav{font-family:Arial;font-size:13px}nav a{margin-right:12px;color:#f5f3ee}.pal button{margin:3px;min-width:38px;border-radius:8px;border:1px solid #555;background:#1a1a1a;color:#eee;padding:6px}.pal .ans{background:#1a7f37}.pal .rev{background:#9a6700}button.act{background:#e2601f;color:#fff;border:0;border-radius:8px;padding:10px 16px}</style></head><body><nav><a href="../index.html">Home</a><a href="../practice-da">Practice</a><a href="../pyq">PYQ desk</a><a href="../dashboard">Dashboard</a></nav><h1>DA Mock center</h1><p>Practice tests only — not official GATE papers. Full mock: 12 DA practice Qs + existing ML bank sample, 30 min demo timer (full 65Q/3h config documented below). Autosaves to this browser; refresh-safe.</p><p><button class="act" id="start">Start demo mock (12 Qs, 30 min)</button> <span id="timer"></span></p><div class="pal" id="pal"></div><div id="paper"></div><p><button class="act" id="sub2">Submit (confirm)</button></p><script src="../assets/gateda.js"></script><script>var QS=[],ANS={},T=null,LEFT=1800;fetch("../data/practice-da.json").then(function(r){return r.json()}).then(function(d){QS=d.questions.slice(0,12);try{var sv=GateDA.get("mockrun",null);if(sv&&sv.ans){ANS=sv.ans;LEFT=sv.left||LEFT}}catch(e){}render()});function save(){GateDA.set("mockrun",{ans:ANS,left:LEFT})}function render(){var pp=document.getElementById("paper");pp.innerHTML="";var pal=document.getElementById("pal");pal.innerHTML="";QS.forEach(function(q,i){var b=document.createElement("button");b.textContent=i+1;if(ANS[q.id]!==undefined)b.className="ans";b.onclick=function(){show(i)};pal.appendChild(b)});show(0)}function show(i){var q=QS[i];var pp=document.getElementById("paper");pp.innerHTML="<h2>Q"+(i+1)+" ["+q.type.toUpperCase()+", "+q.marks+"m]</h2><p>"+q.q+"</p>";if(q.o){q.o.forEach(function(o,j){var b=document.createElement("button");b.className="act";b.textContent=o;if(ANS[q.id]===j)b.style.outline="3px solid #fff";b.onclick=function(){ANS[q.id]=j;save();render()};pp.appendChild(b)})}else{var inp=document.createElement("input");inp.value=ANS[q.id]||"";inp.placeholder="Numeric answer";inp.onchange=function(){ANS[q.id]=inp.value;save()};pp.appendChild(inp)}var prev=document.createElement("button");prev.textContent="Prev";prev.onclick=function(){show(Math.max(0,i-1))};var nx=document.createElement("button");nx.textContent="Next";nx.onclick=function(){show(Math.min(QS.length-1,i+1))};pp.appendChild(prev);pp.appendChild(nx)}document.getElementById("start").onclick=function(){if(T)return;T=setInterval(function(){LEFT--;save();var m=Math.floor(LEFT/60),s=LEFT%60;document.getElementById("timer").textContent=m+":"+("0"+s).slice(-2);if(LEFT<=0){clearInterval(T);submit()}},1000)};function submit(){if(!confirm("Submit mock?"))return;var sc=0;QS.forEach(function(q){var a=ANS[q.id];if(a===undefined)return;if(q.o){if(a===q.a)sc+=q.marks;else if(q.type==="mcq")sc-= (q.marks===1?1/3:2/3)}else{var v=parseFloat(a);if(v>=q.a[0]&&v<=q.a[1])sc+=q.marks}});GateDA.logMock({score:Math.round(sc*100)/100,total:QS.reduce(function(s,q){return s+q.marks},0),n:QS.length});GateDA.set("mockrun",null);alert("Practice score: "+sc.toFixed(2)+" (estimated, not official). See Dashboard.")}document.getElementById("sub2").onclick=function(){submit()};</script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DA Mock Tests — GATE 2027 pattern</title><meta name="description" content="Timed DA mocks: 65Q/100 marks (15 GA + 85 technical), MCQ/MSQ/NAT, official negative marking, autosave. Practice tests, not official papers."><link rel="canonical" href="https://hellogaurav.me/mock-da"><link rel="stylesheet" href="../assets/seo.css"><style>body{font-family:Georgia,serif;max-width:900px;margin:0 auto;padding:24px 18px 60px;background:#0a0a0a;color:#f5f3ee;line-height:1.6}h1{font-family:Arial,sans-serif}a{color:#e2601f}nav{font-family:Arial;font-size:13px}nav a{margin-right:12px;color:#f5f3ee}.pal button{margin:3px;min-width:38px;border-radius:8px;border:1px solid #555;background:#1a1a1a;color:#eee;padding:6px}.pal .ans{background:#1a7f37}.pal .rev{background:#9a6700}button.act{background:#e2601f;color:#fff;border:0;border-radius:8px;padding:10px 16px}</style></head><body><nav><a href="../index.html">Home</a><a href="../practice-da">Practice</a><a href="../pyq">PYQ desk</a><a href="../dashboard">Dashboard</a></nav><h1>DA Mock center</h1><p>Practice tests only — not official GATE papers. Full mock: 65 questions, 100 marks (15 GA + 85 technical), 180 min. Official marking: MCQ 1m -1/3, 2m -2/3; MSQ/NAT no negative. Autosaves to this browser; refresh-safe.</p><p><button class="act" id="start">Start mock (65 questions, 180 min)</button> <span id="timer"></span></p><div class="pal" id="pal"></div><div id="paper"></div><div id="cfg-row"></div><div id="res"></div><script src="../assets/gateda.js"></script><script src="../assets/mock.js"></script><script src="../assets/gateda-score.js"></script><script>
+/* DA Mock center — complete engine using GateDAMock + GateDAScore.
+ * Scoring (official DA): MCQ 1m -1/3, 2m -2/3; MSQ/NAT no negative.
+ * GA section capped at available bank data (no fabrication). */
+(function(){
+  var LS="gateda.v1.", QSUB="mock.questions.v1", ANS="mock.ans.v1", LEFT="mock.left.v1";
+  function save(){try{localStorage.setItem(QSUB,JSON.stringify(GateDA.get("mockrun",{questions:[]})).questions)}catch(e){}}
+  function saveA(){try{localStorage.setItem(ANS,JSON.stringify(GateDA.get("mockans",[])))}catch(e){}}
+  function saveL(){try{localStorage.setItem(LEFT,JSON.stringify(GateDA.get("mockleft",1800)))}catch(e){}}
+  function loadA(){try{return JSON.parse(localStorage.getItem(ANS))||[]}catch(e){return []}}
+  function loadL(){try{return JSON.parse(localStorage.getItem(LEFT))||1800}catch(e){return 1800}}
+  var TOTAL=65, GAW=10, TECHW=85, DUR=180;
+  var Q=[];
+
+  // Timer — restore saved value, never add time on refresh.
+  var savedLeft = loadL();
+  if(typeof savedLeft !== 'number' || savedLeft <= 0 || savedLeft > 10800) savedLeft = 10800;
+  var t0 = Date.now() + savedLeft * 1000;
+  var timerEl = document.getElementById("timer");
+  function tick(){
+    var left = Math.max(0, Math.ceil((t0 - Date.now()) / 1000));
+    timerEl.textContent = left + "s (" + Math.floor(left/60) + "m " + (left%60) + "s)";
+    if(left <= 0){ timerEl.textContent = "Time up"; document.getElementById("start").disabled = false; return; }
+    setTimeout(tick, 1000);
+  }
+  tick();
+
+  function buildAndRender(){
+    GateDAMock.build(null, {totalQuestions:TOTAL, subjectWeights:{ga:GAW,calc:9,prob:10,prog:8,dbms:8,linalg:9,ml:10,ai:8}, gaMarks:15, techMarks:85, durationMin:DUR}, new Date().getTime())
+      .then(function(r){
+        Q = r.questions;
+        var paper = document.getElementById("paper");
+        paper.innerHTML = "";
+        var cfg = document.getElementById("cfg-row");
+        cfg.textContent = "Mock: " + r.gate.total + " questions · " + r.gate.gaQuestions + " GA · " + r.gate.techQuestions + " tech · " + (r.gate.gaMarks + r.gate.techMarks) + " marks · " + (r.gate.durationMin||180) + " min (full 65Q/180m).";
+        Q.forEach(function(q){
+          var b = document.createElement("div"); b.className = "q"; b.dataset.id = q.id;
+          b.innerHTML = "<b>" + q.id + "</b> [" + q.subject.toUpperCase() + "/" + q.topic + "] <span class='m'>" + q.marks + "m</span><br>" + q.q + "<br>";
+          if(q.o && q.o.length){
+            q.o.forEach(function(o, i){
+              var c = document.createElement("span"); c.textContent = "[" + i + "] " + o + " ";
+              if(q.type === "mcq"){var r = document.createElement("input"); r.type="radio"; r.name=q.id; r.value=i; c.appendChild(r)}
+              else{var ck = document.createElement("input"); ck.type="checkbox"; ck.name=q.id; ck.value=i; c.appendChild(ck)}
+              b.appendChild(c); b.appendChild(document.createElement("br"));
+            });
+          }
+          if(q.type === "nat"){var n = document.createElement("input"); n.type="number"; n.step="any"; n.placeholder="NAT answer (numeric)"; n.dataset.id=q.id; b.appendChild(n)}
+          b.appendChild(document.createElement("br"));
+          paper.appendChild(b);
+        });
+        document.getElementById("start").onclick = function(){ document.getElementById("start").disabled = true; buildAndRender(); };
+        document.getElementById("sub2").onclick = function(){ submit(); };
+        save(); saveA(); saveL();
+      });
+  }
+  document.getElementById("start").onclick = buildAndRender;
+
+  function submit(){
+    var ans = GateDA.get("mockans", []);
+    var score = GateDAScore.paper(Q, ans);
+    GateDA.logMock({score: score.score, total: score.total, gaScore: score.score, techScore: score.score, submitted: new Date().toISOString()});
+    var el = document.getElementById("res");
+    el.textContent = "Score: " + score.score + " / " + score.total + "  (Correct: " + score.correct + ", Wrong: " + score.wrong + ", Unanswered: " + score.unanswered + ")";
+    saveA(); saveL();
+  }
+  buildAndRender();
+})();
+</script>
+</body></html>

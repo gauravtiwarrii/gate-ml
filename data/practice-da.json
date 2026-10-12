@@ -1,1 +1,1467 @@
-{"version":"2027-v1","note":"All items are Practice Questions authored for this platform. No item is labelled PYQ. provenance=platform-practice-v1.","questions":[{"id":"DA-C1","subject":"calc","topic":"maxima","type":"mcq","marks":1,"q":"f(x) = x^3 - 3x^2 + 2. Which statement is true?","o":["Local max at x=0, local min at x=2","Local min at x=0, local max at x=2","Inflection at both points","Monotone increasing"],"a":0,"s":"f'=3x^2-6x=0 → x=0,2. f''=6x-6: -6 at 0 (max), +6 at 2 (min).","d":1},{"id":"DA-C2","subject":"calc","topic":"taylor","type":"nat","marks":2,"q":"Second-order Taylor of e^x at 0 evaluated at x=0.5 gives? (2 decimals)","a":[1.62,1.63],"s":"1+0.5+0.125=1.625.","d":1},{"id":"DA-P1","subject":"prog","topic":"search","type":"mcq","marks":1,"q":"Binary search on 1024 sorted elements needs at most how many comparisons?","o":["10","11","512","1024"],"a":1,"s":"ceil(log2(1024+1))≈11 worst-case probes including equality. 10 bounds 2^10=1024; safe answer 11.","d":1},{"id":"DA-P2","subject":"prog","topic":"sort-basic","type":"mcq","marks":1,"q":"Which sorts are O(n^2) worst case?","o":["Selection only","Selection, bubble, insertion","Merge and quick","None"],"a":1,"s":"All three elementary sorts are quadratic worst case.","d":1},{"id":"DA-P3","subject":"prog","topic":"graphs","type":"mcq","marks":2,"q":"BFS from s visits nodes in order of?","o":["Decreasing distance","Increasing distance from s","Edge weight","Degree"],"a":1,"s":"BFS layers by unweighted distance.","d":1},{"id":"DA-D1","subject":"dbms","topic":"normal","type":"mcq","marks":1,"q":"R(A,B,C), A→B, B→C. Highest normal form?","o":["1NF","2NF","3NF","BCNF"],"a":1,"s":"Key A; B→C is transitive → violates 3NF; satisfies 2NF.","d":2},{"id":"DA-D2","subject":"dbms","topic":"warehouse","type":"mcq","marks":1,"q":"Star schema vs snowflake: star has?","o":["Normalized dimensions","Denormalized dimensions, fewer joins","No fact table","Only views"],"a":1,"s":"Star denormalizes dimensions for fewer joins.","d":1},{"id":"DA-A1","subject":"ai","topic":"search","type":"mcq","marks":1,"q":"A* is optimal if heuristic is?","o":["Admissible (and consistent for graph search)","Any positive function","Zero only","Random"],"a":0,"s":"Never overestimates; consistency avoids re-expansion.","d":1},{"id":"DA-A2","subject":"ai","topic":"inference","type":"mcq","marks":2,"q":"Variable elimination cost is dominated by?","o":["Number of variables","Size of largest factor created","Number of evidence nodes","Alphabet size"],"a":1,"s":"Largest intermediate factor dominates time/space.","d":2},{"id":"DA-G1","subject":"ga","topic":"num","type":"nat","marks":1,"q":"Train 240 km at 60 km/h, returns at 40 km/h. Average speed?","a":[47.9,48.1],"s":"2ab/(a+b)=2*60*40/100=48 km/h.","d":1},{"id":"DA-G2","subject":"ga","topic":"verbal","type":"mcq","marks":2,"q":"Choose the correctly punctuated sentence.","o":["Its raining, take an umbrella.","It's raining; take an umbrella.","Its' raining take an umbrella.","It raining, take umbrella."],"a":1,"s":"Contraction It's + semicolon joins clauses.","d":1}]}
+{
+ "version": "2027-v1",
+ "note": "All items are Practice Questions authored for this platform (prov=practice). No item is a PYQ.",
+ "questions": [
+  {
+   "id": "DA-C1",
+   "subject": "calc",
+   "topic": "maxima",
+   "type": "mcq",
+   "marks": 1,
+   "q": "f(x) = x^3 - 3x^2 + 2. Which statement is true?",
+   "o": [
+    "Local max at x=0, local min at x=2",
+    "Local min at x=0, local max at x=2",
+    "Inflection at both points",
+    "Monotone increasing"
+   ],
+   "a": 0,
+   "s": "f'=3x^2-6x=0 â†’ x=0,2. f''=6x-6: -6 at 0 (max), +6 at 2 (min).",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C2",
+   "subject": "calc",
+   "topic": "taylor",
+   "type": "nat",
+   "marks": 2,
+   "q": "Second-order Taylor of e^x at 0 evaluated at x=0.5 gives? (2 decimals)",
+   "a": [
+    1.62,
+    1.63
+   ],
+   "s": "1+0.5+0.125=1.625.",
+   "d": 1,
+   "prov": "practice",
+   "tol_note": "Accept 1.62-1.63 (2 decimals)."
+  },
+  {
+   "id": "DA-P1",
+   "subject": "prog",
+   "topic": "search",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Binary search on 1024 sorted elements needs at most how many comparisons?",
+   "o": [
+    "10",
+    "11",
+    "512",
+    "1024"
+   ],
+   "a": 1,
+   "s": "ceil(log2(1024+1))â‰ˆ11 worst-case probes including equality. 10 bounds 2^10=1024; safe answer 11.",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P2",
+   "subject": "prog",
+   "topic": "sort-basic",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Which sorts are O(n^2) worst case?",
+   "o": [
+    "Selection only",
+    "Selection, bubble, insertion",
+    "Merge and quick",
+    "None"
+   ],
+   "a": 1,
+   "s": "All three elementary sorts are quadratic worst case.",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P3",
+   "subject": "prog",
+   "topic": "graphs",
+   "type": "mcq",
+   "marks": 2,
+   "q": "BFS from s visits nodes in order of?",
+   "o": [
+    "Decreasing distance",
+    "Increasing distance from s",
+    "Edge weight",
+    "Degree"
+   ],
+   "a": 1,
+   "s": "BFS layers by unweighted distance.",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D1",
+   "subject": "dbms",
+   "topic": "normal",
+   "type": "mcq",
+   "marks": 1,
+   "q": "R(A,B,C), Aâ†’B, Bâ†’C. Highest normal form?",
+   "o": [
+    "1NF",
+    "2NF",
+    "3NF",
+    "BCNF"
+   ],
+   "a": 1,
+   "s": "Key A; Bâ†’C is transitive â†’ violates 3NF; satisfies 2NF.",
+   "d": 2,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D2",
+   "subject": "dbms",
+   "topic": "warehouse",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Star schema vs snowflake: star has?",
+   "o": [
+    "Normalized dimensions",
+    "Denormalized dimensions, fewer joins",
+    "No fact table",
+    "Only views"
+   ],
+   "a": 1,
+   "s": "Star denormalizes dimensions for fewer joins.",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-A1",
+   "subject": "ai",
+   "topic": "search",
+   "type": "mcq",
+   "marks": 1,
+   "q": "A* is optimal if heuristic is?",
+   "o": [
+    "Admissible (and consistent for graph search)",
+    "Any positive function",
+    "Zero only",
+    "Random"
+   ],
+   "a": 0,
+   "s": "Never overestimates; consistency avoids re-expansion.",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-A2",
+   "subject": "ai",
+   "topic": "inference",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Variable elimination cost is dominated by?",
+   "o": [
+    "Number of variables",
+    "Size of largest factor created",
+    "Number of evidence nodes",
+    "Alphabet size"
+   ],
+   "a": 1,
+   "s": "Largest intermediate factor dominates time/space.",
+   "d": 2,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-G1",
+   "subject": "ga",
+   "topic": "num",
+   "type": "nat",
+   "marks": 1,
+   "q": "Train 240 km at 60 km/h, returns at 40 km/h. Average speed?",
+   "a": [
+    47.9,
+    48.1
+   ],
+   "s": "2ab/(a+b)=2*60*40/100=48 km/h.",
+   "d": 1,
+   "prov": "practice",
+   "tol_note": "Accept 47.9-48.1 km/h."
+  },
+  {
+   "id": "DA-G2",
+   "subject": "ga",
+   "topic": "verbal",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Choose the correctly punctuated sentence.",
+   "o": [
+    "Its raining, take an umbrella.",
+    "It's raining; take an umbrella.",
+    "Its' raining take an umbrella.",
+    "It raining, take umbrella."
+   ],
+   "a": 1,
+   "s": "Contraction It's + semicolon joins clauses.",
+   "d": 1,
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S1",
+   "subject": "prob",
+   "topic": "counting",
+   "type": "mcq",
+   "marks": 1,
+   "q": "From 6 engineers, how many 3-member committees include a fixed captain?",
+   "o": [
+    "10",
+    "15",
+    "20",
+    "30"
+   ],
+   "a": 0,
+   "s": "Fix captain, choose 2 from 5: C(5,2)=10.",
+   "d": 1,
+   "why_wrong": "15=C(6,2) ignores fixed seat; 20=C(6,3) counts all committees.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S2",
+   "subject": "prob",
+   "topic": "foundations",
+   "type": "mcq",
+   "marks": 1,
+   "q": "A and B independent, P(A)=0.4, P(B)=0.5. P(A union B)?",
+   "o": [
+    "0.9",
+    "0.7",
+    "0.2",
+    "0.45"
+   ],
+   "a": 1,
+   "s": "0.4+0.5-0.4*0.5=0.7. Independence gives intersection 0.2.",
+   "d": 1,
+   "why_wrong": "0.9 forgets subtraction (double counts overlap).",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S3",
+   "subject": "prob",
+   "topic": "condprob",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Test: sensitivity 0.95, specificity 0.90, prevalence 0.02. P(disease|positive)?",
+   "o": [
+    "0.95",
+    "0.16",
+    "0.50",
+    "0.02"
+   ],
+   "a": 1,
+   "s": "(0.95*0.02)/(0.95*0.02+0.10*0.98)=0.019/0.117=0.162.",
+   "d": 3,
+   "why_wrong": "0.95 confuses sensitivity with posterior (base-rate fallacy).",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S4",
+   "subject": "prob",
+   "topic": "expectation",
+   "type": "nat",
+   "marks": 2,
+   "q": "X takes values 1,2,3 with probs 0.2,0.5,0.3. E[X]? (2 decimals)",
+   "a": [
+    2.09,
+    2.11
+   ],
+   "s": "1*0.2+2*0.5+3*0.3=0.2+1.0+0.9=2.10.",
+   "d": 1,
+   "tol_note": "Accept 2.09-2.11.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S5",
+   "subject": "prob",
+   "topic": "descriptive",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Dataset skewed right by outliers. Best central tendency?",
+   "o": [
+    "Mean",
+    "Median",
+    "Mode of raw",
+    "Range midpoint"
+   ],
+   "a": 1,
+   "s": "Median resists outliers; mean is pulled right.",
+   "d": 1,
+   "why_wrong": "Mean is sensitive to skew.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S6",
+   "subject": "prob",
+   "topic": "correlation",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Correlation 0.9 between study hours and score implies?",
+   "o": [
+    "Hours cause scores",
+    "Strong linear association, not proof of causation",
+    "No relation",
+    "Scores cause hours"
+   ],
+   "a": 1,
+   "s": "Correlation measures linear association; causation needs design.",
+   "d": 1,
+   "why_wrong": "High r never proves causation alone.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S7",
+   "subject": "prob",
+   "topic": "rv",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which are valid PMFs on {1,2}?",
+   "o": [
+    "(0.5,0.5)",
+    "(1.2,-0.2)",
+    "(0.7,0.3)",
+    "(0.4,0.4)"
+   ],
+   "a": [
+    0,
+    2
+   ],
+   "s": "Non-negative and sum to 1. B has negative; D sums 0.8.",
+   "d": 2,
+   "why_wrong": "Check both non-negativity and sum=1.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S8",
+   "subject": "prob",
+   "topic": "discrete",
+   "type": "nat",
+   "marks": 2,
+   "q": "Binomial n=10,p=0.3. P(X=0)? (4 decimals)",
+   "a": [
+    0.0282,
+    0.0283
+   ],
+   "s": "0.7^10=0.02824.",
+   "d": 2,
+   "tol_note": "Accept 0.0282-0.0283.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S9",
+   "subject": "prob",
+   "topic": "continuous",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Exponential mean 4. Memoryless: P(X>6|X>2)?",
+   "o": [
+    "P(X>4)",
+    "P(X>6)",
+    "P(X>2)",
+    "0"
+   ],
+   "a": 0,
+   "s": "P(X>s+t|X>s)=P(X>t): here P(X>4)=e^-1.",
+   "d": 2,
+   "why_wrong": "Subtract excess 2 from 6.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S10",
+   "subject": "prob",
+   "topic": "cdf",
+   "type": "mcq",
+   "marks": 1,
+   "q": "A CDF must be?",
+   "o": [
+    "Right-continuous, non-decreasing, 0→1",
+    "Left-continuous decreasing",
+    "Any step function",
+    "Differentiable everywhere"
+   ],
+   "a": 0,
+   "s": "Definition: monotone, right-continuous, limits 0 and 1.",
+   "d": 1,
+   "why_wrong": "Differentiability fails for discrete jumps.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S11",
+   "subject": "prob",
+   "topic": "clt-tests",
+   "type": "msq",
+   "marks": 2,
+   "q": "One-sample t-test assumes?",
+   "o": [
+    "Normality of mean sampling dist (approx)",
+    "Known population variance",
+    "Independent observations",
+    "Equal medians"
+   ],
+   "a": [
+    0,
+    2
+   ],
+   "s": "t handles unknown variance; independence + approximate normality needed.",
+   "d": 2,
+   "why_wrong": "Known variance calls for z, not t.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L1",
+   "subject": "linalg",
+   "topic": "vecspace",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Which set is a subspace of R^3?",
+   "o": [
+    "Vectors with x1+x2+x3=1",
+    "All (x1,x2,0)",
+    "Vectors with x1>=0",
+    "Vectors with x1*x2=0"
+   ],
+   "a": 1,
+   "s": "Only plane through origin closed under add/scalar mult.",
+   "d": 1,
+   "why_wrong": "Affine plane misses zero vector.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L2",
+   "subject": "linalg",
+   "topic": "dependence",
+   "type": "nat",
+   "marks": 1,
+   "q": "Rank of [[1,2],[2,4]]?",
+   "a": [
+    1.0,
+    1.0
+   ],
+   "s": "Rows dependent (row2=2*row1).",
+   "d": 1,
+   "tol_note": "Exact integer 1.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L3",
+   "subject": "linalg",
+   "topic": "matrices",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Idempotent matrix satisfies?",
+   "o": [
+    "A^2=A",
+    "A^2=I",
+    "A^T=-A",
+    "det=0"
+   ],
+   "a": 0,
+   "s": "Projection matrices: applying twice changes nothing.",
+   "d": 1,
+   "why_wrong": "A^2=I defines involutory, not idempotent.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L4",
+   "subject": "linalg",
+   "topic": "quadforms",
+   "type": "mcq",
+   "marks": 1,
+   "q": "x^T[[2,0],[0,-1]]x is?",
+   "o": [
+    "Positive definite",
+    "Negative definite",
+    "Indefinite",
+    "Zero"
+   ],
+   "a": 2,
+   "s": "Eigenvalues 2,-1 mixed signs → indefinite.",
+   "d": 1,
+   "why_wrong": "Check signs of all eigenvalues.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L5",
+   "subject": "linalg",
+   "topic": "linsys",
+   "type": "nat",
+   "marks": 2,
+   "q": "Solve x+y=5, x-y=1. x?",
+   "a": [
+    3.0,
+    3.0
+   ],
+   "s": "Add: 2x=6 → x=3, y=2.",
+   "d": 1,
+   "tol_note": "Exact 3.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L6",
+   "subject": "linalg",
+   "topic": "eigen",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Eigenvalues of [[2,1],[0,3]]?",
+   "o": [
+    "2 and 3",
+    "1 and 5",
+    "2.5,2.5",
+    "0 and 5"
+   ],
+   "a": 0,
+   "s": "Triangular: diagonal entries are eigenvalues.",
+   "d": 1,
+   "why_wrong": "Trace=5, det=6; only {2,3} fits.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L7",
+   "subject": "linalg",
+   "topic": "proj",
+   "type": "msq",
+   "marks": 2,
+   "q": "Orthogonal projection matrix P satisfies?",
+   "o": [
+    "P^2=P",
+    "P^T=P",
+    "P=I always",
+    "Eigenvalues only 0/1"
+   ],
+   "a": [
+    0,
+    1,
+    3
+   ],
+   "s": "Symmetric idempotent; spectrum {0,1}.",
+   "d": 2,
+   "why_wrong": "Not every projection is identity.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L8",
+   "subject": "linalg",
+   "topic": "decomp",
+   "type": "mcq",
+   "marks": 2,
+   "q": "SVD of real A(m×n) gives?",
+   "o": [
+    "A=UΣV^T with orthogonal U,V",
+    "A=LU always",
+    "A=QR with square Q only",
+    "A=PDP^-1 always"
+   ],
+   "a": 0,
+   "s": "SVD exists for every real matrix.",
+   "d": 2,
+   "why_wrong": "LU needs pivoting conditions; eigen-decomp needs diagonalizability.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C3",
+   "subject": "calc",
+   "topic": "functions",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Domain of f(x)=1/sqrt(x-2)?",
+   "o": [
+    "x>2",
+    "x>=2",
+    "x!=2",
+    "all real"
+   ],
+   "a": 0,
+   "s": "Need x-2>0 for real square root in denominator.",
+   "d": 1,
+   "why_wrong": "x=2 gives division by zero.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C4",
+   "subject": "calc",
+   "topic": "limits",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which functions are continuous at x=0?",
+   "o": [
+    "f(x)=x^2",
+    "f(x)=|x|",
+    "f(x)=1/x (f(0)=0)",
+    "f(x)=sin(x)/x (f(0)=1)"
+   ],
+   "a": [
+    0,
+    1,
+    3
+   ],
+   "s": "Polynomials, |x| continuous; removable sin/x filled; 1/x blows up.",
+   "d": 2,
+   "why_wrong": "1/x has infinite discontinuity.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C5",
+   "subject": "calc",
+   "topic": "opt1d",
+   "type": "nat",
+   "marks": 2,
+   "q": "Minimize x^2+4x+7. Minimum value?",
+   "a": [
+    3.0,
+    3.0
+   ],
+   "s": "(x+2)^2+3 → min 3 at x=-2.",
+   "d": 1,
+   "tol_note": "Exact 3.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P4",
+   "subject": "prog",
+   "topic": "python",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Python: [x*x for x in range(4)] gives?",
+   "o": [
+    "[0,1,4,9]",
+    "[1,4,9,16]",
+    "[0,1,2,3]",
+    "[0,2,4]"
+   ],
+   "a": 0,
+   "s": "range(4)=0..3, squared.",
+   "d": 1,
+   "why_wrong": "range stops before 4.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P5",
+   "subject": "prog",
+   "topic": "ds-basic",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Push 1,2,3 then two pops on a stack. Popped order?",
+   "o": [
+    "1,2",
+    "3,2",
+    "2,3",
+    "3,1"
+   ],
+   "a": 1,
+   "s": "LIFO: 3 then 2.",
+   "d": 1,
+   "why_wrong": "Queue would give 1,2.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P6",
+   "subject": "prog",
+   "topic": "dnc",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Mergesort recurrence?",
+   "o": [
+    "T(n)=2T(n/2)+O(n)",
+    "T(n)=T(n-1)+O(1)",
+    "T(n)=T(n/2)+O(1)",
+    "T(n)=nT(n/2)+O(n)"
+   ],
+   "a": 0,
+   "s": "Halve, conquer both, linear merge → O(n log n).",
+   "d": 2,
+   "why_wrong": "T(n-1) is insertion-sort shape.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P7",
+   "subject": "prog",
+   "topic": "python",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Python: [x*x for x in range(4)] gives?",
+   "o": [
+    "[0,1,4,9]",
+    "[1,4,9,16]",
+    "[0,1,2,3]",
+    "[0,2,4]"
+   ],
+   "a": 0,
+   "s": "range(4)=0..3, squared.",
+   "d": 1,
+   "why_wrong": "range stops before 4.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P8",
+   "subject": "prog",
+   "topic": "ds-basic",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Push 1,2,3 then two pops on a stack. Popped order?",
+   "o": [
+    "1,2",
+    "3,2",
+    "2,3",
+    "3,1"
+   ],
+   "a": 1,
+   "s": "LIFO: 3 then 2.",
+   "d": 1,
+   "why_wrong": "Queue would give 1,2.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-P9",
+   "subject": "prog",
+   "topic": "dnc",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Mergesort recurrence?",
+   "o": [
+    "T(n)=2T(n/2)+O(n)",
+    "T(n)=T(n-1)+O(1)",
+    "T(n)=T(n/2)+O(1)",
+    "T(n)=nT(n/2)+O(n)"
+   ],
+   "a": 0,
+   "s": "Halve, conquer both, linear merge → O(n log n).",
+   "d": 2,
+   "why_wrong": "T(n-1) is insertion-sort shape.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C6",
+   "subject": "calc",
+   "topic": "functions",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Domain of f(x)=1/sqrt(x-2)?",
+   "o": [
+    "x>2",
+    "x>=2",
+    "x!=2",
+    "all real"
+   ],
+   "a": 0,
+   "s": "Need x-2>0 for real square root in denominator.",
+   "d": 1,
+   "why_wrong": "x=2 gives division by zero.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C7",
+   "subject": "calc",
+   "topic": "limits",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which functions are continuous at x=0?",
+   "o": [
+    "f(x)=x^2",
+    "f(x)=|x|",
+    "f(x)=1/x (f(0)=0)",
+    "f(x)=sin(x)/x (f(0)=1)"
+   ],
+   "a": [
+    0,
+    1,
+    3
+   ],
+   "s": "Polynomials, |x| continuous; removable sin/x filled; 1/x blows up.",
+   "d": 2,
+   "why_wrong": "1/x has infinite discontinuity.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-C8",
+   "subject": "calc",
+   "topic": "opt1d",
+   "type": "nat",
+   "marks": 2,
+   "q": "Minimize x^2+4x+7. Minimum value?",
+   "a": [
+    3.0,
+    3.0
+   ],
+   "s": "(x+2)^2+3 → min 3 at x=-2.",
+   "d": 1,
+   "tol_note": "Exact 3.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D3",
+   "subject": "dbms",
+   "topic": "er",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Max relationships in 1:1 entity set?",
+   "o": [
+    "1",
+    "2",
+    "n",
+    "unbounded"
+   ],
+   "a": 0,
+   "s": "One-to-one ↔ each entity appears in exactly one relationship instance.",
+   "d": 1,
+   "why_wrong": "1:M allows many related; 1:1 capped at 1 per pair.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D4",
+   "subject": "dbms",
+   "topic": "er",
+   "type": "msq",
+   "marks": 2,
+   "q": "Relational keys: which are superkeys?",
+   "o": [
+    "Candidate key",
+    "Primary key",
+    "Any superset of a candidate key",
+    "Composite key"
+   ],
+   "a": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "s": "Superkey = unique identifier; any superset of a candidate key is also unique.",
+   "d": 2,
+   "why_wrong": "Key must uniquely identify a row.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D5",
+   "subject": "dbms",
+   "topic": "sql",
+   "type": "nat",
+   "marks": 1,
+   "q": "SQL to count employees per dept with >5: SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*) > 5. Is it correct?",
+   "a": [
+    1.0,
+    1.0
+   ],
+   "s": "GROUP BY + HAVING applies the predicate after grouping — correct.",
+   "d": 1,
+   "tol_note": "Exact 1 (true).",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D6",
+   "subject": "dbms",
+   "topic": "sql",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Integrity constraint violated by deleting referenced row?",
+   "o": [
+    "Entity integrity",
+    "Referential integrity",
+    "Domain integrity",
+    "User-defined"
+   ],
+   "a": 1,
+   "s": "FK must reference existing PK — that's referential integrity.",
+   "d": 1,
+   "why_wrong": "Entity integrity guards NULL/PK uniqueness.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D7",
+   "subject": "dbms",
+   "topic": "storage",
+   "type": "mcq",
+   "marks": 1,
+   "q": "B+ tree indexing advantage over B tree?",
+   "o": [
+    "Data only at leaves, linked leaves",
+    "Faster deletes",
+    "Smaller nodes",
+    "In-memory only"
+   ],
+   "a": 0,
+   "s": "All data at leaf level; leaf linked for range scans.",
+   "d": 2,
+   "why_wrong": "B+ trees keep data grouped at leaves.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-A3",
+   "subject": "ai",
+   "topic": "search",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Which heuristic is admissible for 8-puzzle?",
+   "o": [
+    "Sum of Manhattan distances",
+    "Heuristic = 0",
+    "Manhattan + 2*Manhattan",
+    "Random"
+   ],
+   "a": 0,
+   "s": "Admissible if never overestimates; Manhattan does.",
+   "d": 2,
+   "why_wrong": "Zero heuristic is admissible but useless (trivially).",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-A4",
+   "subject": "ai",
+   "topic": "inference",
+   "type": "mcq",
+   "marks": 2,
+   "q": "After evidence e, Markov blanket of X makes X independent of?",
+   "o": [
+    "All others",
+    "Non-descendants only",
+    "All except blanket",
+    "Net all"
+   ],
+   "a": 2,
+   "s": "Given blanket, X ⊥ rest of graph.",
+   "d": 3,
+   "why_wrong": "Blanket shields X from all.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-A5",
+   "subject": "ai",
+   "topic": "logic",
+   "type": "nat",
+   "marks": 2,
+   "q": "Perceptron on OR. After converge, w1+w2?",
+   "a": [
+    2.0,
+    2.0
+   ],
+   "s": "Weights for x1,x2: need w·x>0 for (1,0),(0,1),(1,1). w=(1,1) works → sum 2.",
+   "d": 2,
+   "tol_note": "Exact 2.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S12",
+   "subject": "prob",
+   "topic": "clt-tests",
+   "type": "mcq",
+   "marks": 1,
+   "q": "CLT justifies normal approx when?",
+   "o": [
+    "n large (>30)",
+    "n<10",
+    "only normal inputs",
+    "always"
+   ],
+   "a": 0,
+   "s": "n large → sampling dist of mean ≈ normal.",
+   "d": 1,
+   "why_wrong": "n large is the CLT condition.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S13",
+   "subject": "prob",
+   "topic": "discrete",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which are discrete rvs?",
+   "o": [
+    "Binomial",
+    "Poisson",
+    "Normal",
+    "Geometric"
+   ],
+   "a": [
+    0,
+    1,
+    3
+   ],
+   "s": "Binomial, Poisson, Geometric are discrete; Normal is continuous.",
+   "d": 1,
+   "why_wrong": "Normal is continuous.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S14",
+   "subject": "prob",
+   "topic": "clt-tests",
+   "type": "nat",
+   "marks": 2,
+   "q": "95% CI for mean: (x̄-1.96σ/√n, x̄+1.96σ/√n). If n doubles, width?",
+   "a": [
+    0.707,
+    0.708
+   ],
+   "s": "Width ∝ 1/√n; doubling → 1/√2 ≈ 0.707×.",
+   "d": 2,
+   "tol_note": "Accept 0.70-0.71×.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-S15",
+   "subject": "prob",
+   "topic": "clt-tests",
+   "type": "msq",
+   "marks": 2,
+   "q": "Valid hypothesis test properties?",
+   "o": [
+    "Two-sided > one-sided at same alpha",
+    "Type I error = P(reject|H0 true)",
+    "p-value < α ⇒ reject H0",
+    "Power = 1 - P(Type II)"
+   ],
+   "a": [
+    1,
+    2,
+    3
+   ],
+   "s": "Type I/II defined; power = 1-β; reject when p≤α.",
+   "d": 2,
+   "why_wrong": "One-sided not always better.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L9",
+   "subject": "linalg",
+   "topic": "eigen",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which matrices are diagonalizable?",
+   "o": [
+    "Identity",
+    "Diagonal",
+    "Nilpotent (nonzero)",
+    "Symmetric"
+   ],
+   "a": [
+    0,
+    1,
+    3
+   ],
+   "s": "Identity, diagonal obviously; symmetric has orthogonal QD; nilpotent non-diag.",
+   "d": 2,
+   "why_wrong": "Check discriminant/geometric multiplicity.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L10",
+   "subject": "linalg",
+   "topic": "vecspace",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which statements true?",
+   "o": [
+    "{0} is a subspace",
+    "R^3 has 3 basis vectors",
+    "Subspaces contain 0",
+    "Span of v = line if v≠0"
+   ],
+   "a": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "s": "Zero subspace; 3-dim space has 3 independent; all contain 0; span of single nonzero vector = line.",
+   "d": 2,
+   "why_wrong": "Check each axiom.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-G3",
+   "subject": "ga",
+   "topic": "num",
+   "type": "nat",
+   "marks": 2,
+   "q": "Train goes 60 km/h outbound, 40 km/h return. Avg speed for round trip?",
+   "a": [
+    47.9,
+    48.1
+   ],
+   "s": "2*60*40/(60+40)=4800/100=48 km/h.",
+   "d": 1,
+   "tol_note": "Accept 47.9-48.1 km/h.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-A6",
+   "subject": "ai",
+   "topic": "logic",
+   "type": "nat",
+   "marks": 1,
+   "q": "Perceptron step. w·x > 0 iff?",
+   "a": [
+    1.0,
+    1.0
+   ],
+   "s": "Perceptron w·x>0 defines the separating halfspace — logic gate decision boundary.",
+   "d": 1,
+   "tol_note": "Exact 1 (true).",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D8",
+   "subject": "dbms",
+   "topic": "dtypes",
+   "type": "mcq",
+   "marks": 1,
+   "q": "One-hot encoding of 5 categories?",
+   "o": [
+    "5 binary cols",
+    "Single col with 1-5",
+    "2 cols",
+    "No cols"
+   ],
+   "a": 0,
+   "s": "Each category → one binary column.",
+   "d": 1,
+   "why_wrong": "Single column wouldn't be one-hot.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D9",
+   "subject": "dbms",
+   "topic": "warehouse",
+   "type": "msq",
+   "marks": 2,
+   "q": "DWM facts?",
+   "o": [
+    "Measured at grain",
+    "Integer or fact",
+    "Connected to dims",
+    "Can hold slow-changing attributes"
+   ],
+   "a": [
+    0,
+    1,
+    2
+   ],
+   "s": "Fact: numeric, at grain; dims: at attribute level; slowly changing dims capture history.",
+   "d": 3,
+   "why_wrong": "Fact must be measurable.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-L11",
+   "subject": "linalg",
+   "topic": "matrices",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which are orthogonal matrices?",
+   "o": [
+    "Identity",
+    "Rotation",
+    "Reflection",
+    "Symmetric with det=1"
+   ],
+   "a": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "s": "Q^TQ=I. Identity, rotations, reflections, and symmetric orthogonal = reflections.",
+   "d": 2,
+   "why_wrong": "Check Q^TQ=I.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-G4",
+   "subject": "ga",
+   "topic": "num",
+   "type": "mcq",
+   "marks": 1,
+   "q": "The least number that leaves remainder 3 when divided by 5,6,7 is?",
+   "o": [
+    "210",
+    "213",
+    "215",
+    "420"
+   ],
+   "a": 1,
+   "s": "LCM(5,6,7)=210; +3=213.",
+   "d": 2,
+   "why_wrong": "210 divisible by all, giving rem 0.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML1",
+   "subject": "ml",
+   "topic": "sup-intro",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Supervised learning requires?",
+   "o": [
+    "Labeled input-output pairs",
+    "Only unlabeled data",
+    "No data",
+    "Random weights only"
+   ],
+   "a": 0,
+   "s": "Supervised learning learns mapping from labeled examples.",
+   "d": 1,
+   "why_wrong": "Unsupervised uses only unlabeled data.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML2",
+   "subject": "ml",
+   "topic": "regression",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Simple linear regression minimizes?",
+   "o": [
+    "Sum of squared residuals",
+    "Mean absolute error",
+    "Max likelihood only",
+    "Sum of absolute errors"
+   ],
+   "a": 0,
+   "s": "OLS minimizes sum of squared residuals.",
+   "d": 1,
+   "why_wrong": "MAE minimizes absolute, not squared.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML3",
+   "subject": "ml",
+   "topic": "logreg",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Logistic regression outputs?",
+   "o": [
+    "Probability 0-1",
+    "Log counts",
+    "Raw scores",
+    "Class labels directly"
+   ],
+   "a": 0,
+   "s": "σ(w·x) folds any real score to (0,1).",
+   "d": 1,
+   "why_wrong": "Raw scores live on (−∞,∞).",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML4",
+   "subject": "ml",
+   "topic": "knn",
+   "type": "mcq",
+   "marks": 2,
+   "q": "k-NN prefers small k when?",
+   "o": [
+    "Low noise, little bias needed",
+    "High noise",
+    "Few features",
+    "Small training set"
+   ],
+   "a": 0,
+   "s": "Small k → low bias, high variance (≈memorizes noise).",
+   "d": 2,
+   "why_wrong": "Large k smooths, higher bias.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML5",
+   "subject": "ml",
+   "topic": "nb",
+   "type": "mcq",
+   "marks": 2,
+   "q": "Naive Bayes assumes?",
+   "o": [
+    "Conditional independence of features given class",
+    "Features independent of class",
+    "Features independent of each other",
+    "Normal residuals"
+   ],
+   "a": 0,
+   "s": "'Naive' = conditional independence of features for a given class.",
+   "d": 1,
+   "why_wrong": "Features are assumed independent given class.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML6",
+   "subject": "ml",
+   "topic": "lda",
+   "type": "mcq",
+   "marks": 2,
+   "q": "LDA assumes classes?",
+   "o": [
+    "Share a common covariance",
+    "Have different covariances",
+    "Are linearly separable",
+    "Have equal priors"
+   ],
+   "a": 0,
+   "s": "LDA pools covariance across classes under shared Gaussian.",
+   "d": 2,
+   "why_wrong": "Qb uses separate covariance.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML7",
+   "subject": "ml",
+   "topic": "svm",
+   "type": "mcq",
+   "marks": 2,
+   "q": "SVM's max-margin hyperplane maximizes?",
+   "o": [
+    "Margin between support vectors",
+    "Training accuracy",
+    "Margin width",
+    "VC dimension"
+   ],
+   "a": 0,
+   "s": "Maximize distance between closest points of each class.",
+   "d": 2,
+   "why_wrong": "Margin, not accuracy, is the objective.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML8",
+   "subject": "ml",
+   "topic": "trees",
+   "type": "mcq",
+   "marks": 1,
+   "q": "Decision tree splits maximize?",
+   "o": [
+    "Information gain / Gini impurity reduction",
+    "Training speed",
+    "Number of leaves",
+    "Feature count"
+   ],
+   "a": 0,
+   "s": "Choose split that maximizes impurity decrease.",
+   "d": 1,
+   "why_wrong": "Gini/entropy decrease is the objective.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML9",
+   "subject": "ml",
+   "topic": "biasvar",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which reduce variance?",
+   "o": [
+    "More training data",
+    "Stronger regularization",
+    "Bagging (bootstrap aggregation)",
+    "Deeper trees"
+   ],
+   "a": [
+    0,
+    1,
+    2
+   ],
+   "s": "Bias-variance tradeoff; ensembles and regularization reduce variance.",
+   "d": 2,
+   "why_wrong": "Deeper trees increase variance.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML10",
+   "subject": "ml",
+   "topic": "mlp",
+   "type": "msq",
+   "marks": 2,
+   "q": "Overlapping layers (MLP) use?",
+   "o": [
+    "Sigmoid/ReLU activations",
+    "Linear outputs only",
+    "No hidden layers",
+    "Backprop for training"
+   ],
+   "a": [
+    0,
+    3
+   ],
+   "s": "MLP = layers of nonlinear activations trained by backprop.",
+   "d": 2,
+   "why_wrong": "Backprop computes gradients.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML11",
+   "subject": "ml",
+   "topic": "clustering",
+   "type": "msq",
+   "marks": 2,
+   "q": "k-means minimizes?",
+   "o": [
+    "Within-cluster sum of squares",
+    "Between-cluster variance",
+    "Silhouette always",
+    "Total data variance"
+   ],
+   "a": [
+    0
+   ],
+   "s": "k-means minimizes sum of squared distances to centroids.",
+   "d": 2,
+   "why_wrong": "Within-cluster compactness.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-ML12",
+   "subject": "ml",
+   "topic": "pca",
+   "type": "msq",
+   "marks": 2,
+   "q": "PCA finds?",
+   "o": [
+    "Directions of maximum variance",
+    "Lowest variance directions",
+    "Only binary features",
+    "Independent features"
+   ],
+   "a": [
+    0
+   ],
+   "s": "PCA = eigenvectors of covariance matrix (sorted by eigenvalue).",
+   "d": 2,
+   "why_wrong": "Weights by highest variance direction.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-AI3",
+   "subject": "ai",
+   "topic": "uncertainty",
+   "type": "msq",
+   "marks": 2,
+   "q": "Conditional independence representation?",
+   "o": [
+    "Bayes net encodes P with fewer params",
+    "Naive Bayes only",
+    "Trees only",
+    "No independence needed"
+   ],
+   "a": [
+    0
+   ],
+   "s": "Bayesian networks encode conditional independence compactly.",
+   "d": 2,
+   "why_wrong": "Graphs encode conditional independence structure.",
+   "prov": "practice"
+  },
+  {
+   "id": "DA-D10",
+   "subject": "dbms",
+   "topic": "relational",
+   "type": "msq",
+   "marks": 2,
+   "q": "Which queries can be expressed in relational algebra?",
+   "o": [
+    "SELECT with WHERE",
+    "JOIN and GROUP BY",
+    "PROJECT and RENAME",
+    "Aggregate COUNT"
+   ],
+   "a": [
+    0,
+    2
+   ],
+   "s": "RA has projection, selection, join, rename; aggregation/groups are not pure RA.",
+   "d": 2,
+   "why_wrong": "COUNT with GROUP BY is relational calculus/aggregation, not pure algebra.",
+   "prov": "practice"
+  }
+ ]
+}
