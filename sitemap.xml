@@ -3,156 +3,141 @@
      search results and utility pages are intentionally excluded. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://hellogaurav.me/</loc>
+    <loc>https://www.hellogaurav.me/</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/gate-ml-practice.html</loc>
+    <loc>https://www.hellogaurav.me/gate-ml-practice.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/ml-guide.html</loc>
+    <loc>https://www.hellogaurav.me/ml-guide.html</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/topics/</loc>
+    <loc>https://www.hellogaurav.me/topics/</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/topics/probability</loc>
+    <loc>https://www.hellogaurav.me/topics/probability</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/topics/statistics</loc>
+    <loc>https://www.hellogaurav.me/topics/statistics</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/topics/linear-algebra</loc>
+    <loc>https://www.hellogaurav.me/topics/linear-algebra</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/topics/machine-learning</loc>
+    <loc>https://www.hellogaurav.me/topics/machine-learning</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/topics/deep-learning</loc>
+    <loc>https://www.hellogaurav.me/topics/deep-learning</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/questions</loc>
+    <loc>https://www.hellogaurav.me/questions</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/mock-test</loc>
+    <loc>https://www.hellogaurav.me/mock-test</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/resources</loc>
+    <loc>https://www.hellogaurav.me/resources</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/about</loc>
+    <loc>https://www.hellogaurav.me/about</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/contact</loc>
+    <loc>https://www.hellogaurav.me/contact</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/privacy-policy</loc>
+    <loc>https://www.hellogaurav.me/privacy-policy</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/terms</loc>
+    <loc>https://www.hellogaurav.me/terms</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/disclaimer</loc>
+    <loc>https://www.hellogaurav.me/disclaimer</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/cookie-policy</loc>
+    <loc>https://www.hellogaurav.me/cookie-policy</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/product</loc>
+    <loc>https://www.hellogaurav.me/product</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/claude</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://hellogaurav.me/faq</loc>
-    <lastmod>2026-10-12</lastmod>
+    <loc>https://www.hellogaurav.me/faq</loc>
+    <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://hellogaurav.me/changelog</loc>
-    <lastmod>2026-10-12</lastmod>
+    <loc>https://www.hellogaurav.me/changelog</loc>
+    <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://hellogaurav.me/readiness</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url><loc>https://hellogaurav.me/syllabus</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://hellogaurav.me/dashboard</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://hellogaurav.me/practice-da</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://hellogaurav.me/mock-da</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://hellogaurav.me/pyq</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://hellogaurav.me/revision</loc><lastmod>2026-10-12</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://hellogaurav.me/planner</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://hellogaurav.me/tutor</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://hellogaurav.me/learn/calculus</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://hellogaurav.me/learn/programming</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://hellogaurav.me/learn/dbms</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://hellogaurav.me/learn/ai</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://hellogaurav.me/learn/aptitude</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://hellogaurav.me/coverage</loc><lastmod>2026-10-12</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.hellogaurav.me/syllabus</loc><lastmod>2026-10-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.hellogaurav.me/dashboard</loc><lastmod>2026-10-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.hellogaurav.me/practice-da</loc><lastmod>2026-10-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/mock-da</loc><lastmod>2026-10-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/pyq</loc><lastmod>2026-10-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/learn/calculus</loc><lastmod>2026-10-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/learn/programming</loc><lastmod>2026-10-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/learn/dbms</loc><lastmod>2026-10-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/learn/ai</loc><lastmod>2026-10-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/learn/aptitude</loc><lastmod>2026-10-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.hellogaurav.me/coverage</loc><lastmod>2026-10-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
 

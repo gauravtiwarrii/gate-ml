@@ -78,8 +78,14 @@ Rules enforced by `_validate_bank.py`:
 ## Test harness
 
 ```bash
-python _validate_bank.py      # schema + GA marks + coverage → BANK OK
-python _chk.py                # quick question-backer sanity
+# Python schema validator
+python _validate_bank.py      # schema + question format check → BANK OK
+
+# Full test suite (75 automated regression tests)
+node tests/test_bank.js            # 46 tests: question validation, scoring, coverage
+node tests/test_mock_e2e.js        # 11 tests: mock engine and scoring accuracy
+node tests/test_mock_runtime.js    # 2 tests: runtime initialization and guards
+node tests/test_study_companion.js # 16 tests: study companion tools and UI
 ```
 
 ## Deploying to Vercel

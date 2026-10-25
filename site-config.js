@@ -5,7 +5,7 @@
    ============================================================ */
 window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {
   /* Canonical production origin (no trailing slash). */
-  SITE_URL: "https://hellogaurav.me",
+  SITE_URL: "https://www.hellogaurav.me",
 
   /* Google Search Console verification token (meta name=
      "google-site-verification"). Empty = tag omitted. */
@@ -15,9 +15,15 @@ window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {
      Empty = analytics disabled. Respects Do-Not-Track. */
   GA_ID: "",
 
-  /* Google AdSense publisher ID — verified for hellogaurav.me / gate-ml.
-     Live ID enables Auto Ads + verification snippet in <head>. */
+  /* Google AdSense publisher ID. Keep this value in sync with ads.txt.
+     It is an identifier, not a secret. */
   ADSENSE_CLIENT: "ca-pub-7955473428553830",
+
+  /* Safety switch: advertising stays off until Google Privacy & Messaging,
+     or another Google-certified CMP, is configured in the AdSense account.
+     Do not enable this switch merely because a visitor accepted the local
+     preferences dialog. */
+  AD_SERVING_ENABLED: false,
 
   /* Per-slot AdSense ad-slot IDs (empty = slot renders a
      reserved, labelled house placeholder, never a fake ad). */

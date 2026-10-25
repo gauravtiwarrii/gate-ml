@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var cfg = (window.GATE_ML_CONFIG = window.GATE_ML_CONFIG || {});
-  cfg.SITE_URL = cfg.SITE_URL || "https://hellogaurav.me";
+  cfg.SITE_URL = cfg.SITE_URL || "https://www.hellogaurav.me";
   cfg.AD_SLOTS = cfg.AD_SLOTS || {};
   var path = window.location.pathname || "/index.html";
   var isFile = window.location.protocol === "file:";
@@ -79,7 +79,8 @@
     return navigator.doNotTrack === "1" || window.doNotTrack === "1";
   }
   function loadGA() {
-    if (gaLoaded || !cfg.GA_ID || isFile || dnt()) return;
+    var consent = window.GateConsent && window.GateConsent.get ? window.GateConsent.get() : null;
+    if (gaLoaded || !cfg.GA_ID || isFile || dnt() || !(consent && consent.analytics)) return;
     gaLoaded = true;
     var s = document.createElement("script");
     s.async = true;

@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google AdSense: verification + Auto Ads for hellogaurav.me -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7955473428553830"
-     crossorigin="anonymous"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GATE Machine Learning Notes – Complete ML Guide with Formulas</title>
 <meta name="description" content="Free GATE Machine Learning notes: 10 units and 4 appendices covering ML fundamentals, algorithms, formulas, worked examples and scikit-learn code.">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://hellogaurav.me/ml-guide.html" />
+<link rel="canonical" href="https://www.hellogaurav.me/ml-guide.html" />
 <meta name="author" content="GATE ML">
 <meta name="theme-color" content="#0a0a0a" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Cg fill='none' stroke='%23e2601f' stroke-width='1.6'%3E%3Cpath d='M8 22 L16 10 L24 22'/%3E%3Cpath d='M8 10 L24 10'/%3E%3C/g%3E%3Cg fill='%23f5f3ee'%3E%3Ccircle cx='8' cy='10' r='2.4'/%3E%3Ccircle cx='24' cy='10' r='2.4'/%3E%3Ccircle cx='16' cy='10' r='2.4'/%3E%3Ccircle cx='8' cy='22' r='2.4'/%3E%3Ccircle cx='24' cy='22' r='2.4'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="GATE ML" />
 <meta property="og:title" content="GATE Machine Learning Notes – Complete ML Guide with Formulas" />
 <meta property="og:description" content="10 units, 4 appendices, worked examples, formulas and code — free ML notes for GATE Data Science & AI." />
-<meta property="og:url" content="https://hellogaurav.me/ml-guide.html" />
-<meta property="og:image" content="https://hellogaurav.me/assets/og-cover.svg" />
+<meta property="og:url" content="https://www.hellogaurav.me/ml-guide.html" />
+<meta property="og:image" content="https://www.hellogaurav.me/assets/og-cover.svg" />
 <meta property="og:image:alt" content="GATE Machine Learning notes cover" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="GATE Machine Learning Notes – Complete ML Guide with Formulas" />
 <meta name="twitter:description" content="ML fundamentals, algorithms, formulas and worked examples for GATE Data Science & AI." />
-<meta name="twitter:image" content="https://hellogaurav.me/assets/og-cover.svg" />
+<meta name="twitter:image" content="https://www.hellogaurav.me/assets/og-cover.svg" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"Article","@id":"https://hellogaurav.me/ml-guide.html#article","headline":"GATE Machine Learning Notes – Complete ML Guide with Formulas","description":"Ten units and four appendices of ML fundamentals, algorithms, formulas, worked examples and scikit-learn code for GATE Data Science and AI.","author":{"@type":"Organization","name":"GATE ML","url":"https://hellogaurav.me/"},"dateModified":"2026-10-06","inLanguage":"en-IN","isPartOf":{"@id":"https://hellogaurav.me/#website"},"mainEntityOfPage":"https://hellogaurav.me/ml-guide.html"},
-{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://hellogaurav.me/"},{"@type":"ListItem","position":2,"name":"ML guide","item":"https://hellogaurav.me/ml-guide.html"}]}
+{"@type":"Article","@id":"https://www.hellogaurav.me/ml-guide.html#article","headline":"GATE Machine Learning Notes – Complete ML Guide with Formulas","description":"Ten units and four appendices of ML fundamentals, algorithms, formulas, worked examples and scikit-learn code for GATE Data Science and AI.","author":{"@type":"Organization","name":"GATE ML","url":"https://www.hellogaurav.me/"},"dateModified":"2026-10-06","inLanguage":"en-IN","isPartOf":{"@id":"https://www.hellogaurav.me/#website"},"mainEntityOfPage":"https://www.hellogaurav.me/ml-guide.html"},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.hellogaurav.me/"},{"@type":"ListItem","position":2,"name":"ML guide","item":"https://www.hellogaurav.me/ml-guide.html"}]}
 ]}
 </script>
-<link rel="stylesheet" href="assets/seo.css" /><link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/seo.css" /><link rel="stylesheet" href="assets/app.css"><link rel="stylesheet" href="assets/study-companion.css">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -55,12 +54,60 @@
 
 /* ============ BASE ============ */
 * { box-sizing: border-box; }
-html { -webkit-print-color-adjust: exact; print-color-adjust: exact; scroll-behavior: smooth; }
-body{margin:0}
-body > * {
-  max-width: 1180px;
-  margin-left: auto;
-  margin-right: auto;
+html {
+  background: var(--bg, #0a0a0a);
+  color: var(--text, #f5f3ee);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg, #0a0a0a);
+  color: var(--text, #f5f3ee);
+  width: 100%;
+  min-height: 100vh;
+}
+[data-theme="light"],
+[data-theme="light"] body {
+  background: #f5f3ee !important;
+  color: #141310 !important;
+}
+.app-header, .app-main, .app-footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+/* Rendering & Scroll Performance Optimization */
+.unit {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1100px;
+}
+@media print {
+  .unit {
+    content-visibility: visible !important;
+  }
+}
+@media (max-width: 820px) {
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+ins.adsbygoogle[data-ad-status="unfilled"],
+.google-auto-placed,
+iframe[name^="google_ads_iframe"] {
+  background: transparent !important;
 }
 p { margin: 0 0 0.75em 0; text-align: justify; }
 strong { color: #111827; }
@@ -96,610 +143,897 @@ h4 { font-size: 11pt; color: #0f766e; margin-top: 1.1em; text-transform: upperca
 
 @media screen {
   /* ============================================================
-     GATE ML Study Guide — screen design
-     Paper reading surface, night navigation rail, one accent.
-     Print output is untouched: it lives in the @media print
-     block that follows this one.
+     GATE ML Study Guide — Structured Screen Design
+     Two-column docs layout, night/paper themes, clear typography.
      ============================================================ */
   :root {
     --night: #0a0a0a;
-    --night-2: #111111;
-    --paper: #f5f3ee;
-    --white: #ffffff;
-    --ink: #141310;
-    --ink-2: #47443d;
-    --muted: #75716a;
+    --night-2: #121212;
+    --night-3: #181818;
+    --paper: #0a0a0a;
+    --surface-card: #141414;
+    --white: #141414;
+    --ink: #f5f3ee;
+    --ink-2: #c9c6bf;
+    --muted: #95918a;
     --muted-night: #95918a;
-    --line: rgba(20, 19, 15, 0.16);
-    --line-night: rgba(245, 243, 238, 0.14);
+    --line: rgba(245, 243, 238, 0.13);
+    --line-night: rgba(245, 243, 238, 0.13);
     --accent: #e2601f;
-    --accent-ink: #b34a12;
-    --accent-soft: rgba(226, 96, 31, 0.12);
-    --ok: #3f8f5b;
-    --bad: #c0554a;
+    --accent-ink: #f57a3f;
+    --accent-soft: rgba(226, 96, 31, 0.14);
+    --ok: #3fb950;
+    --bad: #f85149;
     --font-sans: "Manrope", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-mono: "DM Mono", ui-monospace, Menlo, Consolas, monospace;
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  body{margin:0}
-  body > * { max-width: 1180px; }
-  #topnav, #docsnav, .docs-veil { max-width: none; margin: 0; }
+  [data-theme="light"] {
+    --night: #141310;
+    --night-2: #1f1e1a;
+    --night-3: #f0eee6;
+    --paper: #f5f3ee;
+    --surface-card: #ffffff;
+    --white: #ffffff;
+    --ink: #141310;
+    --ink-2: #47443d;
+    --muted: #75716a;
+    --muted-night: #95918a;
+    --line: rgba(20, 19, 15, 0.14);
+    --line-night: rgba(245, 243, 238, 0.14);
+    --accent: #c4541a;
+    --accent-ink: #b34a12;
+    --accent-soft: rgba(196, 84, 26, 0.12);
+    --ok: #1a7f37;
+    --bad: #cf222e;
+  }
 
-  p { text-align: left; margin: 0 0 1em; max-width: 76ch; }
-  strong { color: var(--ink); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app-main {
+    padding: 0 !important;
+    min-height: calc(100vh - var(--nav-h, 60px));
+  }
+
+  p { text-align: left; margin: 0 0 1.1em; max-width: 76ch; color: var(--ink); }
+  strong { color: var(--ink); font-weight: 700; }
   em { color: var(--ink-2); }
-  
-  a:hover { border-bottom-color: var(--accent-ink); }
+
+  a { color: var(--accent-ink); text-decoration: none; transition: color 0.15s ease; }
+  a:hover { color: var(--accent); text-decoration: underline; }
   code {
     font-family: var(--font-mono);
-    font-size: 0.86em;
-    background: #eceae2;
-    padding: 1px 6px;
+    font-size: 0.88em;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
     border-radius: 4px;
     color: var(--accent-ink);
-    border: 1px solid rgba(20, 19, 15, 0.08);
+    border: 1px solid var(--line);
+  }
+  [data-theme="light"] code {
+    background: #eceae2;
+    border-color: rgba(20, 19, 15, 0.08);
+  }
+  pre {
+    background: var(--night-2) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--line) !important;
+    border-left: 3.5px solid var(--accent) !important;
+    border-radius: 8px !important;
+    padding: 16px 20px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    overflow-x: auto !important;
+    margin: 22px 0 !important;
+  }
+  [data-theme="light"] pre {
+    background: #f8f7f2 !important;
+    color: #1f2937 !important;
+    border-color: rgba(20, 19, 15, 0.12) !important;
   }
 
   h1, h2, h3, h4 {
     font-family: var(--font-sans);
     color: var(--ink);
-    line-height: 1.16;
+    line-height: 1.2;
     margin: 1.5em 0 0.5em;
-    page-break-after: avoid;
     letter-spacing: -0.03em;
   }
   h2 {
-    font-size: clamp(23px, 2.4vw, 31px);
+    font-size: clamp(23px, 2.4vw, 32px);
     font-weight: 800;
     border-bottom: 1px solid var(--line);
     padding-bottom: 10px;
     margin-top: 2em;
-    letter-spacing: -0.035em;
   }
-  h3 { font-size: clamp(17.5px, 1.9vw, 21px); font-weight: 800; color: var(--ink); margin-top: 1.7em; letter-spacing: -0.025em; }
+  h3 { font-size: clamp(18px, 1.9vw, 22px); font-weight: 700; margin-top: 1.6em; }
   h4 {
     font-family: var(--font-mono);
-    font-size: 11.5px;
+    font-size: 12px;
     color: var(--accent-ink);
-    margin-top: 1.5em;
+    margin-top: 1.4em;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-weight: 500;
+    letter-spacing: 0.14em;
+    font-weight: 600;
   }
 
-  /* ---------- fixed top navigation ---------- */
-  #top
-  .topnav-in {
-    display: flex; align-items: center; gap: 22px;
-    height: 64px; padding: 0 20px;
+  /* ---------- Two-Column Documentation Layout ---------- */
+  .guide-layout {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - var(--nav-h, 60px));
+    position: relative;
   }
-  .topnav .brand { display: inline-flex; align-items: center; gap: 11px; border: 0; }
-  .topnav .brand svg { width: 24px; height: 24px; }
-  .topnav .brand b {
-    font-size: 14.5px; font-weight: 800; letter-spacing: -0.02em;
-    text-transform: uppercase; color: var(--paper);
+
+  /* Fixed Navigation Rail (Left) */
+  #docsnav {
+    position: fixed;
+    top: var(--nav-h, 60px);
+    bottom: 0;
+    left: 0;
+    width: 270px;
+    z-index: 60;
+    background: var(--night-2);
+    border-right: 1px solid var(--line);
+    padding: 24px 0 44px;
+    overflow-y: auto;
+    font-family: var(--font-sans);
+    transition: transform 0.28s var(--ease);
+    box-sizing: border-box;
   }
-  .topnav .brand em {
-    font-family: var(--font-mono); font-style: normal; font-weight: 400;
-    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--muted-night);
-  }
-  .topnav-links { display: flex; gap: 4px; margin-left: auto; }
-  .topnav-links 
-  .topnav-links a:hover { color: #fff; background: rgba(245, 243, 238, 0.07); }
-  .topnav-links a[aria-current="page"] { background: var(--paper); color: var(--night); }
-  .topnav-actions { display: flex; gap: 10px; align-items: center; }
-  .toc-btn, .pdf-btn {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
-    text-transform: uppercase; cursor: pointer; border-radius: 999px;
-    padding: 9px 17px; transition: background .18s, border-color .18s, transform .18s;
-  }
-  .toc-btn {
-    display: none;
-    background: transparent; color: var(--paper);
-    border: 1px solid rgba(255, 255, 255, 0.32);
-  }
-  .toc-btn:hover { background: rgba(255, 255, 255, 0.1); }
-  .pdf-btn {
-    background: var(--accent); color: #fff; border: 1px solid var(--accent);
-  }
-  .pdf-btn:hover { transform: translateY(-1px); background: #f07029; }
-  /* ---------- documentation sidebar ---------- */
-  #docs
-  #docsnav::-webkit-scrollbar { width: 6px; }
-  #docsnav::-webkit-scrollbar-thumb { background: rgba(245, 243, 238, 0.18); border-radius: 3px; }
+  #docsnav::-webkit-scrollbar { width: 5px; }
+  #docsnav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.16); border-radius: 3px; }
   .docsnav-head {
     font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em;
     text-transform: uppercase; color: var(--muted-night);
-    margin: 22px 0 8px; padding: 0 22px; max-width: none;
+    margin: 20px 0 8px; padding: 0 20px;
   }
   .docsnav-head:first-child { margin-top: 0; }
   .docsnav-group { display: grid; }
-  #docs
+  #docsnav a {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 7px 20px; font-size: 13px; font-weight: 600;
+    color: rgba(245, 243, 238, 0.72);
+    border-left: 2px solid transparent;
+    transition: background 0.16s, color 0.16s, border-color 0.16s;
+    text-decoration: none;
+  }
+  [data-theme="light"] #docsnav a { color: rgba(20, 19, 15, 0.78); }
   #docsnav a .n {
     font-family: var(--font-mono); font-size: 11px; font-weight: 400;
-    color: var(--muted-night); min-width: 18px;
-    transition: color 0.16s;
+    color: var(--muted-night); min-width: 20px;
   }
-  #docsnav a:hover { color: #fff; background: rgba(245, 243, 238, 0.05); border-left-color: rgba(226, 96, 31, 0.5); }
+  #docsnav a:hover { color: #fff; background: rgba(255, 255, 255, 0.05); border-left-color: var(--accent); }
+  [data-theme="light"] #docsnav a:hover { color: #000; background: rgba(0, 0, 0, 0.04); }
   #docsnav a:hover .n { color: var(--accent); }
   #docsnav a.active {
     color: #fff; background: var(--accent-soft);
     border-left-color: var(--accent);
   }
+  [data-theme="light"] #docsnav a.active { color: var(--accent-ink); }
   #docsnav a.active .n { color: var(--accent); }
-  .docsnav-foot { margin-top: 26px; padding: 16px 22px 0; border-top: 1px solid var(--line-night); }
-  .docsnav-foot 
-  .docsnav-foot a:hover { color: #f07029; }
+  .docsnav-foot { margin-top: 24px; padding: 14px 20px 0; border-top: 1px solid var(--line); }
+  .docsnav-foot a {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent-ink);
+  }
+
   .docs-veil {
     position: fixed; inset: 0; z-index: 55;
-    background: rgba(10, 10, 10, 0.6);
+    background: rgba(0, 0, 0, 0.6);
     opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
-    -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
   body.docs-open .docs-veil { opacity: 1; visibility: visible; }
 
-  /* ---------- print-to-PDF helper panel ---------- */
-  #pdfbar {
-    position: sticky;
-    top: calc(64px + 14px);
-    z-index: 40;
-    background: var(--night-2);
-    border: 1px solid var(--line-night);
-    border-radius: 6px;
-    box-shadow: 0 20px 44px rgba(10, 10, 10, 0.24);
-    margin-bottom: 22px;
-    padding: 18px 22px 16px;
-    color: var(--paper);
-    font-family: var(--font-sans);
-    transition: padding 0.22s ease, margin-bottom 0.22s ease;
+  /* Main Reading Column */
+  .guide-main {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+    max-width: 1020px;
+    margin-right: auto;
+    padding: 24px 36px 90px;
+    box-sizing: border-box;
+    min-width: 0;
   }
-  #pdfbar.collapsed { padding-top: 11px; padding-bottom: 11px; margin-bottom: 18px; }
-  #pdfbarTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  #pdfbar 
-  #pdfbar a:hover { color: var(--accent); }
-  #pdfbarToggle {
-    appearance: none;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--paper);
+
+  /* Mobile/Tablet Bar */
+  .guide-mobile-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--night-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-family: var(--font-sans);
+  }
+  .guide-toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--ink);
     border-radius: 999px;
     padding: 7px 15px;
-    font-family: var(--font-mono); font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease;
   }
-  #pdfbarToggle:hover { background: rgba(226, 96, 31, 0.16); border-color: rgba(226, 96, 31, 0.6); }
-  #pdfbarBody { overflow: hidden; }
-  #pdfbar.collapsed #pdfbarBody {
-    max-height: 0; opacity: 0; margin: 0; pointer-events: none;
-    transition: max-height 0.24s ease, opacity 0.2s ease, margin 0.2s ease;
+  .guide-toc-toggle:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
   }
-  #pdfbar strong { display: inline; font-size: inherit; font-weight: 700; color: #fff; }
-  #pdfbar > strong {
-    display: block; font-size: clamp(17px, 1.8vw, 23px);
-    font-weight: 800; letter-spacing: -0.03em;
-    margin: 16px 0 8px; color: var(--paper);
-  }
-  #pdfbar > div:nth-of-type(2) {
-    font-size: 13.5px; color: rgba(245, 243, 238, 0.75);
-    line-height: 1.7; margin-bottom: 14px; max-width: 84ch;
-  }
-  #pdfbar strong + div strong { color: var(--paper); }
-  #partbtns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  #partbtns button {
-    appearance: none;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--paper);
-    border-radius: 999px;
-    padding: 9px 15px;
-    font-family: var(--font-mono); font-size: 10.5px;
-    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
-    cursor: pointer;
-    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-  }
-  #partbtns button:hover {
-    transform: translateY(-1px);
-    border-color: rgba(226, 96, 31, 0.65);
-    background: rgba(226, 96, 31, 0.14);
-  }
-  #partbtns button[data-part="0"] {
-    background: var(--accent); border-color: var(--accent); color: #fff;
-  }
-  #partbtns button[data-part="0"]:hover { background: #f07029; }
-  #partnote { color: rgba(245, 243, 238, 0.7); font-family: var(--font-mono); font-size: 11px; }
 
-  /* ---------- cover ---------- */
+  /* ---------- Cover ---------- */
   .cover {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: min(760px, 86vh);
-    padding: clamp(40px, 6vw, 88px);
-    margin-top: 14px;
-    border-radius: 6px;
+    min-height: min(640px, 80vh);
+    padding: clamp(36px, 5vw, 72px);
+    border-radius: 12px;
     background: var(--night);
-    border: 1px solid rgba(20, 19, 15, 0.4);
-    box-shadow: 0 30px 70px rgba(20, 19, 15, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     text-align: left;
-    color: var(--paper);
+    color: #f5f3ee;
   }
   .cover::before {
     content: "";
     position: absolute; inset: -140px auto auto -100px;
-    width: 460px; height: 460px;
-    background: radial-gradient(circle, rgba(226, 96, 31, 0.24), transparent 68%);
+    width: 440px; height: 440px;
+    background: radial-gradient(circle, rgba(226, 96, 31, 0.22), transparent 70%);
     pointer-events: none;
   }
   .cover::after {
     content: "";
     position: absolute; inset: auto -140px -160px auto;
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(245, 243, 238, 0.07), transparent 70%);
+    width: 460px; height: 460px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
     pointer-events: none;
   }
   .cover > * { position: relative; z-index: 1; }
-  .cover .rule {
-    width: 76px; height: 3px; background: var(--accent);
-    margin: 0 0 36px;
-    box-shadow: none; border-radius: 0;
+  .cover .rule { width: 68px; height: 3.5px; background: var(--accent); border-radius: 2px; margin: 0 0 24px; }
+  .cover .crumbs {
+    margin-bottom: 16px;
+    font-size: 12.5px;
+    font-family: var(--font-mono);
   }
+  .cover .crumbs ol {
+    display: flex; gap: 8px; list-style: none; padding: 0; margin: 0; align-items: center;
+  }
+  /* Inherit single chevron from .crumbs li + li::before */
+  .cover .crumbs a { color: var(--muted); text-decoration: none; }
+  .cover .crumbs a:hover { color: var(--accent-ink); text-decoration: underline; }
+  .cover .crumbs [aria-current="page"] { color: var(--accent-ink); font-weight: 600; }
+
   .cover h1 {
     font-family: var(--font-sans);
-    font-size: clamp(46px, 8.5vw, 116px);
+    font-size: clamp(32px, 4.8vw, 64px);
     font-weight: 800;
-    line-height: 0.94;
-    letter-spacing: -0.055em;
-    color: var(--paper);
-    margin: 0 0 18px;
-    border: none;
-    max-width: none;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    color: #ffffff;
+    margin: 0 0 14px;
     text-transform: uppercase;
   }
+  [data-theme="light"] .cover h1 { color: #101827; }
+
+  /* Override any .sub clash from global styles */
+  .cover .cover-subtitle,
   .cover .sub {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 22px 0 !important;
+    box-shadow: none !important;
     font-family: var(--font-mono);
-    font-size: clamp(11px, 1.2vw, 14px);
-    color: var(--accent);
-    letter-spacing: 0.32em;
+    font-size: 12.5px;
+    color: var(--accent-ink);
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    font-weight: 500;
-    margin: 0 0 28px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+
   .cover .tagline {
-    max-width: 640px;
-    margin: 0 0 34px;
-    font-size: clamp(15.5px, 1.7vw, 19px);
-    color: rgba(245, 243, 238, 0.78);
-    font-style: normal;
-    letter-spacing: -0.01em;
-    text-align: left;
-    line-height: 1.6;
-    max-width: 62ch;
+    max-width: 66ch;
+    margin: 0 0 24px;
+    font-size: clamp(15px, 1.5vw, 17.5px);
+    color: rgba(245, 243, 238, 0.88);
+    line-height: 1.65;
   }
-  .cover .badges {
+  [data-theme="light"] .cover .tagline { color: #374151; }
+
+  .cover .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
+  .badge {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(245, 243, 238, 0.92);
+    border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 13px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .badge:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  [data-theme="light"] .badge {
+    background: #f4f2ea;
+    border-color: rgba(20, 19, 15, 0.12);
+    color: #374151;
+  }
+
+  /* Metric cards & Quick Actions */
+  .cover-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 6px 0 26px;
+  }
+  .cover-meta-pill {
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  [data-theme="light"] .cover-meta-pill {
+    background: #f8f7f2;
+    border-color: rgba(20, 19, 15, 0.1);
+  }
+  .cover-meta-pill .meta-val {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent-ink);
+  }
+  .cover-meta-pill .meta-lbl {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  [data-theme="light"] .cover-meta-pill .meta-lbl {
+    color: #6b7280;
+  }
+
+  .cover-actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 9px;
-    margin: 0 0 34px;
+    gap: 12px;
+    align-items: center;
+    margin-top: 4px;
   }
-  .badge {
-    display: inline-flex; align-items: center; justify-content: center;
+  .cover-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(245, 243, 238, 0.85);
-    border: 1px solid rgba(245, 243, 238, 0.22);
-    border-radius: 999px;
-    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.18s ease;
   }
-  .cover .meta {
-    font-family: var(--font-sans);
-    font-size: 13.5px;
-    line-height: 1.9;
-    color: rgba(245, 243, 238, 0.7);
-    letter-spacing: 0.01em;
-    text-align: left;
-    max-width: none;
+  .cover-action-btn.primary {
+    background: var(--accent);
+    color: #fff !important;
+    border: 1px solid var(--accent);
+    box-shadow: 0 4px 14px rgba(226, 96, 31, 0.35);
   }
-  .cover .meta strong { color: var(--paper); }
-
-  /* ---------- units ---------- */
-  .unit {
-    background: var(--white);
+  .cover-action-btn.primary:hover {
+    background: #c4541a;
+    border-color: #c4541a;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(226, 96, 31, 0.45);
+    text-decoration: none;
+  }
+  .cover-action-btn.secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink) !important;
     border: 1px solid var(--line);
-    border-radius: 5px;
-    padding: clamp(24px, 4vw, 56px);
-    margin-top: 30px;
-    box-shadow: 0 2px 0 rgba(20, 19, 15, 0.03);
-    scroll-margin-top: calc(64px + 22px);
+  }
+  .cover-action-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--accent);
+    color: var(--accent-ink) !important;
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+  [data-theme="light"] .cover-action-btn.secondary {
+    background: #f4f2ea;
+    border-color: rgba(20, 19, 15, 0.14);
+    color: #1f2937 !important;
+  }
+
+  /* Light Theme Cover Harmonization */
+  [data-theme="light"] .cover {
+    background: #ffffff !important;
+    color: #141310 !important;
+    border-color: rgba(20, 19, 15, 0.12) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+  }
+  [data-theme="light"] .cover::before {
+    background: radial-gradient(circle, rgba(226, 96, 31, 0.12), transparent 70%) !important;
+  }
+  [data-theme="light"] .cover::after {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.03), transparent 70%) !important;
+  }
+  [data-theme="light"] .cover h1 {
+    color: #101827 !important;
+  }
+  [data-theme="light"] .cover .tagline {
+    color: #374151 !important;
+  }
+  [data-theme="light"] .cover .crumbs a {
+    color: #6b7280 !important;
+  }
+  [data-theme="light"] .cover .crumbs [aria-current="page"] {
+    color: #c4541a !important;
+  }
+  [data-theme="light"] .cover .badge {
+    background: #f4f2ea !important;
+    border-color: rgba(20, 19, 15, 0.12) !important;
+    color: #374151 !important;
+  }
+  [data-theme="light"] .cover .cover-meta-pill {
+    background: #f8f7f2 !important;
+    border-color: rgba(20, 19, 15, 0.1) !important;
+  }
+  [data-theme="light"] .cover .cover-meta-pill .meta-val {
+    color: #c4541a !important;
+  }
+  [data-theme="light"] .cover .cover-meta-pill .meta-lbl {
+    color: #4b5563 !important;
+  }
+  [data-theme="light"] .cover-action-btn.secondary {
+    background: #f4f2ea !important;
+    border-color: rgba(20, 19, 15, 0.14) !important;
+    color: #1f2937 !important;
+  }
+
+
+  /* ---------- Units ---------- */
+  .unit {
+    background: var(--surface-card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: clamp(24px, 4vw, 48px);
+    margin-top: 36px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    scroll-margin-top: calc(var(--nav-h, 60px) + 20px);
   }
   .unit-head {
     display: block;
-    background: var(--night);
-    color: var(--paper);
-    padding: clamp(20px, 3vw, 36px);
-    border-radius: 3px;
-    margin: calc(-1 * clamp(24px, 4vw, 56px)) calc(-1 * clamp(24px, 4vw, 56px)) 30px;
-    border: 0;
-    box-shadow: none;
+    background: var(--night-2);
+    color: #f5f3ee;
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: 8px;
+    margin: calc(-1 * clamp(24px, 4vw, 48px)) calc(-1 * clamp(24px, 4vw, 48px)) 30px;
+    border-bottom: 2px solid var(--accent);
   }
   .unit-head .kicker {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
   }
   .unit-head h2 {
-    font-family: var(--font-sans);
-    color: var(--paper);
-    border: none;
-    margin: 0;
-    padding: 0;
-    font-size: clamp(24px, 3vw, 40px);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1.05;
+    color: #ffffff; border: none; margin: 0; padding: 0;
+    font-size: clamp(24px, 2.8vw, 36px); font-weight: 800;
   }
   .unit-head .abstract {
-    font-size: 14.5px;
-    color: rgba(245, 243, 238, 0.72);
-    margin: 12px 0 0;
-    font-style: normal;
-    line-height: 1.6;
-    max-width: 74ch;
+    font-size: 14.5px; color: rgba(245, 243, 238, 0.76);
+    margin: 10px 0 0; line-height: 1.55; max-width: 74ch;
   }
 
-  /* ---------- callout boxes ---------- */
+  /* ---------- Callout Boxes ---------- */
   .box {
-    margin: 22px 0;
-    padding: 17px 19px;
-    border-radius: 4px;
-    border: 1px solid var(--line);
-    border-left-width: 3px;
-    background: #faf9f4;
+    margin: 22px 0; padding: 18px 20px; border-radius: 6px;
+    border: 1px solid var(--line); border-left-width: 4px;
+    background: rgba(255, 255, 255, 0.03);
     page-break-inside: avoid;
-    max-width: none;
   }
   .box .label {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 9px;
+    display: block; font-family: var(--font-mono); font-size: 11px;
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 8px;
   }
-  .box p:last-child { margin-bottom: 0; }
-  .hinglish { background: #fbf4e6; border-left-color: #c08a3e; border-top-color: var(--line); border-right-color: var(--line); border-bottom-color: var(--line); }
-  .hinglish .label { color: #96662a; }
-  .insight { background: #f0f5ef; border-left-color: var(--ok); border-top-color: var(--line); border-right-color: var(--line); border-bottom-color: var(--line); }
-  .insight .label { color: #2f7a4c; }
-  .warn { background: #faf0ee; border-left-color: var(--bad); border-top-color: var(--line); border-right-color: var(--line); border-bottom-color: var(--line); }
-  .warn .label { color: #a5443a; }
-  .analogy { background: #f3f1f9; border-left-color: #8f83c0; border-top-color: var(--line); border-right-color: var(--line); border-bottom-color: var(--line); }
-  .analogy .label { color: #6a5fa8; }
+  .hinglish { background: rgba(217, 119, 6, 0.08); border-left-color: #d97706; }
+  .hinglish .label { color: #f59e0b; }
+  .insight { background: rgba(16, 185, 129, 0.08); border-left-color: #10b981; }
+  .insight .label { color: #34d399; }
+  .warn { background: rgba(239, 68, 68, 0.08); border-left-color: #ef4444; }
+  .warn .label { color: #f87171; }
+  .analogy { background: rgba(168, 85, 247, 0.08); border-left-color: #a855f7; }
+  .analogy .label { color: #c084fc; }
   .mathbox {
-    background: var(--night);
-    color: rgba(245, 243, 238, 0.88);
-    border: 1px solid var(--night);
-    border-left: 3px solid var(--accent);
-    padding: 20px 22px;
+    background: #0d1117; color: rgba(245, 243, 238, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 4px solid var(--accent); padding: 20px 22px;
   }
-  .mathbox strong, .mathbox em { color: var(--paper); }
+  .mathbox strong, .mathbox em { color: #fff; }
 
-  /* ---------- worked examples ---------- */
+  /* ---------- Worked Examples ---------- */
   .worked {
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    margin: 24px 0;
-    overflow: hidden;
-    box-shadow: none;
-    background: var(--white);
-    page-break-inside: avoid;
+    border: 1px solid var(--line); border-radius: 8px;
+    margin: 24px 0; overflow: hidden; background: var(--surface-card);
   }
   .worked .whead {
-    background: #f0eee6;
-    border-bottom: 1px solid var(--line);
-    padding: 12px 17px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-2);
+    background: rgba(255, 255, 255, 0.06); border-bottom: 1px solid var(--line);
+    padding: 12px 18px; font-family: var(--font-mono); font-size: 11px;
+    font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent-ink);
   }
-  .worked .wbody{margin:0}
+  .worked .wbody { padding: 18px 20px; }
 
-  /* ---------- code ---------- */
-  pre {
-    background: var(--night);
-    color: #e8e4da;
-    border: 1px solid rgba(245, 243, 238, 0.1);
-    border-left: 2px solid var(--accent);
-    border-radius: 5px;
-    box-shadow: none;
-    padding: 16px 18px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 20px 0;
-  }
-  pre .c { color: #8b8779; font-style: italic; }
-  pre .k { color: #ef8b52; }
-  pre .s { color: #6fc193; }
-  pre .n { color: #d3a463; }
-  .codecap {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    color: var(--muted);
-    margin: -12px 0 18px 2px;
-    font-style: normal;
-    letter-spacing: 0.04em;
-  }
-
-  /* ---------- tables ---------- */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 14.5px;
-    page-break-inside: avoid;
-    font-family: var(--font-sans);
-  }
+  /* ---------- Tables ---------- */
+  table { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 14.5px; }
   th {
-    background: var(--night);
-    color: var(--paper);
-    text-align: left;
-    padding: 10px 13px;
-    font-family: var(--font-mono);
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    border: 0;
+    background: var(--night-2); color: #fff; text-align: left;
+    padding: 11px 14px; font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase; border: 0;
   }
-  td {
-    padding: 10px 13px;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
-  }
-  tr:nth-child(even) td { background: rgba(20, 19, 15, 0.028); }
-  tbody tr { transition: background 0.15s; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255, 255, 255, 0.02); }
   tbody tr:hover td { background: var(--accent-soft); }
 
-  /* ---------- formulas ---------- */
+  /* ---------- Formulas ---------- */
   .formula {
-    text-align: center;
-    font-family: "Cambria Math", Georgia, serif;
-    font-size: clamp(16px, 1.7vw, 20px);
-    color: var(--ink);
-    margin: 24px 0;
-    padding: clamp(22px, 3vw, 34px) 20px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-top: 3px solid var(--accent);
-    border-radius: 4px;
-    page-break-inside: avoid;
-    max-width: none;
+    text-align: center; font-family: "Cambria Math", Georgia, serif;
+    font-size: clamp(16px, 1.7vw, 20px); color: var(--ink);
+    margin: 24px 0; padding: clamp(20px, 3vw, 32px) 20px;
+    background: var(--surface-card); border: 1px solid var(--line);
+    border-top: 3px solid var(--accent); border-radius: 8px;
   }
-  .formula .where {
-    display: block;
-    font-size: 13.5px;
-    color: var(--muted);
-    font-family: var(--font-sans);
-    margin: 14px auto 0;
-    text-align: left;
-    max-width: 72ch;
-    line-height: 1.6;
-  }
+  .formula .where { display: block; font-size: 13px; color: var(--muted); font-family: var(--font-sans); margin-top: 8px; }
 
   /* ---------- Q&A ---------- */
-  .qa { margin: 14px 0; page-break-inside: avoid; }
-  .qa .q {
-    font-weight: 800;
-    color: var(--accent-ink);
-    font-family: var(--font-sans);
-    font-size: 15px;
-    letter-spacing: -0.01em;
-    margin-bottom: 4px;
-  }
-  .qa .a { font-size: 15px; margin-left: 18px; color: var(--ink-2); }
-  .qa p.q, .qa p.a { margin-top: 0; margin-bottom: 0; }
-  .qa p.q { margin-bottom: 4px; }
+  .qa { margin: 16px 0; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+  .qa .q { font-weight: 800; color: var(--accent-ink); font-size: 15.5px; margin-bottom: 6px; }
+  .qa .a { font-size: 15px; margin-left: 12px; color: var(--ink-2); line-height: 1.6; }
 
-  /* ---------- figures ---------- */
-  figure { margin: 24px 0; page-break-inside: avoid; text-align: center; }
+  /* ---------- Figures ---------- */
+  figure { margin: 26px 0; text-align: center; }
   figure svg { max-width: 100%; height: auto; }
   figcaption {
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+    margin-top: 8px; letter-spacing: 0.04em;
+  }
+
+  /* ---------- Enhanced Table of Contents & Curriculum ---------- */
+  .toc-unit {
+    margin-top: 36px;
+    scroll-margin-top: calc(var(--nav-h, 60px) + 20px);
+  }
+  .toc-section-label {
     font-family: var(--font-mono);
     font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 28px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+  }
+  .toc-section-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .toc-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--night-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .toc-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3.5px;
+    background: transparent;
+    transition: background 0.18s ease;
+  }
+  .toc-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(226, 96, 31, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    text-decoration: none;
+  }
+  .toc-card:hover::before {
+    background: var(--accent);
+  }
+  [data-theme="light"] .toc-card {
+    background: #fdfcfa;
+    border-color: rgba(20, 19, 15, 0.12);
+  }
+  [data-theme="light"] .toc-card:hover {
+    background: #ffffff;
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  }
+  .toc-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: rgba(226, 96, 31, 0.14);
+    color: var(--accent-ink);
+    border: 1px solid rgba(226, 96, 31, 0.28);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .toc-badge.app-badge {
+    background: rgba(59, 130, 246, 0.12);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.28);
+  }
+  [data-theme="light"] .toc-badge.app-badge {
+    background: rgba(37, 99, 235, 0.08);
+    color: #2563eb;
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+  .toc-badge.star-badge {
+    background: rgba(245, 158, 11, 0.14);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.28);
+  }
+  [data-theme="light"] .toc-badge.star-badge {
+    background: rgba(217, 119, 6, 0.1);
+    color: #d97706;
+  }
+  .toc-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .toc-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    line-height: 1.35;
+  }
+  .toc-card:hover .toc-title {
+    color: var(--accent-ink);
+  }
+  .toc-arrow {
+    font-size: 14px;
+    color: var(--accent-ink);
+    opacity: 0.5;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+    flex-shrink: 0;
+  }
+  .toc-card:hover .toc-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+  .toc-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
     color: var(--muted);
-    margin-top: 9px;
-    font-style: normal;
-    letter-spacing: 0.05em;
-    text-align: center;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  [data-theme="light"] .toc-desc {
+    color: #66635b;
   }
 
-  /* ---------- contents ---------- */
-  .toc { scroll-margin-top: calc(64px + 22px); }
-  .toc h2 { margin-top: 0; }
-  .toc-item {
-    display: grid;
-    grid-template-columns: 46px minmax(0, 1fr);
-    gap: 2px 14px;
+  /* ---------- Redesigned PDF / Utility Bar ---------- */
+  #pdfbar {
+    background: var(--night-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    color: var(--ink);
     font-family: var(--font-sans);
-    font-size: 15px;
-    padding: 15px 6px;
-    border-bottom: 1px solid var(--line);
-    transition: background 0.15s, padding 0.2s;
+    transition: all 0.2s ease;
   }
-  .toc-item:hover { background: rgba(20, 19, 15, 0.03); padding-left: 12px; }
-  .toc-item .num {
-    grid-column: 1; grid-row: 1;
-    display: inline-block;
-    width: auto;
+  [data-theme="light"] #pdfbar {
+    background: #ffffff;
+    border-color: rgba(20, 19, 15, 0.12);
+  }
+  #pdfbar.collapsed {
+    padding: 10px 16px;
+    margin-bottom: 18px;
+  }
+  #pdfbarTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .pdfbar-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-mono);
-    color: var(--accent-ink);
-    font-weight: 500;
-    font-size: 13px;
+    font-size: 11.5px;
+    text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  .toc-item .t { grid-column: 2; grid-row: 1; color: var(--ink); font-weight: 800; letter-spacing: -0.02em; }
-  .toc-item .d { grid-column: 2; grid-row: 2; color: var(--muted); font-size: 13.5px; display: block; margin-left: 0; line-height: 1.55; }
-  .toc-sub {
-    font-family: var(--font-sans);
-    font-size: 13.5px;
+  .pdfbar-nav a {
+    color: var(--accent-ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .pdfbar-nav a:hover {
+    text-decoration: underline;
+  }
+  .pdfbar-nav .pdfbar-sep {
     color: var(--muted);
-    margin-left: 60px;
-    padding: 3px 0;
+    opacity: 0.5;
+  }
+  .pdfbar-nav .pdfbar-cur {
+    color: var(--muted);
+  }
+  #pdfbarToggle {
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 6px 15px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.15s ease;
+  }
+  [data-theme="light"] #pdfbarToggle {
+    background: #f4f2ea;
+    border-color: rgba(20, 19, 15, 0.14);
+    color: #1f2937;
+  }
+  #pdfbarToggle:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  #pdfbarBody {
+    overflow: hidden;
+    padding-top: 14px;
+    margin-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  #pdfbar.collapsed #pdfbarBody {
+    display: none;
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
+  }
+  .pdfbar-info {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    margin-bottom: 12px;
+  }
+  .pdfbar-info strong {
+    color: var(--ink);
+  }
+  #partbtns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  #partbtns button {
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  [data-theme="light"] #partbtns button {
+    background: #f4f2ea;
+    color: #1f2937;
+  }
+  #partbtns button:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  #partbtns button[data-part="0"] {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  #partnote {
+    font-size: 12px;
+    color: var(--accent-ink);
+    font-family: var(--font-mono);
+    margin-left: 8px;
   }
 
-  /* ---------- misc ---------- */
-  ul, ol { margin: 10px 0 16px; padding-left: 24px; }
-  li { margin-bottom: 6px; }
-  .tight li { margin-bottom: 3px; }
-  hr { border: none; border-top: 1px solid var(--line); margin: 26px 0; }
-  .center { text-align: center; }
-  .small { font-size: 13.5px; color: var(--muted); }
-  .nobreak { page-break-inside: avoid; }
-  ::selection { background: var(--accent); color: #fff; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  /* ---------- Responsive Breakpoints ---------- */
+  @media (max-width: 1100px) {
+    #docsnav {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 290px; max-width: 85vw;
+      transform: translateX(-105%);
+      box-shadow: none; z-index: 100;
+      padding: 70px 0 40px;
+    }
+    body.docs-open #docsnav { transform: translateX(0); box-shadow: 20px 0 60px rgba(0, 0, 0, 0.6); }
+    .guide-main { margin-left: 0; width: 100%; max-width: 100%; padding: 16px 16px 80px; }
+    .guide-mobile-bar { display: flex; }
+  }
 
-  /* ---------- desktop: content sits beside the rail ---------- */
-  @media (min-width: 1200px) {
-    body{margin:0}
-  }
-  /* ---------- smaller screens: rail becomes an overlay ---------- */
-  @media (max-width: 1199px) {
-    #docs
-    body.docs-open #docs
-    .toc-btn { display: inline-flex; }
-    .topnav-links { margin-left: auto; }
-  }
   @media (max-width: 760px) {
-    body{margin:0}
-    .topnav-in { padding: 0 14px; gap: 10px; }
-    .topnav .brand em { display: none; }
-    .topnav-links 
-    .pdf-btn, .toc-btn { padding: 8px 12px; }
-    .cover { min-height: auto; padding: 34px 22px 40px; }
-    .unit { padding: 20px 16px 28px; }
-    .unit-head { margin: -20px -16px 24px; padding: 18px 16px; }
-    .toc-item { grid-template-columns: 34px minmax(0, 1fr); }
-    .toc-sub { margin-left: 48px; }
-    table { font-size: 13.5px; }
-    th, td { padding: 8px 9px; }
+    .guide-main { padding: 12px 12px 70px; }
+    .cover { padding: 28px 18px 36px; min-height: auto; }
+    .unit { padding: 18px 14px 24px; }
+    .unit-head { margin: -18px -14px 20px; padding: 16px 14px; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .toc-card { padding: 14px 14px; }
+    .cover-meta-grid { grid-template-columns: 1fr 1fr; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -710,9 +1044,6 @@ h4 { font-size: 11pt; color: #0f766e; margin-top: 1.1em; text-transform: upperca
     html { scroll-behavior: auto; }
   }
 }
-
-
-
 
 
 @media print {
@@ -990,6 +1321,59 @@ figcaption {
   padding: 2px 0;
 }
 
+.toc-unit {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  page-break-after: always;
+}
+.toc-section-label {
+  color: #c2410c !important;
+  font-size: 10.5pt !important;
+  font-weight: bold !important;
+  margin: 14pt 0 6pt !important;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 3pt;
+}
+.toc-grid {
+  display: block !important;
+}
+.toc-card {
+  display: block !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 4pt 0 !important;
+  margin-bottom: 6pt !important;
+  page-break-inside: avoid;
+  text-decoration: none !important;
+}
+.toc-card::before { display: none !important; }
+.toc-badge {
+  display: inline-block !important;
+  margin-right: 6pt !important;
+  background: none !important;
+  border: none !important;
+  color: #c2410c !important;
+  font-weight: 700 !important;
+  padding: 0 !important;
+  font-size: 9pt !important;
+}
+.toc-title {
+  display: inline !important;
+  font-size: 10pt !important;
+  color: #111827 !important;
+  font-weight: 700 !important;
+}
+.toc-arrow { display: none !important; }
+.toc-desc {
+  display: block !important;
+  font-size: 8.5pt !important;
+  color: #4b5563 !important;
+  margin: 2pt 0 0 24pt !important;
+  -webkit-line-clamp: unset !important;
+}
+
 /* ============ MISC ============ */
 ul, ol { margin: 8px 0 12px 0; padding-left: 22px; }
 li { margin-bottom: 5px; }
@@ -1002,7 +1386,9 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
 }
 </style>
 </head>
-<body><main class="app-main" id="main"><div class="shell">
+<body>
+<main class="app-main" id="main">
+<div class="guide-layout">
 <aside class="docsnav" id="docsnav" aria-label="Guide contents">
   <p class="docsnav-head">Start here</p>
   <div class="docsnav-group">
@@ -1037,22 +1423,33 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
 <div class="docs-veil" id="docsVeil" aria-hidden="true"></div>
 
 
+
+<div class="guide-main">
+  <div class="guide-mobile-bar">
+    <button type="button" class="guide-toc-toggle" id="tocBtn" aria-expanded="false" aria-controls="docsnav">
+      <span>☰</span> Table of Contents (Units 1–10)
+    </button>
+    <span style="font-size:12px;color:var(--muted);font-family:var(--font-mono);">10 Units · GATE ML</span>
+  </div>
 <!-- Screen-only helper. Never appears in the printed/PDF output. -->
 <div id="pdfbar" class="collapsed">
   <div id="pdfbarTop">
-    <a href="index.html">Back to the study hub</a>
-    <button id="pdfbarToggle" type="button" aria-expanded="false" aria-controls="pdfbarBody">Show</button>
+    <div class="pdfbar-nav">
+      <a href="index.html">← Back to Study Hub</a>
+      <span class="pdfbar-sep">/</span>
+      <span class="pdfbar-cur">Complete ML Guide</span>
+    </div>
+    <button id="pdfbarToggle" type="button" aria-expanded="false" aria-controls="pdfbarBody">
+      <span>🖨️</span> Print / Save PDF
+    </button>
   </div>
   <div id="pdfbarBody">
-    <strong>Save this as a PDF</strong>
-    <div>
-      This guide is about 150 pages, which is enough to make some browsers fail and save a 0&nbsp;KB file.
-      If that happens, <strong>print one part at a time</strong> using the buttons below &mdash; you get four
-      smaller PDFs that all work.
-      In the print dialog choose destination <strong>&ldquo;Save as PDF&rdquo;</strong>, paper
-      <strong>A4</strong>, and under &ldquo;More settings&rdquo; tick <strong>&ldquo;Background graphics&rdquo;</strong>
-      or the coloured boxes and diagrams will come out blank.
-      <em>Wait for the page count to appear in the preview before clicking Save.</em>
+    <div class="pdfbar-info">
+      <strong>Save this as a PDF:</strong>
+      This comprehensive study guide is about 150 pages. For the smoothest export,
+      <strong>print one part at a time</strong> using the buttons below &mdash; generating clean, modular PDFs.
+      In your browser's print dialog, choose destination <strong>&ldquo;Save as PDF&rdquo;</strong>, paper size <strong>A4</strong>,
+      and ensure <strong>&ldquo;Background graphics&rdquo;</strong> is enabled.
     </div>
     <div id="partbtns">
       <button data-part="1">Part 1 &middot; Units 1&ndash;3</button>
@@ -1060,12 +1457,13 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
       <button data-part="3">Part 3 &middot; Units 7&ndash;10</button>
       <button data-part="4">Part 4 &middot; Appendices</button>
       <span style="opacity:.6;padding:0 4px;">|</span>
-      <button data-part="0">Try whole book</button>
+      <button data-part="0">Try Full Guide</button>
       <span id="partnote"></span>
     </div>
   </div>
 </div>
 <style>@media print { #pdfbar, #topnav, #docsnav, #docsVeil { display: none !important; } }</style>
+<!-- Modern Study Companion loaded via assets/study-companion.js -->
 <script>
 (function () {
   var LABELS = {
@@ -1097,7 +1495,9 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
     var bar = document.getElementById("pdfbar");
     var note = document.getElementById("partnote");
     var toggle = document.getElementById("pdfbarToggle");
-    var blocks = [].slice.call(document.body.children).filter(function (el) {
+    var guideMain = document.querySelector(".guide-main") || document.body;
+    var blocks = [].slice.call(guideMain.children).filter(function (el) {
+      if (el.classList.contains("guide-mobile-bar")) return false;
       return el !== bar && el.tagName !== "STYLE" && el.tagName !== "SCRIPT";
     });
     var parts = blocks.map(partOf);
@@ -1122,12 +1522,12 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
 
     if (toggle) {
       bar.classList.add("collapsed");
-        toggle.textContent = "Show";
-        toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML = "<span>🖨️</span> Print / Save PDF";
+      toggle.setAttribute("aria-expanded", "false");
 
       toggle.addEventListener("click", function () {
         var isCollapsed = bar.classList.toggle("collapsed");
-        toggle.textContent = isCollapsed ? "Show" : "Hide";
+        toggle.innerHTML = isCollapsed ? "<span>🖨️</span> Print / Save PDF" : "✕ Close Print Options";
         toggle.setAttribute("aria-expanded", String(!isCollapsed));
       });
     }
@@ -1153,15 +1553,14 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
 </script>
 
 <!-- ==================== COVER ==================== -->
-<main>
 <div class="cover">
   <div class="rule"></div>
   <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">ML guide</li></ol></nav>
   <h1>GATE Machine Learning Notes — Complete Study Guide</h1>
-  <div class="sub">Complete Study Guide</div>
+  <div class="cover-subtitle">Complete Curriculum · GATE Data Science &amp; AI 2027</div>
   <div class="tagline">
-    From zero to working understanding — concepts explained in plain language,
-    with full workflows, worked numerical examples, diagrams, Python code and practice questions.
+    From zero to working understanding — core concepts explained in plain language,
+    with end-to-end workflows, worked numerical hand calculations, interactive diagrams, Python code, and exam practice questions.
   </div>
   <div class="badges">
     <span class="badge">Beginner Friendly</span>
@@ -1171,11 +1570,28 @@ hr { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
     <span class="badge">scikit-learn Code</span>
     <span class="badge">Interview Questions</span>
   </div>
-  <div class="meta" style="margin-top:36px;">
-    <strong>10 Units &nbsp;•&nbsp; 4 Appendices</strong><br>
-    Regression · Classification · Ensembles · Clustering · Neural Networks<br>
-    Model Evaluation · Deployment · Ethics<br><br>
-    <span style="font-size:8.5pt;">Language: English, with Hinglish notes for the difficult parts</span>
+  <div class="cover-meta-grid">
+    <div class="cover-meta-pill">
+      <span class="meta-val">10</span>
+      <span class="meta-lbl">Comprehensive Units</span>
+    </div>
+    <div class="cover-meta-pill">
+      <span class="meta-val">4</span>
+      <span class="meta-lbl">Revision Appendices</span>
+    </div>
+    <div class="cover-meta-pill">
+      <span class="meta-val">100+</span>
+      <span class="meta-lbl">Formulas &amp; Worked Numericals</span>
+    </div>
+    <div class="cover-meta-pill">
+      <span class="meta-val">EN + HI</span>
+      <span class="meta-lbl">Bilingual Hinglish Explanations</span>
+    </div>
+  </div>
+  <div class="cover-actions">
+    <a href="#contents" class="cover-action-btn primary">Browse Full Contents ↓</a>
+    <a href="#howto" class="cover-action-btn secondary">How to Use This Guide →</a>
+    <a href="gate-ml-practice.html" class="cover-action-btn secondary">Practice Mode ↗</a>
   </div>
 </div>
 
@@ -1262,53 +1678,125 @@ mathematical background you will need, in case a symbol is unfamiliar.</p>
 </div>
 
 <!-- ==================== TOC ==================== -->
-<div class="toc" id="contents">
-<h2>Contents</h2>
+<div class="unit toc-unit" id="contents">
+  <div class="unit-head">
+    <div class="kicker">Curriculum Directory</div>
+    <h2>Table of Contents</h2>
+    <div class="abstract">Complete breakdown of all 10 core units, 4 appendices, and the 90-day study roadmap. Click any unit card to jump directly to its theory, formulas, worked numericals, and code.</div>
+  </div>
 
-<div class="toc-item"><span class="num">1</span><span class="t">Introduction to Machine Learning</span>
-  <span class="d">What ML is, how it differs from traditional programming, the three learning paradigms, real-world applications, and what ML cannot do</span></div>
+  <div class="toc-section-label">Core Curriculum · 10 Units</div>
+  <div class="toc-grid">
+    <a href="#u1" class="toc-card">
+      <div class="toc-badge">Unit 01</div>
+      <div class="toc-content">
+        <div class="toc-title">Introduction to Machine Learning <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">What ML is, how it differs from traditional programming, the three learning paradigms, real-world applications, and what ML cannot do.</p>
+      </div>
+    </a>
+    <a href="#u2" class="toc-card">
+      <div class="toc-badge">Unit 02</div>
+      <div class="toc-content">
+        <div class="toc-title">The Machine Learning Workflow &amp; Data Prep <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">The end-to-end pipeline, data collection, cleaning, missing values, encoding, feature scaling, feature engineering, and data leakage.</p>
+      </div>
+    </a>
+    <a href="#u3" class="toc-card">
+      <div class="toc-badge">Unit 03</div>
+      <div class="toc-content">
+        <div class="toc-title">Regression <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Linear regression, the cost function, gradient descent, multiple regression, polynomial features, Ridge, Lasso and Elastic Net.</p>
+      </div>
+    </a>
+    <a href="#u4" class="toc-card">
+      <div class="toc-badge">Unit 04</div>
+      <div class="toc-content">
+        <div class="toc-title">Classification Algorithms <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Logistic regression, K-Nearest Neighbours, Naive Bayes, Decision Trees, and Support Vector Machines.</p>
+      </div>
+    </a>
+    <a href="#u5" class="toc-card">
+      <div class="toc-badge">Unit 05</div>
+      <div class="toc-content">
+        <div class="toc-title">Model Evaluation &amp; Ensemble Methods <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Confusion matrix, precision, recall, F1, ROC-AUC, regression metrics, bagging, Random Forest, AdaBoost, Gradient Boosting, XGBoost, stacking.</p>
+      </div>
+    </a>
+    <a href="#u6" class="toc-card">
+      <div class="toc-badge">Unit 06</div>
+      <div class="toc-content">
+        <div class="toc-title">Unsupervised Learning <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">K-Means, hierarchical clustering, DBSCAN, the elbow method, silhouette score, PCA, t-SNE, and association rules.</p>
+      </div>
+    </a>
+    <a href="#u7" class="toc-card">
+      <div class="toc-badge">Unit 07</div>
+      <div class="toc-content">
+        <div class="toc-title">Neural Networks &amp; Deep Learning <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Perceptron, activation functions, multilayer networks, backpropagation by hand, optimisers, CNNs, RNNs, transformers and transfer learning.</p>
+      </div>
+    </a>
+    <a href="#u8" class="toc-card">
+      <div class="toc-badge">Unit 08</div>
+      <div class="toc-content">
+        <div class="toc-title">Model Selection &amp; Hyperparameter Tuning <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Bias–variance decomposition, underfitting vs overfitting, cross-validation, learning curves, grid and random search, Bayesian optimisation.</p>
+      </div>
+    </a>
+    <a href="#u9" class="toc-card">
+      <div class="toc-badge">Unit 09</div>
+      <div class="toc-content">
+        <div class="toc-title">Applied Machine Learning <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Text and NLP basics, recommender systems, time series, imbalanced data, and handling images and tabular data.</p>
+      </div>
+    </a>
+    <a href="#u10" class="toc-card">
+      <div class="toc-badge">Unit 10</div>
+      <div class="toc-content">
+        <div class="toc-title">Deployment, Monitoring &amp; Responsible AI <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Saving models, APIs, containers, MLOps, data drift, fairness, explainability and privacy.</p>
+      </div>
+    </a>
+  </div>
 
-<div class="toc-item"><span class="num">2</span><span class="t">The Machine Learning Workflow &amp; Data Preparation</span>
-  <span class="d">The end-to-end pipeline, data collection, cleaning, missing values, encoding, feature scaling, feature engineering, and data leakage</span></div>
-
-<div class="toc-item"><span class="num">3</span><span class="t">Regression</span>
-  <span class="d">Linear regression, the cost function, gradient descent, multiple regression, polynomial features, Ridge, Lasso and Elastic Net</span></div>
-
-<div class="toc-item"><span class="num">4</span><span class="t">Classification Algorithms</span>
-  <span class="d">Logistic regression, K-Nearest Neighbours, Naive Bayes, Decision Trees, and Support Vector Machines</span></div>
-
-<div class="toc-item"><span class="num">5</span><span class="t">Model Evaluation &amp; Ensemble Methods</span>
-  <span class="d">Confusion matrix, precision, recall, F1, ROC-AUC, regression metrics, bagging, Random Forest, AdaBoost, Gradient Boosting, XGBoost, stacking</span></div>
-
-<div class="toc-item"><span class="num">6</span><span class="t">Unsupervised Learning</span>
-  <span class="d">K-Means, hierarchical clustering, DBSCAN, the elbow method, silhouette score, PCA, t-SNE, and association rules</span></div>
-
-<div class="toc-item"><span class="num">7</span><span class="t">Neural Networks &amp; Deep Learning</span>
-  <span class="d">Perceptron, activation functions, multilayer networks, backpropagation by hand, optimisers, CNNs, RNNs, transformers and transfer learning</span></div>
-
-<div class="toc-item"><span class="num">8</span><span class="t">Model Selection, Overfitting &amp; Hyperparameter Tuning</span>
-  <span class="d">Bias–variance decomposition, underfitting vs overfitting, cross-validation, learning curves, grid and random search, Bayesian optimisation</span></div>
-
-<div class="toc-item"><span class="num">9</span><span class="t">Applied Machine Learning</span>
-  <span class="d">Text and NLP basics, recommender systems, time series, imbalanced data, and handling images and tabular data</span></div>
-
-<div class="toc-item"><span class="num">10</span><span class="t">Deployment, Monitoring &amp; Responsible AI</span>
-  <span class="d">Saving models, APIs, containers, MLOps, data drift, fairness, explainability and privacy</span></div>
-
-<div class="toc-item"><span class="num">A</span><span class="t">Appendix A — Mathematics Refresher</span>
-  <span class="d">Vectors, matrices, derivatives, probability and statistics — only what ML actually needs</span></div>
-
-<div class="toc-item"><span class="num">B</span><span class="t">Appendix B — Formula Cheat Sheet</span>
-  <span class="d">Every important formula in the guide, on a few dense pages, for quick revision</span></div>
-
-<div class="toc-item"><span class="num">C</span><span class="t">Appendix C — Glossary</span>
-  <span class="d">Plain-language definitions of around 120 terms, alphabetically</span></div>
-
-<div class="toc-item"><span class="num">D</span><span class="t">Appendix D — Interview Question Bank</span>
-  <span class="d">60 questions with model answers, grouped by topic and difficulty</span></div>
-
-<div class="toc-item"><span class="num">★</span><span class="t">Where To Go From Here</span>
-  <span class="d">A realistic ninety-day study plan and the working habits that separate knowing from being able</span></div>
+  <div class="toc-section-label">Revision &amp; Appendices · 4 Appendices &amp; Study Plan</div>
+  <div class="toc-grid">
+    <a href="#appA" class="toc-card">
+      <div class="toc-badge app-badge">App A</div>
+      <div class="toc-content">
+        <div class="toc-title">Mathematics Refresher <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Vectors, matrices, derivatives, probability and statistics — only what ML actually needs.</p>
+      </div>
+    </a>
+    <a href="#appB" class="toc-card">
+      <div class="toc-badge app-badge">App B</div>
+      <div class="toc-content">
+        <div class="toc-title">Formula Cheat Sheet <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Every important formula in the guide, on a few dense pages, for quick revision.</p>
+      </div>
+    </a>
+    <a href="#appC" class="toc-card">
+      <div class="toc-badge app-badge">App C</div>
+      <div class="toc-content">
+        <div class="toc-title">Glossary <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">Plain-language definitions of around 120 key machine learning terms, alphabetically.</p>
+      </div>
+    </a>
+    <a href="#appD" class="toc-card">
+      <div class="toc-badge app-badge">App D</div>
+      <div class="toc-content">
+        <div class="toc-title">Interview Question Bank <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">60 questions with model answers, grouped by topic and difficulty.</p>
+      </div>
+    </a>
+    <a href="#plan" class="toc-card">
+      <div class="toc-badge star-badge">★ Plan</div>
+      <div class="toc-content">
+        <div class="toc-title">90-Day Study Plan &amp; Habits <span class="toc-arrow">→</span></div>
+        <p class="toc-desc">A realistic ninety-day study roadmap and the working habits that separate knowing from being able.</p>
+      </div>
+    </a>
+  </div>
 </div>
 
 <!-- ==================== UNIT 1 ==================== -->
@@ -8545,7 +9033,8 @@ contrib = sorted(zip(feature_names, shap_values[i]),
 <footer style="max-width:1180px;margin:26px auto 40px;font-size:12.5px;opacity:.85;">
   <a href="index.html">Home</a> · <a href="privacy-policy">Privacy</a> · <a href="terms">Terms</a> · <a href="disclaimer">Disclaimer</a> · <a href="cookie-policy">Cookies</a>
 </footer>
-</main>
+  </div><!-- /.guide-main -->
+</div><!-- /.guide-layout -->
 <script src="site-config.js" defer></script>
 <script src="assets/seo.js" defer></script>
 <script src="assets/ads.js" defer></script>
@@ -8622,7 +9111,9 @@ contrib = sorted(zip(feature_names, shap_values[i]),
 })();
 </script>
 
+</main>
 <script src="assets/app-shell.js" defer></script>
-</div></main></body>
+<script src="assets/study-companion.js" defer></script>
+</body>
 </html>
 

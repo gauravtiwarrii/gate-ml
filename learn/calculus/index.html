@@ -1,2 +1,168 @@
-<!DOCTYPE html><html lang="en" data-root="../../"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Calculus & Optimization — GATE DA 2027</title><meta name="description" content="Single-variable calculus for GATE DA: limits, differentiability, Taylor series, maxima-minima. Official wording included."><link rel="canonical" href="https://hellogaurav.me/learn/calculus"><link rel="stylesheet" href="../../assets/seo.css"><link rel="stylesheet" href="../../assets/app.css"><style>body{margin:0}h1,h2{font-family:Arial,sans-serif}.off{background:#fff;border:1px solid #141310;border-radius:10px;padding:12px}.f{background:#eef;border-radius:8px;padding:8px 12px}</style></head><body><main class="app-main" id="main"><div class="shell shell--prose"><div class="prose"><h1>Calculus & Optimization (DA §3)</h1><div class="off"><b>Official (2027 PDF):</b> Functions of a single variable, limit, continuity and differentiability, Taylor series, maxima and minima, optimization involving a single variable.</div><h2>1. Objectives</h2><p>Evaluate limits; test continuity/differentiability; use Taylor expansion; find and classify stationary points.</p><h2>2. Prerequisites</h2><p>Algebra, functions, basic differentiation.</p><h2>3. Concept</h2><p>Differentiability implies continuity; converse is false (|x| at 0). Second-derivative test: f'=0 and f''&gt;0 → local minimum; f''&lt;0 → maximum; f''=0 → inspect further.</p><h2>4. Formulas</h2><p class="f">Taylor: f(x)=f(a)+f'(a)(x−a)+f''(a)(x−a)²/2!+…<br>Stationary: f'(c)=0; classify via f''(c).</p><h2>5. Worked examples</h2><p><b>E1.</b> f(x)=x³−3x²+2: f'=3x²−6x=0 → x=0,2. f''=6x−6: f''(0)=−6 max, f''(2)=6 min.</p><p><b>E2.</b> lim<sub>x→0</sub> sin x / x = 1 (standard; use series sin x=x−x³/6+…).</p><h2>6. GATE applications</h2><p>Single-variable optimization appears directly; Taylor remainder bounds error of approximations.</p><h2>7. Practice</h2><p>Try <a href="../../practice-da?subject=calc">Calculus practice set</a> (Practice Questions, not PYQs).</p><h2>8. Takeaways + checklist</h2><p>Check: differentiability⇒continuity; stationary classification; Taylor up to 2nd order.</p><p><label>Status: <select id="st"><option value="not-started">Not Started</option><option value="in-progress">In Progress</option><option value="practiced">Practiced</option><option value="revision-needed">Revision Needed</option><option value="mastered">Mastered</option></select></label></p><script src="../../assets/gateda.js"></script><script>["functions","limits","taylor","maxima","opt1d"].forEach(function(){var s=document.getElementById("st");s.onchange=function(){["functions","limits","taylor","maxima","opt1d"].forEach(function(id){GateDA.setTopic(id,{status:s.value})})}})</script><script src="../../assets/app-shell.js" defer></script>
-</div></div></main></body></html>
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Calculus &amp; Optimization for GATE DA – Complete Study Guide</title>
+    <meta name="description" content="In-depth GATE Data Science &amp; AI calculus guide: limits, continuity, differentiability, Taylor series, single-variable maxima-minima, and optimization with worked examples.">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://www.hellogaurav.me/learn/calculus">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="GATE ML">
+    <meta property="og:title" content="Calculus &amp; Optimization for GATE DA – Complete Guide">
+    <meta property="og:description" content="Functions of a single variable, limits, Taylor series, maxima, minima, and optimization.">
+    <meta property="og:url" content="https://www.hellogaurav.me/learn/calculus">
+    <meta property="og:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculus &amp; Optimization for GATE DA – Complete Guide">
+    <meta name="twitter:description" content="Functions of a single variable, limits, Taylor series, maxima, minima, and optimization.">
+    <meta name="twitter:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
+    <link rel="stylesheet" href="../../assets/seo.css">
+    <link rel="stylesheet" href="../../assets/app.css">
+    <style>
+      .off-box { background: #1a1a1a; border-left: 4px solid #e2601f; padding: 14px 18px; border-radius: 6px; margin: 16px 0; font-size: 0.95rem; }
+      .formula-card { background: rgba(226, 96, 31, 0.08); border: 1px solid rgba(226, 96, 31, 0.25); border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-family: var(--font-mono, monospace); line-height: 1.6; }
+      .example-card { background: #16181d; border: 1px solid #2a2d36; border-radius: 10px; padding: 18px 22px; margin: 18px 0; }
+    </style>
+</head>
+<body>
+<main class="app-main" id="main">
+  <div class="shell shell--prose">
+    <div class="page-head">
+      <p class="eyebrow">GATE DA — Section 3</p>
+      <h1>Calculus &amp; Optimization</h1>
+      <p class="lede">Comprehensive study notes on single-variable functions, limits, continuity, differentiability, Taylor series, and optimization for GATE Data Science &amp; AI.</p>
+    </div>
+
+    <div class="card prose">
+      <div class="off-box">
+        <strong>Official GATE DA Syllabus:</strong> Functions of a single variable, limit, continuity and differentiability, Taylor series, maxima and minima, optimization involving a single variable.
+      </div>
+
+      <h2>1. Functions of a Single Variable: Domains &amp; Properties</h2>
+      <p>A real-valued function of a single variable is a mapping <code>f: D &rarr; &reals;</code> where <code>D &sube; &reals;</code> is the domain. In machine learning, loss functions, activation curves (e.g., Sigmoid, ReLU, GELU), and likelihood functions are single-variable slices along optimization coordinates.</p>
+      <ul>
+        <li><strong>Monotonicity:</strong> If <code>f'(x) &ge; 0</code> on an interval <code>I</code>, <code>f(x)</code> is monotonically non-decreasing. If <code>f'(x) &gt; 0</code>, it is strictly increasing and invertible.</li>
+        <li><strong>Convexity:</strong> A function <code>f(x)</code> is strictly convex on interval <code>I</code> if for all <code>x_1, x_2 &isin; I</code> and <code>&lambda; &isin; (0, 1)</code>: <code>f(&lambda; x_1 + (1-&lambda;)x_2) &le; &lambda; f(x_1) + (1-&lambda;)f(x_2)</code>. Equivalently, if <code>f''(x) &ge; 0</code> everywhere, every local minimum is guaranteed to be a global minimum.</li>
+      </ul>
+
+      <h2>2. Limits, Continuity &amp; Differentiability</h2>
+      <p>Understanding limits is crucial for evaluating gradient behavior and asymptotic stability:</p>
+      <ul>
+        <li><strong>Limit Existence:</strong> <code>lim_{x&rarr;a} f(x) = L</code> if and only if both left-hand and right-hand limits exist and coincide: <code>lim_{x&rarr;a^-} f(x) = lim_{x&rarr;a^+} f(x) = L</code>.</li>
+        <li><strong>Continuity:</strong> A function <code>f</code> is continuous at <code>x = a</code> if:
+          <ol>
+            <li><code>f(a)</code> is defined.</li>
+            <li><code>lim_{x&rarr;a} f(x)</code> exists.</li>
+            <li><code>lim_{x&rarr;a} f(x) = f(a)</code>.</li>
+          </ol>
+        </li>
+        <li><strong>Differentiability:</strong> <code>f</code> is differentiable at <code>a</code> if the derivative limit exists:
+          <div class="formula-card">f'(a) = lim_{h &rarr; 0} [f(a + h) - f(a)] / h</div>
+        </li>
+        <li><strong>The Fundamental Theorem:</strong> Differentiability implies continuity. <em>The converse is false</em>: <code>f(x) = |x|</code> is continuous at <code>x = 0</code>, but has left derivative <code>-1</code> and right derivative <code>+1</code>, so it is not differentiable at <code>x = 0</code>.</li>
+      </ul>
+
+      <h2>3. L'H&ocirc;pital's Rule &amp; Indeterminate Forms</h2>
+      <p>When evaluating limits producing indeterminate forms <code>0/0</code> or <code>&infin;/&infin;</code>, where <code>f</code> and <code>g</code> are differentiable in an open interval around <code>a</code> (except possibly at <code>a</code>) and <code>g'(x) &ne; 0</code>:</p>
+      <div class="formula-card">lim_{x &rarr; a} [f(x) / g(x)] = lim_{x &rarr; a} [f'(x) / g'(x)]</div>
+      <p>For exponential indeterminate forms like <code>1^&infin;</code>, <code>0^0</code>, or <code>&infin;^0</code>, convert using natural logarithms: <code>y = f(x)^{g(x)} &rArr; ln y = g(x) ln f(x)</code>.</p>
+
+      <h2>4. Taylor Series &amp; Polynomial Approximation</h2>
+      <p>Taylor series expansion allows us to approximate complex, non-linear objective functions with polynomials around an operating point <code>x = a</code>:</p>
+      <div class="formula-card">
+        f(x) = f(a) + f'(a)(x - a) + \frac{f''(a)}{2!}(x - a)^2 + \dots + \frac{f^{(n)}(a)}{n!}(x - a)^n + R_n(x)
+      </div>
+      <p>When expanded around <code>a = 0</code>, it is called a <strong>Maclaurin series</strong>. Key expansions to memorize for GATE:</p>
+      <ul>
+        <li><code>e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \dots</code></li>
+        <li><code>ln(1 + x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \dots \quad \text{for } -1 &lt; x &le; 1</code></li>
+        <li><code>sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \dots</code></li>
+        <li><code>cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \dots</code></li>
+        <li><code>\frac{1}{1 - x} = 1 + x + x^2 + x^3 + \dots \quad \text{for } |x| &lt; 1</code></li>
+      </ul>
+
+      <h2>5. Maxima, Minima &amp; Single-Variable Optimization</h2>
+      <p>Single-variable optimization is the foundation for gradient descent step-size tuning and regularizer parameter search:</p>
+      <ul>
+        <li><strong>Fermat's Theorem (First Derivative Test):</strong> If <code>f(x)</code> has a local extremum at an interior point <code>c</code> and is differentiable, then <code>f'(c) = 0</code>. Points where <code>f'(c) = 0</code> or where <code>f'(c)</code> is undefined are called <strong>critical points</strong>.</li>
+        <li><strong>Second Derivative Test:</strong> Let <code>c</code> be a critical point where <code>f'(c) = 0</code>:
+          <ul>
+            <li>If <code>f''(c) &gt; 0</code>, <code>f(x)</code> is strictly concave up &rarr; <strong>Local Minimum</strong>.</li>
+            <li>If <code>f''(c) &lt; 0</code>, <code>f(x)</code> is strictly concave down &rarr; <strong>Local Maximum</strong>.</li>
+            <li>If <code>f''(c) = 0</code>, the test is inconclusive (requires higher-order derivative inspection or sign change check; e.g., <code>x^3</code> has an inflection point at <code>x = 0</code>, whereas <code>x^4</code> has a local minimum).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>6. Worked Step-by-Step Examples</h2>
+      <div class="example-card">
+        <h3>Worked Example 1: Limit with Indeterminate Power (1^&infin;)</h3>
+        <p><strong>Problem:</strong> Evaluate <code>L = lim_{x &rarr; 0} (1 + 3x)^{2/x}</code>.</p>
+        <p><strong>Solution:</strong> This has the indeterminate form <code>1^&infin;</code>.</p>
+        <p>Take the natural logarithm: <code>ln L = lim_{x &rarr; 0} \frac{2}{x} ln(1 + 3x) = 2 \cdot lim_{x &rarr; 0} \frac{ln(1 + 3x)}{x}</code>.</p>
+        <p>Applying L'H&ocirc;pital's rule (form 0/0): <code>ln L = 2 \cdot lim_{x &rarr; 0} \frac{\frac{3}{1 + 3x}}{1} = 2 \cdot 3 = 6</code>.</p>
+        <p>Exponentiating gives: <code>L = e^6</code>. (Alternatively, apply standard result <code>lim_{u&rarr;0}(1 + u)^{1/u} = e</code>).</p>
+      </div>
+
+      <div class="example-card">
+        <h3>Worked Example 2: Taylor Expansion &amp; Truncation Error</h3>
+        <p><strong>Problem:</strong> Approximate <code>f(x) = \sqrt{1 + x}</code> up to the second degree around <code>a = 0</code>, and estimate <code>\sqrt{1.2}</code>.</p>
+        <p><strong>Solution:</strong> Compute derivatives at 0:</p>
+        <p><code>f(0) = 1</code><br>
+        <code>f'(x) = \frac{1}{2}(1 + x)^{-1/2} &rArr; f'(0) = 1/2</code><br>
+        <code>f''(x) = -\frac{1}{4}(1 + x)^{-3/2} &rArr; f''(0) = -1/4</code></p>
+        <p>The second-order Taylor polynomial is: <code>P_2(x) = 1 + \frac{1}{2}x - \frac{1}{8}x^2</code>.</p>
+        <p>For <code>x = 0.2</code>: <code>P_2(0.2) = 1 + 0.1 - \frac{0.04}{8} = 1 + 0.1 - 0.005 = 1.095</code>.</p>
+        <p>Actual value: <code>\sqrt{1.2} \approx 1.095445</code> (Relative error &lt; 0.04%).</p>
+      </div>
+
+      <div class="example-card">
+        <h3>Worked Example 3: Global Optimization on a Closed Interval</h3>
+        <p><strong>Problem:</strong> Find the absolute minimum and maximum values of <code>f(x) = 2x^3 - 3x^2 - 12x + 5</code> on the closed interval <code>[-2, 4]</code>.</p>
+        <p><strong>Solution:</strong></p>
+        <p>1. Find interior critical points: <code>f'(x) = 6x^2 - 6x - 12 = 6(x^2 - x - 2) = 6(x - 2)(x + 1) = 0 &rArr; x = -1, 2</code>.</p>
+        <p>Both points lie within <code>[-2, 4]</code>.</p>
+        <p>2. Evaluate <code>f(x)</code> at critical points and boundary endpoints:</p>
+        <ul>
+          <li><code>f(-2) = 2(-8) - 3(4) - 12(-2) + 5 = -16 - 12 + 24 + 5 = 1</code></li>
+          <li><code>f(-1) = 2(-1) - 3(1) - 12(-1) + 5 = -2 - 3 + 12 + 5 = 12</code></li>
+          <li><code>f(2) = 2(8) - 3(4) - 12(2) + 5 = 16 - 12 - 24 + 5 = -15</code></li>
+          <li><code>f(4) = 2(64) - 3(16) - 12(4) + 5 = 128 - 48 - 48 + 5 = 37</code></li>
+        </ul>
+        <p><strong>Conclusion:</strong> The absolute maximum is <strong>37</strong> (at <code>x = 4</code>) and absolute minimum is <strong>-15</strong> (at <code>x = 2</code>).</p>
+      </div>
+
+      <h2>7. GATE Exam Traps &amp; Common Distractors</h2>
+      <ul>
+        <li><strong>Checking Endpoints:</strong> For optimization over a closed interval <code>[a, b]</code>, never forget to evaluate the boundary points <code>f(a)</code> and <code>f(b)</code>. Extrema frequently lie on the boundaries where <code>f'(x) &ne; 0</code>.</li>
+        <li><strong>Local vs Global:</strong> Critical points with <code>f''(x) &gt; 0</code> only guarantee <em>local</em> minima. Global optimality requires either convexity over the domain or exhaustive comparison with boundary values.</li>
+        <li><strong>L'H&ocirc;pital Preconditions:</strong> Do not apply L'H&ocirc;pital's rule unless you have explicitly verified that the expression is in indeterminate form (<code>0/0</code> or <code>&infin;/&infin;</code>). Differentiating a determinate limit leads to wrong answers.</li>
+      </ul>
+
+      <h2>8. Syllabus Practice &amp; Topic Tracking</h2>
+      <p>Test your understanding with exam-pattern practice problems:</p>
+      <p><a class="btn" href="../../practice-da?subject=calc">Practice Calculus Questions</a> or review the <a class="link" href="../../syllabus">GATE DA Syllabus Index</a>.</p>
+
+      <p><label>Topic Mastery Status: <select id="st"><option value="not-started">Not Started</option><option value="in-progress">In Progress</option><option value="practiced">Practiced</option><option value="revision-needed">Revision Needed</option><option value="mastered">Mastered</option></select></label></p>
+    </div>
+  </div>
+</main>
+<script src="../../assets/gateda.js"></script>
+<script>
+  ["functions","limits","taylor","maxima","opt1d"].forEach(function(){
+    var s = document.getElementById("st");
+    if (!s) return;
+    s.onchange = function(){
+      ["functions","limits","taylor","maxima","opt1d"].forEach(function(id){
+        GateDA.setTopic(id, { status: s.value });
+      });
+    };
+  });
+</script>
+<script src="../../site-config.js" defer></script>
+<script src="../../assets/seo.js" defer></script>
+<script src="../../assets/ads.js" defer></script>
+<script src="../../assets/app-shell.js" defer></script>
+</body>
+</html>

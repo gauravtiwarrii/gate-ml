@@ -1,2 +1,203 @@
-<!DOCTYPE html><html lang="en" data-root="../../"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI — Search, Logic, Uncertainty — GATE DA 2027</title><meta name="description" content="GATE DA AI: informed/uninformed/adversarial search, propositional/predicate logic, conditional independence, variable elimination, sampling."><link rel="canonical" href="https://hellogaurav.me/learn/ai"><link rel="stylesheet" href="../../assets/seo.css"><link rel="stylesheet" href="../../assets/app.css"><style>body{margin:0}h1,h2{font-family:Arial,sans-serif}</style></head><body><main class="app-main" id="main"><div class="shell shell--prose"><div class="prose"><h1>Artificial Intelligence (DA §7)</h1><p><b>Official:</b> Search (informed, uninformed, adversarial); logic (propositional, predicate); reasoning under uncertainty — conditional independence representation, exact inference via variable elimination, approximate inference via sampling.</p><h2>Objectives</h2><p>Compare BFS/UCS/A*; state minimax with alpha-beta; convert to CNF; test entailment; factorize with conditional independence; run variable elimination order; describe rejection/likelihood sampling.</p><h2>Key points</h2><p>A* optimal with admissible + consistent heuristic. Minimax + alpha-beta prunes safely. Variable elimination cost dominated by largest factor. Sampling approximates posteriors when exact inference is intractable.</p><p>Practice: <a href="../../practice-da?subject=ai">AI set</a> (Practice Questions).</p><script src="../../assets/app-shell.js" defer></script>
-</div></div></main></body></html>
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Artificial Intelligence – Search, Logic &amp; Uncertainty for GATE DA</title>
+    <meta name="description" content="Complete AI preparation guide for GATE DA: BFS/A* search, minimax alpha-beta pruning, propositional &amp; predicate logic, Bayesian networks, variable elimination.">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://www.hellogaurav.me/learn/ai">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="GATE ML">
+    <meta property="og:title" content="Artificial Intelligence for GATE DA – Complete Guide">
+    <meta property="og:description" content="Informed/uninformed search, adversarial games, resolution logic, conditional independence, and probabilistic inference.">
+    <meta property="og:url" content="https://www.hellogaurav.me/learn/ai">
+    <meta property="og:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Artificial Intelligence for GATE DA – Complete Guide">
+    <meta name="twitter:description" content="Informed/uninformed search, adversarial games, resolution logic, conditional independence, and probabilistic inference.">
+    <meta name="twitter:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
+    <link rel="stylesheet" href="../../assets/seo.css">
+    <link rel="stylesheet" href="../../assets/app.css">
+    <style>
+      .off-box { background: #1a1a1a; border-left: 4px solid #e2601f; padding: 14px 18px; border-radius: 6px; margin: 16px 0; font-size: 0.95rem; }
+      pre { background: #121316; color: #e1e4ea; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.5; border: 1px solid #23262f; }
+      .example-card { background: #16181d; border: 1px solid #2a2d36; border-radius: 10px; padding: 18px 22px; margin: 18px 0; }
+      table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+      th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+      th { color: #e2601f; font-weight: 600; }
+    </style>
+</head>
+<body>
+<main class="app-main" id="main">
+  <div class="shell shell--prose">
+    <div class="page-head">
+      <p class="eyebrow">GATE DA — Section 7</p>
+      <h1>Artificial Intelligence</h1>
+      <p class="lede">Comprehensive preparation notes on search algorithms, adversarial game playing, logic representations, and probabilistic reasoning under uncertainty for GATE Data Science &amp; AI.</p>
+    </div>
+
+    <div class="card prose">
+      <div class="off-box">
+        <strong>Official GATE DA Syllabus:</strong> Search: informed, uninformed, adversarial; logic: propositional, predicate; reasoning under uncertainty: conditional independence representation, exact inference via variable elimination, approximate inference via sampling.
+      </div>
+
+      <h2>1. Uninformed &amp; Informed Search Strategies</h2>
+      <p>Problem-solving agents formulate state spaces characterized by an initial state, actions, transition model, goal test, and path cost <code>c(s, a, s')</code>:</p>
+      <ul>
+        <li><strong>Uninformed (Blind) Search:</strong>
+          <ul>
+            <li><em>Breadth-First Search (BFS):</em> Expands shallowest node using FIFO queue. Time &amp; space: <code>O(b^d)</code>. Complete and optimal for uniform step costs.</li>
+            <li><em>Depth-First Search (DFS):</em> Expands deepest node using LIFO stack. Space: <code>O(bm)</code>. Not guaranteed complete on infinite graphs; not optimal.</li>
+            <li><em>Uniform Cost Search (UCS):</em> Expands node with minimum path cost <code>g(n)</code>. Equivalent to Dijkstra's algorithm. Optimal for general positive edge costs.</li>
+          </ul>
+        </li>
+        <li><strong>Informed (Heuristic) Search:</strong> Utilizes problem-specific estimate <code>h(n)</code> of remaining cost to goal:
+          <ul>
+            <li><em>Greedy Best-First:</em> Expands lowest <code>h(n)</code>. Fast but neither optimal nor complete.</li>
+            <li><em>A* Search:</em> Evaluates <code>f(n) = g(n) + h(n)</code> (actual cost so far + estimated cost to goal).</li>
+          </ul>
+        </li>
+        <li><strong>Heuristic Properties:</strong>
+          <ul>
+            <li><strong>Admissibility:</strong> <code>h(n) \le h^*(n)</code> (never overestimates true cost). Guarantees optimality in A* tree search.</li>
+            <li><strong>Consistency (Monotonicity):</strong> For every node <code>n</code> and successor <code>n'</code> generated by action <code>a</code>: <code>h(n) \le c(n, a, n') + h(n')</code>. Ensures that <code>f(n)</code> values along any path are non-decreasing. Guarantees optimality in A* graph search without node reopening.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>2. Adversarial Search &amp; Alpha-Beta Pruning</h2>
+      <p>Used for two-player deterministic, zero-sum perfect-information games (e.g., Chess, Tic-Tac-Toe):</p>
+      <ul>
+        <li><strong>Minimax Principle:</strong> MAX seeks moves maximizing the payoff; MIN seeks moves minimizing MAX's payoff:
+          <div style="background: rgba(226, 96, 31, 0.08); padding: 10px 14px; border-radius: 6px; font-family: monospace;">
+            V(s) = max_{a} V(Result(s, a)) [at MAX nodes] | min_{a} V(Result(s, a)) [at MIN nodes]
+          </div>
+        </li>
+        <li><strong>Alpha-Beta Pruning:</strong> Prunes subtrees without altering the final optimal move choice:
+          <ul>
+            <li><code>\alpha</code>: Best value (highest payoff) found so far along the path for MAX. Initialized to <code>-\infty</code>.</li>
+            <li><code>\beta</code>: Best value (lowest payoff) found so far along the path for MIN. Initialized to <code>+\infty</code>.</li>
+            <li><strong>Pruning Condition:</strong> Prune the branch whenever <code>\alpha \ge \beta</code>.</li>
+            <li>With ideal move ordering, time complexity drops from <code>O(b^m)</code> to <code>O(b^{m/2})</code>, effectively doubling the search depth.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>3. Knowledge Representation &amp; Logic</h2>
+      <ul>
+        <li><strong>Propositional Logic:</strong>
+          <ul>
+            <li><em>Entailment (<code>\alpha \vDash \beta</code>):</em> In every model where sentence <code>\alpha</code> is true, sentence <code>\beta</code> is also true. Equivalently: <code>(\alpha \land \neg \beta)</code> is unsatisfiable.</li>
+            <li><em>Conjunctive Normal Form (CNF):</em> Conjunction of clauses (disjunction of literals), e.g., <code>(A \lor B) \land (\neg B \lor C)</code>.</li>
+            <li><em>Resolution Rule:</em> Given <code>(P \lor Q)</code> and <code>(\neg P \lor R)</code>, derive the resolvent <code>(Q \lor R)</code>. Empty clause <code>\square</code> proves refutation.</li>
+          </ul>
+        </li>
+        <li><strong>First-Order Predicate Logic (FOL):</strong>
+          <ul>
+            <li>Uses objects, relations (predicates), functions, and quantifiers: Universal (<code>\forall x</code>) and Existential (<code>\exists x</code>).</li>
+            <li>Conversion to Clause Form requires eliminating implications, moving negation inwards, Standardizing variables, Skolemization (replacing <code>\exists</code> with Skolem constants or functions), and dropping universal quantifiers.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>4. Reasoning Under Uncertainty &amp; Bayesian Networks</h2>
+      <p>A Bayesian Network is a Directed Acyclic Graph (DAG) whose nodes represent random variables and directed edges represent conditional dependencies. The joint probability distribution factors as:</p>
+      <div style="background: rgba(226, 96, 31, 0.08); padding: 12px 16px; border-radius: 6px; font-family: monospace;">
+        P(X_1, X_2, \dots, X_n) = \prod_{i=1}^{n} P(X_i \mid \text{Parents}(X_i))
+      </div>
+
+      <h3>D-Separation (Conditional Independence in DAGs)</h3>
+      <p>A path between nodes <code>X</code> and <code>Y</code> is blocked by a conditioning set <code>Z</code> if any of the following node triples occurs on the path:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Structure</th>
+              <th>Triple Form</th>
+              <th>Condition for Path Blocking</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Causal Chain</strong></td>
+              <td>A &rarr; B &rarr; C</td>
+              <td>Blocked if intermediate node <code>B &isin; Z</code> (is observed).</td>
+            </tr>
+            <tr>
+              <td><strong>Common Cause (Fork)</strong></td>
+              <td>A &larr; B &rarr; C</td>
+              <td>Blocked if common parent <code>B &isin; Z</code> (is observed).</td>
+            </tr>
+            <tr>
+              <td><strong>Common Effect (Collider / V-Structure)</strong></td>
+              <td>A &rarr; B &larr; C</td>
+              <td>Blocked if <strong>neither</strong> <code>B</code> nor any descendant of <code>B</code> is in <code>Z</code>. (Observing a collider opens the path!).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>5. Exact &amp; Approximate Probabilistic Inference</h2>
+      <ul>
+        <li><strong>Exact Inference via Variable Elimination:</strong> Avoids exponential summation by caching intermediate factor products. Repeatedly chooses an elimination ordering, multiplies all factors containing variable <code>Y</code>, and sums out <code>Y</code>:
+          <div style="background: rgba(226, 96, 31, 0.08); padding: 10px 14px; border-radius: 6px; font-family: monospace;">
+            m_Y(X) = \sum_{y} \prod f_j(X, y)
+          </div>
+          Running time is exponential in the size of the largest factor created (treewidth of the moralized graph).
+        </li>
+        <li><strong>Approximate Inference via Sampling:</strong>
+          <ul>
+            <li><em>Prior Sampling:</em> Generates samples from topological order without evidence.</li>
+            <li><em>Rejection Sampling:</em> Drops samples that do not match observed evidence <code>E = e</code>. Inefficient when evidence is rare.</li>
+            <li><em>Likelihood Weighting:</em> Fixes evidence variables and weights each sampled state by the conditional probability of the evidence given its parents: <code>w = \prod_{i} P(e_i \mid parents(E_i))</code>.</li>
+            <li><em>Gibbs Sampling / MCMC:</em> Generates sequence of dependent samples by repeatedly sampling one variable conditioned on its Markov blanket.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>6. Worked Step-by-Step Examples</h2>
+      <div class="example-card">
+        <h3>Worked Example 1: Alpha-Beta Pruning Cutoff Trace</h3>
+        <p><strong>Problem:</strong> In a depth-2 game tree, root MAX has left child <code>N1</code> (MIN) and right child <code>N2</code> (MIN). <code>N1</code>'s terminal leaf children have values 4 and 7. The first inspected child of <code>N2</code> has terminal value 3. Will any subsequent children of <code>N2</code> be pruned?</p>
+        <p><strong>Solution:</strong></p>
+        <p>1. Evaluate left child <code>N1</code> (MIN node): <code>\min(4, 7) = 4</code>. Hence, MAX root receives value 4. Root <code>\alpha</code> updates to <code>\alpha = 4</code>, <code>\beta = +\infty</code>.</p>
+        <p>2. Pass <code>[\alpha=4, \beta=+\infty]</code> down to right child <code>N2</code> (MIN node).</p>
+        <p>3. <code>N2</code> inspects its first child value 3. Because <code>N2</code> is a MIN node, its upper bound drops: <code>\beta = \min(+\infty, 3) = 3</code>.</p>
+        <p>4. Check cutoff condition: <code>\alpha \ge \beta \iff 4 \ge 3</code> (True!).</p>
+        <p><strong>Conclusion:</strong> Prune immediately. The remaining children of <code>N2</code> are never evaluated because MAX would never choose <code>N2</code> (which offers at most 3) over <code>N1</code> (which guarantees 4).</p>
+      </div>
+
+      <h2>7. GATE Exam Traps &amp; Common Distractors</h2>
+      <ul>
+        <li><strong>The Collider Pitfall:</strong> Remember that two unconditionally independent causes become conditionally dependent once their shared effect (collider) is observed: <code>P(A \mid C, B) \ne P(A \mid C)</code>.</li>
+        <li><strong>Heuristic Consistency implies Admissibility:</strong> If a heuristic is consistent, it is always admissible. The reverse is NOT true: an admissible heuristic can be inconsistent.</li>
+        <li><strong>Markov Blanket Composition:</strong> The Markov blanket of variable <code>X</code> consists of: (1) its parents, (2) its children, and (3) <strong>other parents of its children (spouses)</strong>. Forgetting spouse nodes leads to incorrect conditional independence assertions.</li>
+      </ul>
+
+      <h2>8. Practice &amp; Topic Tracking</h2>
+      <p>Practice exam-pattern AI problems:</p>
+      <p><a class="btn" href="../../practice-da?subject=ai">Practice AI Questions</a> or review the <a class="link" href="../../syllabus">GATE DA Syllabus Index</a>.</p>
+
+      <p><label>Topic Mastery Status: <select id="st"><option value="not-started">Not Started</option><option value="in-progress">In Progress</option><option value="practiced">Practiced</option><option value="revision-needed">Revision Needed</option><option value="mastered">Mastered</option></select></label></p>
+    </div>
+  </div>
+</main>
+<script src="../../assets/gateda.js"></script>
+<script>
+  ["search","logic","uncertainty","inference"].forEach(function(){
+    var s = document.getElementById("st");
+    if (!s) return;
+    s.onchange = function(){
+      ["search","logic","uncertainty","inference"].forEach(function(id){
+        GateDA.setTopic(id, { status: s.value });
+      });
+    };
+  });
+</script>
+<script src="../../site-config.js" defer></script>
+<script src="../../assets/seo.js" defer></script>
+<script src="../../assets/ads.js" defer></script>
+<script src="../../assets/app-shell.js" defer></script>
+</body>
+</html>

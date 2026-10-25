@@ -1,2 +1,191 @@
-<!DOCTYPE html><html lang="en" data-root="../../"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DBMS & Warehousing — GATE DA 2027</title><meta name="description" content="ER model, relational algebra/calculus, SQL, normal forms, indexing, data transformation, warehouse schemas for GATE DA."><link rel="canonical" href="https://hellogaurav.me/learn/dbms"><link rel="stylesheet" href="../../assets/seo.css"><link rel="stylesheet" href="../../assets/app.css"><style>body{margin:0}h1,h2{font-family:Arial,sans-serif}</style></head><body><main class="app-main" id="main"><div class="shell shell--prose"><div class="prose"><h1>DBMS & Warehousing (DA §5)</h1><p><b>Official:</b> ER-model; relational algebra, tuple calculus; SQL, integrity constraints; normal forms; file organization, indexing; data types and transformation (normalization, discretization, sampling, compression); warehouse modelling: multidimensional schemas, concept hierarchies, measures.</p><h2>Objectives</h2><p>Map ER→tables; write relational algebra + SQL; normalize to 3NF/BCNF; choose star vs snowflake; define roll-up/drill-down.</p><h2>Key points</h2><p>Keys: PK/FK enforce entity/referential integrity. Normal forms remove redundancy (1NF atomic, 2NF no partial, 3NF no transitive, BCNF every determinant a key). Index (B+ tree) speeds selection. Star schema: central fact + denormalized dimensions; snowflake normalizes dimensions.</p><h2>Worked example</h2><p>R(A,B,C), A→B, B→C. Key: A. Not 3NF (B→C transitive). Decompose: R1(A,B), R2(B,C).</p><p>Practice: <a href="../../practice-da?subject=dbms">DBMS set</a> (Practice Questions).</p><script src="../../assets/app-shell.js" defer></script>
-</div></div></main></body></html>
+<!DOCTYPE html>
+<html lang="en" data-root="../../">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Database Management &amp; Data Warehousing – GATE DA Study Guide</title>
+    <meta name="description" content="Complete DBMS and Data Warehousing notes for GATE DA: ER-model, relational algebra, SQL, normalization (BCNF/3NF), indexing, star/snowflake schemas.">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://www.hellogaurav.me/learn/dbms">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="GATE ML">
+    <meta property="og:title" content="Database Management &amp; Warehousing – GATE DA Guide">
+    <meta property="og:description" content="ER diagrams, relational algebra, SQL, normalization, B+ tree indexing, and OLAP warehousing schemas.">
+    <meta property="og:url" content="https://www.hellogaurav.me/learn/dbms">
+    <meta property="og:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Database Management &amp; Warehousing – GATE DA Guide">
+    <meta name="twitter:description" content="ER diagrams, relational algebra, SQL, normalization, B+ tree indexing, and OLAP warehousing schemas.">
+    <meta name="twitter:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
+    <link rel="stylesheet" href="../../assets/seo.css">
+    <link rel="stylesheet" href="../../assets/app.css">
+    <style>
+      .off-box { background: #1a1a1a; border-left: 4px solid #e2601f; padding: 14px 18px; border-radius: 6px; margin: 16px 0; font-size: 0.95rem; }
+      pre { background: #121316; color: #e1e4ea; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.5; border: 1px solid #23262f; }
+      .example-card { background: #16181d; border: 1px solid #2a2d36; border-radius: 10px; padding: 18px 22px; margin: 18px 0; }
+      table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+      th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+      th { color: #e2601f; font-weight: 600; }
+    </style>
+</head>
+<body>
+<main class="app-main" id="main">
+  <div class="shell shell--prose">
+    <div class="page-head">
+      <p class="eyebrow">GATE DA — Section 5</p>
+      <h1>DBMS &amp; Data Warehousing</h1>
+      <p class="lede">Comprehensive reference guide covering the relational model, SQL queries, database normalization, storage indexing, and multidimensional data warehousing for GATE Data Science &amp; AI.</p>
+    </div>
+
+    <div class="card prose">
+      <div class="off-box">
+        <strong>Official GATE DA Syllabus:</strong> ER-model; relational model: relational algebra, tuple calculus; SQL, integrity constraints; normal forms; file organization, indexing; data types and transformation (normalization, discretization, sampling, compression); data warehouse modelling: schema for multidimensional models, concept hierarchies, measures: categorization and computations.
+      </div>
+
+      <h2>1. The Entity-Relationship (ER) Model</h2>
+      <p>The ER model abstracts real-world semantics into entities, attributes, and relationships:</p>
+      <ul>
+        <li><strong>Entities:</strong> Strong entities possess an independent primary key. Weak entities depend on an identifying owner entity via an identifying relationship and use a <em>partial key (discriminator)</em>.</li>
+        <li><strong>Cardinality Ratios:</strong>
+          <ul>
+            <li><code>1:1</code>: Can be merged into a single table if both entities participate totally.</li>
+            <li><code>1:N</code>: Foreign key is placed on the <code>N</code>-side entity table referencing the primary key of the <code>1</code>-side.</li>
+            <li><code>M:N</code>: Requires a distinct relationship table whose primary key consists of the composite foreign keys of both participating entities.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>2. Relational Algebra &amp; Tuple Relational Calculus (TRC)</h2>
+      <p>Relational algebra is a procedural query language operating on relations:</p>
+      <ul>
+        <li><strong>Fundamental Operators:</strong> Selection (<code>&sigma;_{cond}(R)</code>), Projection (<code>&pi;_{cols}(R)</code>), Cartesian Product (<code>R &times; S</code>), Set Union (<code>R &cup; S</code>), and Set Difference (<code>R - S</code>).</li>
+        <li><strong>Derived Operators:</strong>
+          <ul>
+            <li><em>Natural Join (<code>R &bowtie; S</code>):</em> Equi-join on all common attribute names with duplicate attribute columns projected out.</li>
+            <li><em>Division (<code>R &divide; S</code>):</em> Identifies tuples in <code>R</code> that are associated with <strong>all</strong> tuples in <code>S</code> (evaluates "for all" universal quantification).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>3. SQL &amp; Integrity Constraints</h2>
+      <ul>
+        <li><strong>Entity Integrity:</strong> Primary keys cannot contain <code>NULL</code> values.</li>
+        <li><strong>Referential Integrity:</strong> A foreign key value in a referencing relation must either match an existing primary key in the referenced relation or be <code>NULL</code> (unless declared <code>NOT NULL</code>). Trigger actions include <code>ON DELETE CASCADE</code>, <code>ON DELETE SET NULL</code>, and <code>ON DELETE RESTRICT</code>.</li>
+        <li><strong>Aggregation &amp; Subqueries:</strong> <code>WHERE</code> filters individual tuples prior to aggregation; <code>HAVING</code> filters group rows produced by <code>GROUP BY</code>. Correlated subqueries execute once for each outer query row.</li>
+      </ul>
+
+      <h2>4. Functional Dependencies &amp; Normal Forms</h2>
+      <p>Normalization eliminates insertion, update, and deletion anomalies by decomposing relations into lossless, dependency-preserving sub-relations:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Normal Form</th>
+              <th>Core Requirement</th>
+              <th>Eliminates</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1NF</strong></td>
+              <td>All attribute values must be atomic (no repeating groups or multi-valued attributes).</td>
+              <td>Nested sets/arrays</td>
+            </tr>
+            <tr>
+              <td><strong>2NF</strong></td>
+              <td>In 1NF and <strong>no partial dependency</strong>: no non-prime attribute depends on a proper subset of any candidate key.</td>
+              <td>Partial key redundancies</td>
+            </tr>
+            <tr>
+              <td><strong>3NF</strong></td>
+              <td>In 2NF and <strong>no transitive dependency</strong>: for every non-trivial FD <code>X &rarr; Y</code>, either <code>X</code> is a superkey OR <code>Y</code> is a prime attribute.</td>
+              <td>Transitive non-key dependencies</td>
+            </tr>
+            <tr>
+              <td><strong>BCNF</strong></td>
+              <td>For every non-trivial FD <code>X &rarr; Y</code>, <code>X</code> <strong>must be a superkey</strong>.</td>
+              <td>All functional redundancy</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Decomposition Guarantees:</strong> Any relation can always be decomposed into <strong>3NF with both Lossless Join and Dependency Preservation</strong>. Decompositions into BCNF are always guaranteed to be lossless, but may not always preserve all functional dependencies.</p>
+
+      <h2>5. Storage, File Organization &amp; Indexing</h2>
+      <ul>
+        <li><strong>Primary vs. Clustered vs. Secondary:</strong>
+          <ul>
+            <li><em>Primary Index:</em> Built on a key attribute where data file is sorted. Always sparse.</li>
+            <li><em>Clustering Index:</em> Built on a non-key attribute where data file is sorted. One entry per distinct value.</li>
+            <li><em>Secondary Index:</em> Built on unsorted data file. Must be <strong>dense</strong> (pointers for every record or distinct key).</li>
+          </ul>
+        </li>
+        <li><strong>B+ Trees:</strong> Balanced search trees where all data records/pointers reside exclusively at the <strong>leaf level</strong>. Leaves are sequentially linked with pointers, enabling extremely fast range scans (e.g., <code>WHERE age BETWEEN 20 AND 30</code>) with logarithmic <code>O(\log_B N)</code> tree depth.</li>
+      </ul>
+
+      <h2>6. Data Transformation &amp; Warehousing</h2>
+      <ul>
+        <li><strong>Data Transformation:</strong>
+          <ul>
+            <li><em>Min-Max Normalization:</em> <code>v' = \frac{v - \min}{\max - \min}(new\_max - new\_min) + new\_min</code>.</li>
+            <li><em>Z-Score Normalization:</em> <code>v' = \frac{v - \mu}{\sigma}</code>.</li>
+            <li><em>Discretization:</em> Equal-width vs. equal-frequency binning.</li>
+          </ul>
+        </li>
+        <li><strong>Multidimensional Schema Models:</strong>
+          <ul>
+            <li><em>Star Schema:</em> Central fact table surrounded by denormalized, single-table dimension entities. Maximizes query performance and simplifies joins.</li>
+            <li><em>Snowflake Schema:</em> Dimension tables are normalized into hierarchies. Saves storage space but requires multi-table joins.</li>
+            <li><em>Fact Constellation (Galaxy Schema):</em> Multiple fact tables share dimension tables across an enterprise.</li>
+          </ul>
+        </li>
+        <li><strong>OLAP Operations:</strong> Roll-up (aggregation/climbing hierarchy), Drill-down (stepping into granular details), Slice (filtering on one dimension), Dice (sub-cube on two or more dimensions), Pivot (reorienting view axes).</li>
+      </ul>
+
+      <h2>7. Worked Step-by-Step Examples</h2>
+      <div class="example-card">
+        <h3>Worked Example 1: Finding Candidate Keys &amp; Normal Form</h3>
+        <p><strong>Problem:</strong> Given relation <code>R(A, B, C, D, E)</code> with functional dependencies: <code>F = { A &rarr; BC, CD &rarr; E, B &rarr; D, E &rarr; A }</code>. Find the candidate keys and highest normal form.</p>
+        <p><strong>Solution:</strong></p>
+        <p>1. Compute attribute closure of <code>A</code>: <code>A^+ = {A, B, C, D, E}</code> &rarr; <code>A</code> is a candidate key.</p>
+        <p>2. Since <code>E &rarr; A</code>, <code>E^+ = {E, A, B, C, D}</code> &rarr; <code>E</code> is a candidate key.</p>
+        <p>3. Check <code>CD</code>: <code>CD &rarr; E &rarr; A &rarr; BC</code> &rarr; <code>CD</code> is a candidate key.</p>
+        <p>4. Check <code>BC</code>: <code>B &rarr; D &rArr; BC &rarr; BCD &rarr; E &rarr; A</code> &rarr; <code>BC</code> is a candidate key.</p>
+        <p>Prime attributes: <code>{A, B, C, D, E}</code> (all attributes are prime!).</p>
+        <p>Since every attribute is prime, the condition for 3NF ("either X is superkey OR Y is prime") holds trivially for all dependencies. However, in <code>B &rarr; D</code>, <code>B</code> is not a superkey, violating BCNF.</p>
+        <p><strong>Conclusion:</strong> <code>R</code> is in <strong>3NF</strong>, but not in BCNF.</p>
+      </div>
+
+      <h2>8. GATE Exam Traps &amp; Common Distractors</h2>
+      <ul>
+        <li><strong>Lossless Join Test for Binary Decomposition:</strong> A decomposition of <code>R</code> into <code>(R1, R2)</code> is lossless if and only if <code>R1 &cap; R2 &rarr; R1</code> OR <code>R1 &cap; R2 &rarr; R2</code> in <code>F^+</code>.</li>
+        <li><strong>COUNT(*) vs COUNT(attribute):</strong> <code>COUNT(*)</code> counts all rows including <code>NULL</code>s, while <code>COUNT(col)</code> ignores rows where <code>col IS NULL</code>.</li>
+        <li><strong>Additive vs Non-Additive Measures:</strong> Sales revenue is fully additive across all dimensions. Inventory quantity is semi-additive (additive across stores, but not across time). Average unit price is non-additive.</li>
+      </ul>
+
+      <h2>9. Practice &amp; Topic Tracking</h2>
+      <p>Test your knowledge with exam-pattern DBMS questions:</p>
+      <p><a class="btn" href="../../practice-da?subject=dbms">Practice DBMS Questions</a> or review the <a class="link" href="../../syllabus">GATE DA Syllabus Index</a>.</p>
+
+      <p><label>Topic Mastery Status: <select id="st"><option value="not-started">Not Started</option><option value="in-progress">In Progress</option><option value="practiced">Practiced</option><option value="revision-needed">Revision Needed</option><option value="mastered">Mastered</option></select></label></p>
+    </div>
+  </div>
+</main>
+<script src="../../assets/gateda.js"></script>
+<script>
+  ["er","relational","sql","normal","storage","dtypes","warehouse"].forEach(function(){
+    var s = document.getElementById("st");
+    if (!s) return;
+    s.onchange = function(){
+      ["er","relational","sql","normal","storage","dtypes","warehouse"].forEach(function(id){
+        GateDA.setTopic(id, { status: s.value });
+      });
+    };
+  });
+</script>
+<script src="../../site-config.js" defer></script>
+<script src="../../assets/seo.js" defer></script>
+<script src="../../assets/ads.js" defer></script>
+<script src="../../assets/app-shell.js" defer></script>
+</body>
+</html>

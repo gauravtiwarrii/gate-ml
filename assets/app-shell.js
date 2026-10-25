@@ -43,9 +43,7 @@
     { label: "Learn", route: "learn/calculus", match: "learn/" },
     { label: "Practice", route: "practice-da", match: "practice-da" },
     { label: "Mocks", route: "mock-da", match: "mock-da" },
-    { label: "Revision", route: "revision", match: "revision" },
-    { label: "Planner", route: "planner", match: "planner" },
-    { label: "Tutor", route: "tutor", match: "tutor" },
+    { label: "PYQ Guide", route: "pyq", match: "pyq" },
     { label: "Coverage", route: "coverage", match: "coverage" }
   ];
 
@@ -87,9 +85,9 @@
       '<div class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">' +
       items +
       '<div class="m-group">More</div>' +
-      '<a class="m-link" href="' + href("pyq") + '"><span>10</span>PYQ desk</a>' +
-      '<a class="m-link" href="' + href("readiness") + '"><span>11</span>Readiness</a>' +
-      '<a class="m-link" href="' + href("faq") + '"><span>12</span>FAQ</a>' +
+      '<a class="m-link" href="' + href("faq") + '"><span>08</span>FAQ</a>' +
+      '<a class="m-link" href="' + href("about") + '"><span>09</span>About</a>' +
+      '<a class="m-link" href="' + href("contact") + '"><span>10</span>Contact</a>' +
       "</div>"
     );
   }
@@ -125,7 +123,9 @@
       '<li><a href="' + href("faq") + '">FAQ</a></li>' +
       '<li><a href="' + href("contact") + '">Contact</a></li>' +
       '<li><a href="' + href("privacy-policy") + '">Privacy</a></li>' +
+      '<li><a href="' + href("cookie-policy") + '">Cookie Policy</a></li>' +
       '<li><a href="' + href("terms") + '">Terms</a></li>' +
+      '<li><button class="link-btn" id="gateConsentReset" type="button" data-open-consent="1" style="background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-decoration:underline">Cookie Preferences</button></li>' +
       "</ul></div>" +
       "</div>" +
       '<div class="app-footer__base">' +
@@ -133,6 +133,14 @@
       "<span>Unofficial practice \u00B7 Not affiliated with IIT Madras / GATE</span>" +
       "</div></footer>"
     );
+  }
+
+  function ensureConsent() {
+    if (document.querySelector('script[src*="consent.js"]') || window.GateConsent) return;
+    var s = document.createElement("script");
+    s.src = href("assets/consent.js");
+    s.defer = true;
+    document.head.appendChild(s);
   }
 
   function mount() {
@@ -149,6 +157,7 @@
 
     wireMenu();
     wireTheme();
+    ensureConsent();
   }
 
   function wireMenu() {
