@@ -743,14 +743,14 @@
       '<h3>⚡ GATE ML Study Shortcuts</h3>' +
       '<button type="button" class="study-modal-close" id="studyShortcutsClose" aria-label="Close shortcuts modal">&times;</button>' +
       '</div>' +
-      '<div class="study-shortcut-row"><span>Toggle No Distraction / Zen Mode</span><kbd>Z</kbd></div>' +
-      '<div class="study-shortcut-row"><span>Toggle Paragraph Focus Lens (Spotlight)</span><kbd>L</kbd></div>' +
-      '<div class="study-shortcut-row"><span>Toggle Reading Focus Ruler</span><kbd>R</kbd></div>' +
-      '<div class="study-shortcut-row"><span>Toggle Bionic Reading Mode</span><kbd>B</kbd></div>' +
-      '<div class="study-shortcut-row"><span>Toggle Screen Marker / Pen Drawing</span><kbd>M</kbd></div>' +
-      '<div class="study-shortcut-row"><span>Toggle Instant Highlighter Wand</span><kbd>H</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Toggle No Distraction / Zen Mode</span><kbd>Alt + Z</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Toggle Paragraph Focus Lens (Spotlight)</span><kbd>Alt + L</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Toggle Reading Focus Ruler</span><kbd>Alt + R</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Toggle Bionic Reading Mode</span><kbd>Alt + B</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Toggle Screen Marker / Pen Drawing</span><kbd>Alt + M</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Toggle Instant Highlighter Wand</span><kbd>Alt + H</kbd></div>' +
       '<div class="study-shortcut-row"><span>Exit Zen / Close Modal / Erase</span><kbd>Esc</kbd></div>' +
-      '<div class="study-shortcut-row"><span>Open Keyboard Shortcuts Help</span><kbd>?</kbd></div>' +
+      '<div class="study-shortcut-row"><span>Open Keyboard Shortcuts Help</span><kbd>? / Alt + ?</kbd></div>' +
       '</div>';
     document.body.appendChild(shortcutsModal);
 
@@ -4261,7 +4261,7 @@
 
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
 
-      if (e.key === "m" || e.key === "M") {
+      if (e.altKey && (e.key === "m" || e.key === "M")) {
 
         e.preventDefault();
 
@@ -4613,7 +4613,7 @@
 
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
 
-      if (e.key === "h" || e.key === "H") {
+      if (e.altKey && (e.key === "h" || e.key === "H")) {
 
         setWand(!wandActive);
 
@@ -5522,6 +5522,15 @@
         return;
       }
 
+      if (e.key === "?" || (e.shiftKey && key === "/") || (e.altKey && e.key === "?")) {
+        toggleShortcutsModal();
+        e.preventDefault();
+        return;
+      }
+
+      // Require Alt key for character shortcuts to comply with WCAG 2.1.4
+      if (!e.altKey) return;
+
       if (key === "z") {
         toggleZenMode();
         e.preventDefault();
@@ -5533,9 +5542,6 @@
         e.preventDefault();
       } else if (key === "b") {
         toggleBionicReading();
-        e.preventDefault();
-      } else if (e.key === "?" || (e.shiftKey && key === "/")) {
-        toggleShortcutsModal();
         e.preventDefault();
       }
     });

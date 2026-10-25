@@ -41,6 +41,7 @@
     { label: "Dashboard", route: "dashboard", match: "dashboard" },
     { label: "Syllabus", route: "syllabus", match: "syllabus" },
     { label: "Learn", route: "learn/calculus", match: "learn/" },
+    { label: "ML Guide", route: "ml-guide", match: "ml-guide" },
     { label: "Practice", route: "practice-da", match: "practice-da" },
     { label: "Mocks", route: "mock-da", match: "mock-da" },
     { label: "PYQ Guide", route: "pyq", match: "pyq" },
@@ -51,6 +52,7 @@
   function isActive(match) {
     var p = here.replace(/\/$/, "");
     if (match === "learn/") return p.indexOf("/learn") === p.length - 6 || p.indexOf("/learn/") !== -1;
+    if (match === "ml-guide") return p === "/ml-guide" || p === "/ml-guide.html" || p.indexOf("/ml-guide") !== -1;
     return p === "/" + match || p.slice(-(match.length + 1)) === "/" + match;
   }
 
@@ -85,9 +87,9 @@
       '<div class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">' +
       items +
       '<div class="m-group">More</div>' +
-      '<a class="m-link" href="' + href("faq") + '"><span>08</span>FAQ</a>' +
-      '<a class="m-link" href="' + href("about") + '"><span>09</span>About</a>' +
-      '<a class="m-link" href="' + href("contact") + '"><span>10</span>Contact</a>' +
+      '<a class="m-link" href="' + href("faq") + '"><span>09</span>FAQ</a>' +
+      '<a class="m-link" href="' + href("about") + '"><span>10</span>About</a>' +
+      '<a class="m-link" href="' + href("contact") + '"><span>11</span>Contact</a>' +
       "</div>"
     );
   }
@@ -110,6 +112,7 @@
       '<li><a href="' + href("planner") + '">Planner</a></li>' +
       "</ul></div>" +
       "<div><h3>Learn</h3><ul>" +
+      '<li><a href="' + href("ml-guide") + '">ML Guide</a></li>' +
       '<li><a href="' + href("learn/calculus") + '">Calculus</a></li>' +
       '<li><a href="' + href("learn/programming") + '">Programming</a></li>' +
       '<li><a href="' + href("learn/dbms") + '">DBMS</a></li>' +

@@ -14,8 +14,9 @@
     var map = {
       "/": "/index.html",
       "/practice": "/gate-ml-practice.html",
-      "/guide": "/ml-guide.html",
-      "/ml-guide": "/ml-guide.html",
+      "/guide": "/ml-guide",
+      "/ml-guide": "/ml-guide",
+      "/ml-guide.html": "/ml-guide",
       "/topics": "/topics/index.html",
       "/questions": "/questions/index.html",
       "/mock-test": "/mock-test/index.html",
