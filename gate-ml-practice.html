@@ -81,13 +81,13 @@ button{cursor:pointer}
 
 /* ---------------- top bar ---------------- */
 .topbar{
-  position:sticky;top:0;z-index:50;
-  background:rgba(10,10,10,0.88);
+  position:sticky;top:var(--nav-h,60px);z-index:40;
+  background:rgba(10,10,10,0.92);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   color:var(--ink);
   display:flex;align-items:center;gap:18px;
-  padding:0 20px;height:64px;
+  padding:0 20px;height:56px;
   border-bottom:1px solid var(--line);
 }
 .brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
@@ -112,8 +112,12 @@ a.brand:hover{opacity:.75}
 .modes button:hover{background:rgba(245,243,238,.07);color:var(--ink)}
 .modes button[aria-current="true"]{background:var(--ink);color:var(--navy-deep);font-weight:600}
 .topend{display:flex;align-items:center;gap:16px}
-.site
-.site
+.sitenav{display:flex;gap:4px}
+.sitenav a{
+  font-family:var(--code);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);padding:7px 10px;border-radius:6px;
+  border:1px solid transparent;transition:color .16s,border-color .16s;
+}
 .sitenav a:hover{color:var(--ink);border-color:var(--line)}
 .clock{
   font-family:var(--code);
@@ -129,7 +133,7 @@ a.brand:hover{opacity:.75}
 @media (max-width:760px){
   .topbar{padding:0 14px;gap:12px}
   .brand span{display:none}
-  .site
+  .sitenav{display:none}
 }
 
 /* ---------------- layout ---------------- */
@@ -253,7 +257,7 @@ pre code{background:none;border:0;padding:0;font-size:inherit}
 .sol .body p{margin-bottom:.7em}
 
 /* ---------------- palette rail ---------------- */
-.rail{position:sticky;top:80px;display:flex;flex-direction:column;gap:16px}
+.rail{position:sticky;top:calc(var(--nav-h, 60px) + 72px);display:flex;flex-direction:column;gap:16px}
 .rail .card{padding:17px}
 .railhead{
   font-family:var(--code);font-size:11px;font-weight:500;color:var(--ink-faint);
@@ -413,7 +417,9 @@ tbody tr:hover{background:var(--surface-2)}
 
 </style>
 </head>
-<body><main class="app-main" id="main"><div class="shell"><header class="topbar">
+<body>
+<div id="main" tabindex="-1"></div>
+<header class="topbar">
   <a class="brand" href="index.html" title="Back to the study hub"><b>GATE&nbsp;ML</b><span>Practice environment</span></a>
   <nav class="modes" id="modes" aria-label="Practice modes"></nav>
   <div class="topend">
@@ -2139,5 +2145,5 @@ renderModes();
 </script>
 
 <script src="assets/app-shell.js" defer></script>
-</div></main></body>
+</body>
 </html>
