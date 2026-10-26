@@ -603,14 +603,38 @@
 }
 
 @keyframes pulseTimer {
-
   0% { opacity: 1; }
-
   50% { opacity: 0.6; }
-
   100% { opacity: 1; }
-
 }
+
+.study-dock__btn--min {
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(245, 243, 238, 0.65);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.16s ease;
+}
+.study-dock__btn--min:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.study-dock.study-dock--minimized {
+  padding: 4px 6px;
+  background: rgba(14, 14, 14, 0.95);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+.study-dock.study-dock--minimized .study-dock__btn:not(.study-dock__btn--min):not(#studyDockHubBtn) {
+  display: none;
+}
+.study-dock.study-dock--minimized #studyDockHubBtn {
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
 
 
 

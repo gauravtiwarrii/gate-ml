@@ -950,12 +950,22 @@
       '</button>' +
 
       '<button type="button" class="study-dock__btn study-dock__btn--primary" id="studyDockHubBtn" title="Open Study Companion Hub">' +
-
       '📚 Study Hub <span class="study-dock__badge" id="studyDockCount">0</span>' +
-
-      '</button>';
+      '</button>' +
+      '<button type="button" class="study-dock__btn study-dock__btn--min" id="studyDockMinBtn" aria-label="Minimize or collapse dock" title="Minimize toolbar">&minus;</button>';
 
     document.body.appendChild(dock);
+
+    var minDockBtn = document.getElementById("studyDockMinBtn");
+    if (minDockBtn) {
+      minDockBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var isMin = dock.classList.toggle("study-dock--minimized");
+        minDockBtn.innerHTML = isMin ? "+" : "&minus;";
+        minDockBtn.title = isMin ? "Expand study toolbar" : "Minimize toolbar";
+        minDockBtn.setAttribute("aria-label", isMin ? "Expand study toolbar" : "Minimize toolbar");
+      });
+    }
 
 
 
@@ -5623,6 +5633,9 @@
           }
           writeStorage(CHECKLIST_KEY, completedUnits);
           renderReadinessAndChecklist();
+          try {
+            window.dispatchEvent(new CustomEvent("gateda:units_updated", { detail: { completedUnits: completedUnits } }));
+          } catch (e) {}
           var unitCheckCount = document.getElementById("unitCheckCount");
           if (unitCheckCount) {
             var cDone = completedUnits.filter(function (id) { return coreUnits.some(function (c) { return c.id === id; }); }).length;
@@ -5633,6 +5646,11 @@
     }
 
     renderReadinessAndChecklist();
+
+    window.addEventListener("gateda:units_updated", function (e) {
+      completedUnits = readStorage(CHECKLIST_KEY, []);
+      renderReadinessAndChecklist();
+    });
 
     // URL parameter check for direct zen focus link (?zen=1 or ?focus=1)
     try {
