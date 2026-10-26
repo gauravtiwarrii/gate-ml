@@ -3,120 +3,801 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>GATE DA Previous Year Questions (PYQ) – Pattern, Weightage &amp; Strategy Guide</title>
-    <meta name="description" content="Complete analysis of GATE Data Science &amp; AI (DA) previous year questions: subject-wise marks weightage, MCQ/MSQ/NAT distribution, scoring rules, and preparation strategy.">
+    <title>GATE DA Previous Year Questions (PYQ) – 2024, 2025 &amp; 2026 Official Papers</title>
+    <meta name="description" content="Practice all 195 official GATE Data Science &amp; AI (DA) previous year questions with instant scoring, GATE negative marking rules, and step-by-step worked solutions for 2024, 2025, and 2026.">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://www.hellogaurav.me/pyq">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="GATE ML">
-    <meta property="og:title" content="GATE DA Previous Year Questions (PYQ) – Analysis &amp; Strategy Guide">
-    <meta property="og:description" content="In-depth analysis of GATE Data Science &amp; AI question trends, subject weightage, marking rules, and official paper links.">
+    <meta property="og:title" content="GATE DA Previous Year Questions (PYQ) – Official Papers &amp; Solutions">
+    <meta property="og:description" content="All 195 official GATE DA questions from 2024 (IISc), 2025 (IIT Roorkee), and 2026 (IIT Guwahati) with verified answer keys, detailed solutions, and interactive practice.">
     <meta property="og:url" content="https://www.hellogaurav.me/pyq">
     <meta property="og:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="GATE DA Previous Year Questions (PYQ) – Analysis &amp; Strategy Guide">
-    <meta name="twitter:description" content="In-depth analysis of GATE Data Science &amp; AI question trends, subject weightage, marking rules, and official paper links.">
+    <meta name="twitter:title" content="GATE DA Previous Year Questions (PYQ) – Official Papers &amp; Solutions">
+    <meta name="twitter:description" content="All 195 official GATE DA questions from 2024, 2025, and 2026 with verified answer keys, detailed solutions, and interactive practice.">
     <meta name="twitter:image" content="https://www.hellogaurav.me/assets/og-cover.svg">
     <link rel="stylesheet" href="../assets/seo.css">
     <link rel="stylesheet" href="../assets/app.css">
+    <style>
+      .pyq-hero {
+        margin-bottom: var(--sp-5);
+      }
+      .pyq-tabs {
+        display: flex;
+        gap: 8px;
+        border-bottom: 1px solid var(--line-strong);
+        margin: var(--sp-4) 0 var(--sp-5);
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+      .pyq-tab-btn {
+        padding: 10px 18px;
+        font-weight: 600;
+        font-size: 14.5px;
+        color: var(--muted);
+        border: none;
+        border-bottom: 2px solid transparent;
+        background: none;
+        cursor: pointer;
+        transition: color var(--dur), border-color var(--dur);
+        white-space: nowrap;
+      }
+      .pyq-tab-btn:hover {
+        color: var(--text);
+      }
+      .pyq-tab-btn.active {
+        color: var(--accent-ink);
+        border-bottom-color: var(--accent);
+      }
+      .pyq-scorecard {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--r-lg);
+        padding: var(--sp-4) var(--sp-5);
+        margin-bottom: var(--sp-5);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: var(--sp-3);
+        align-items: center;
+      }
+      .score-stat {
+        text-align: center;
+      }
+      .score-stat .val {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text);
+        font-family: var(--font-mono);
+      }
+      .score-stat .lbl {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 2px;
+      }
+      .score-stat.score-stat--accent .val {
+        color: var(--accent-ink);
+      }
+      .score-stat.score-stat--ok .val {
+        color: var(--ok);
+      }
+      .score-stat.score-stat--err .val {
+        color: var(--err);
+      }
+      .pyq-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--sp-3);
+        align-items: center;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        padding: var(--sp-3) var(--sp-4);
+        margin-bottom: var(--sp-5);
+      }
+      .pyq-filters label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13.5px;
+        color: var(--text-2);
+      }
+      .pyq-filters select,
+      .pyq-filters input[type="search"] {
+        background: var(--bg);
+        border: 1px solid var(--line-strong);
+        border-radius: var(--r-sm);
+        padding: 6px 10px;
+        font-size: 13.5px;
+        color: var(--text);
+      }
+      .paper-badges {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin: var(--sp-2) 0;
+      }
+      .paper-badge {
+        font-size: 11px;
+        font-family: var(--font-mono);
+        padding: 3px 8px;
+        border-radius: var(--r-pill);
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        color: var(--muted);
+      }
+      .paper-badge.active {
+        background: var(--accent-soft);
+        border-color: var(--accent);
+        color: var(--accent-ink);
+        font-weight: 700;
+      }
+      .q-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: var(--sp-3);
+      }
+      .q-stem {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--text);
+        margin: 0 0 var(--sp-4);
+        white-space: pre-wrap;
+      }
+      .sol-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--accent-ink);
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: var(--r-sm);
+        border: 1px solid transparent;
+        background: none;
+        margin-top: 10px;
+      }
+      .sol-toggle:hover {
+        background: var(--accent-soft);
+      }
+      .sol-box {
+        margin-top: var(--sp-3);
+        padding: var(--sp-4);
+        border-radius: var(--r);
+        background: var(--surface-2);
+        border-left: 3px solid var(--accent);
+        font-size: 14.5px;
+        line-height: 1.65;
+      }
+      .sol-box h4 {
+        margin: 0 0 6px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--accent-ink);
+      }
+      .btn-action-bar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+      .badge-penalty {
+        font-size: 11px;
+        color: var(--err);
+        font-family: var(--font-mono);
+      }
+      .badge-nopenalty {
+        font-size: 11px;
+        color: var(--ok);
+        font-family: var(--font-mono);
+      }
+      .empty-state {
+        text-align: center;
+        padding: 48px 16px;
+        background: var(--surface);
+        border: 1px dashed var(--line-strong);
+        border-radius: var(--r-lg);
+      }
+    </style>
 </head>
 <body>
 <main class="app-main" id="main">
-  <div class="shell shell--prose">
-    <div class="page-head">
-      <p class="eyebrow">Exam Analysis</p>
-      <h1>GATE DA Previous Year Questions (PYQ) Guide</h1>
-      <p class="lede">Comprehensive breakdown of GATE Data Science &amp; AI (Paper Code: DA) trends, subject-wise marks weightage, question format analysis, and preparation recommendations.</p>
+  <div class="shell">
+    <div class="page-head pyq-hero">
+      <p class="eyebrow">Official Exam Papers</p>
+      <h1>GATE DA Previous Year Questions (PYQs)</h1>
+      <p class="lede">Comprehensive collection of <strong>195 official questions</strong> from GATE 2024 (IISc Bengaluru), GATE 2025 (IIT Roorkee), and GATE 2026 Model Paper (IIT Guwahati). Practice under exact GATE scoring rules with worked mathematical explanations.</p>
     </div>
 
-    <div class="card prose">
-      <h2>1. The Evolution of the GATE DA Paper</h2>
-      <p>The <strong>Data Science and Artificial Intelligence (DA)</strong> paper was officially introduced in GATE 2024 by IISc Bangalore. Designed to cater to undergraduate engineers and computing professionals entering modern AI/ML specializations, the paper establishes a dedicated evaluation standard separate from Computer Science and Information Technology (CS/IT).</p>
-      <p>Because the paper was introduced recently, official previous year papers provide invaluable insight into the depth, rigor, and mathematical maturity expected by the organizing IITs.</p>
+    <!-- Main Navigation Tabs -->
+    <div class="pyq-tabs" role="tablist">
+      <button class="pyq-tab-btn active" id="tabBtnPractice" role="tab" aria-selected="true" onclick="switchMainView('practice')">
+        Interactive PYQ Bank (195 Qs)
+      </button>
+      <button class="pyq-tab-btn" id="tabBtnGuide" role="tab" aria-selected="false" onclick="switchMainView('guide')">
+        Exam Analysis &amp; Weightage Guide
+      </button>
+    </div>
 
-      <h2>2. Exam Structure &amp; Mark Distribution</h2>
-      <p>The GATE DA paper consists of <strong>65 questions</strong> carrying a total of <strong>100 marks</strong>, to be completed in a 3-hour computer-based test (CBT):</p>
-      <ul>
-        <li><strong>General Aptitude (GA):</strong> 10 questions (5 one-mark questions + 5 two-mark questions) = <strong>15 marks</strong>.</li>
-        <li><strong>Technical Section (DA Core):</strong> 55 questions (25 one-mark questions + 30 two-mark questions) = <strong>85 marks</strong>.</li>
-      </ul>
-
-      <h2>3. Subject-Wise Marks Weightage Breakdown</h2>
-      <p>Based on official exam patterns and syllabus specifications, the 85 technical marks are distributed across core mathematical and algorithmic subjects:</p>
-      <div style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>Subject</th>
-              <th>Approximate Weightage</th>
-              <th>Key Tested Topics</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Probability &amp; Statistics</strong></td>
-              <td>16 – 18 Marks</td>
-              <td>Bayes Theorem, Conditional Distributions, Random Variables, Expectation, CLT, Hypothesis Testing (t-test, z-test, chi-square).</td>
-            </tr>
-            <tr>
-              <td><strong>Machine Learning</strong></td>
-              <td>15 – 18 Marks</td>
-              <td>Linear &amp; Ridge Regression, Logistic Regression, SVMs, Decision Trees (Gini/Entropy), k-Means/Hierarchical Clustering, PCA, Bias-Variance Trade-off.</td>
-            </tr>
-            <tr>
-              <td><strong>Linear Algebra</strong></td>
-              <td>10 – 12 Marks</td>
-              <td>Eigenvalues &amp; Eigenvectors, Rank &amp; Nullity, Orthogonal Matrices, Projections, LU &amp; SVD decompositions.</td>
-            </tr>
-            <tr>
-              <td><strong>Programming &amp; DSA (Python)</strong></td>
-              <td>10 – 12 Marks</td>
-              <td>Python data structures, complexity analysis, recursion, binary search, QuickSort/MergeSort, tree/graph traversals (BFS, DFS, Dijkstra).</td>
-            </tr>
-            <tr>
-              <td><strong>DBMS &amp; Data Warehousing</strong></td>
-              <td>10 – 12 Marks</td>
-              <td>Relational Algebra, SQL queries, BCNF/3NF normalization, B+ Tree indexing, Star/Snowflake schemas.</td>
-            </tr>
-            <tr>
-              <td><strong>Artificial Intelligence</strong></td>
-              <td>8 – 10 Marks</td>
-              <td>A* Search (admissibility/consistency), Minimax with Alpha-Beta pruning, Propositional/Predicate Logic, Variable Elimination.</td>
-            </tr>
-            <tr>
-              <td><strong>Calculus &amp; Optimization</strong></td>
-              <td>6 – 8 Marks</td>
-              <td>Limits, Taylor series expansion, single-variable maxima/minima, gradient-based optimization concepts.</td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- VIEW 1: INTERACTIVE PYQ BANK -->
+    <section id="viewPractice" style="display: block;">
+      <!-- Paper Filter Buttons -->
+      <div class="paper-badges" id="paperButtons" role="group" aria-label="Select GATE DA Question Paper">
+        <button type="button" class="paper-badge active" data-year="all" onclick="selectPaper('all')">All Papers (195 Qs)</button>
+        <button type="button" class="paper-badge" data-year="2025" onclick="selectPaper('2025')">GATE 2025 — IIT Roorkee (65 Qs)</button>
+        <button type="button" class="paper-badge" data-year="2024" onclick="selectPaper('2024')">GATE 2024 — IISc Bengaluru (65 Qs)</button>
+        <button type="button" class="paper-badge" data-year="2026" onclick="selectPaper('2026')">GATE 2026 Model — IIT Guwahati (65 Qs)</button>
       </div>
 
-      <h2>4. Question Types &amp; Marking Rules</h2>
-      <p>The GATE examination features three distinct question formats:</p>
-      <ul>
-        <li><strong>Multiple Choice Questions (MCQ):</strong> 4 options with exactly 1 correct option. Negative marking applies: ⅓ penalty for 1-mark questions and ⅔ penalty for 2-mark questions.</li>
-        <li><strong>Multiple Select Questions (MSQ):</strong> 4 options with one or more correct options. <strong>No negative marking</strong> and <strong>no partial credit</strong>; you must select all correct options and no incorrect options to earn marks.</li>
-        <li><strong>Numerical Answer Type (NAT):</strong> Enter numerical values using a virtual on-screen keypad within an accepted tolerance window. <strong>No negative marking</strong>.</li>
-      </ul>
+      <!-- Live Performance Scorecard -->
+      <div class="pyq-scorecard" id="scorecard">
+        <div class="score-stat">
+          <div class="val" id="statAttempted">0 / 195</div>
+          <div class="lbl">Attempted</div>
+        </div>
+        <div class="score-stat score-stat--ok">
+          <div class="val" id="statCorrect">0</div>
+          <div class="lbl">Correct</div>
+        </div>
+        <div class="score-stat score-stat--err">
+          <div class="val" id="statWrong">0</div>
+          <div class="lbl">Incorrect</div>
+        </div>
+        <div class="score-stat score-stat--accent">
+          <div class="val" id="statScore">0.00</div>
+          <div class="lbl">Score (Marks)</div>
+        </div>
+        <div class="score-stat">
+          <div class="val" id="statAccuracy">0%</div>
+          <div class="lbl">Accuracy</div>
+        </div>
+        <div class="score-stat" style="grid-column: span 1;">
+          <button type="button" class="btn btn--sm" style="border: 1px solid var(--line-strong);" onclick="resetSession()">Reset Progress</button>
+        </div>
+      </div>
 
-      <h2>5. How to Prepare with Official PYQs</h2>
-      <p>Follow a proven three-phase preparation cycle:</p>
-      <ol>
-        <li><strong>Concept Grounding:</strong> Never jump directly into PYQs without mastering the fundamentals. Work through our <a class="link" href="../ml-guide.html">Machine Learning Guide</a> and <a class="link" href="../syllabus">Syllabus Index</a> first.</li>
-        <li><strong>Topic-Wise Practice:</strong> Solve standard practice problems under timed conditions. Use our <a class="link" href="../questions">150 GATE ML Practice Questions</a> to build calculation speed and avoid distractor traps.</li>
-        <li><strong>Full-Length Timed Simulation:</strong> Attempt the official GATE DA question paper under strict 3-hour examination conditions using our <a class="link" href="../mock-test">Mock Exam Engine</a>.</li>
-      </ol>
+      <!-- Filter & Search Controls -->
+      <div class="pyq-filters">
+        <label for="filterSubject">Subject:
+          <select id="filterSubject" onchange="renderQuestionList()">
+            <option value="">All Subjects</option>
+            <option value="ga">General Aptitude (GA)</option>
+            <option value="prob">Probability &amp; Statistics</option>
+            <option value="linalg">Linear Algebra</option>
+            <option value="calc">Calculus &amp; Optimization</option>
+            <option value="prog">Programming &amp; DSA (Python)</option>
+            <option value="dbms">DBMS &amp; Warehousing</option>
+            <option value="ml">Machine Learning</option>
+            <option value="ai">Artificial Intelligence</option>
+          </select>
+        </label>
 
-      <h2>6. Official Question Papers &amp; Provenance Policy</h2>
-      <p>At GATE ML, we uphold strict standards of honesty. All questions created natively on our platform are transparently labeled <strong>Practice Questions</strong> and are designed strictly according to the official syllabus. We do not mislabel unofficial exercises as official PYQs.</p>
-      <p>To download original question papers and master answer keys released by the organizing institutes, consult the official IIT GATE portal: <a class="link" href="https://gate2027.iitm.ac.in" target="_blank" rel="noopener">Official GATE Portal (gate2027.iitm.ac.in)</a>.</p>
-    </div>
+        <label for="filterType">Format:
+          <select id="filterType" onchange="renderQuestionList()">
+            <option value="">All Formats</option>
+            <option value="mcq">MCQ (Single Choice)</option>
+            <option value="msq">MSQ (Multiple Select)</option>
+            <option value="nat">NAT (Numerical)</option>
+          </select>
+        </label>
+
+        <label for="filterMarks">Marks:
+          <select id="filterMarks" onchange="renderQuestionList()">
+            <option value="">All Marks</option>
+            <option value="1">1 Mark</option>
+            <option value="2">2 Marks</option>
+          </select>
+        </label>
+
+        <label for="filterSearch" style="flex: 1; min-width: 200px;">Search:
+          <input type="search" id="filterSearch" placeholder="Filter by question, topic, keyword..." oninput="renderQuestionList()" style="width: 100%;">
+        </label>
+
+        <div style="margin-left: auto; display: flex; gap: 8px; align-items: center;">
+          <span class="muted" id="filterCount" style="font-size: 13px;">Showing 195 questions</span>
+          <button type="button" class="btn btn--sm" id="btnToggleAllSol" onclick="toggleAllSolutions()">Show All Solutions</button>
+        </div>
+      </div>
+
+      <!-- Question List Container -->
+      <div id="pyqQuestionList" class="stack">
+        <div class="empty-state">
+          <p class="muted">Loading official GATE DA previous year questions...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: EXAM ANALYSIS & WEIGHTAGE GUIDE -->
+    <section id="viewGuide" style="display: none;">
+      <div class="card prose">
+        <h2>1. The Evolution of the GATE DA Paper</h2>
+        <p>The <strong>Data Science and Artificial Intelligence (DA)</strong> paper was officially introduced in GATE 2024 by IISc Bangalore. Designed to cater to undergraduate engineers and computing professionals entering modern AI/ML specializations, the paper establishes a dedicated evaluation standard separate from Computer Science and Information Technology (CS/IT).</p>
+        <p>Because the paper was introduced recently, official previous year papers provide invaluable insight into the depth, rigor, and mathematical maturity expected by the organizing IITs.</p>
+
+        <h2>2. Exam Structure &amp; Mark Distribution</h2>
+        <p>The GATE DA paper consists of <strong>65 questions</strong> carrying a total of <strong>100 marks</strong>, to be completed in a 3-hour computer-based test (CBT):</p>
+        <ul>
+          <li><strong>General Aptitude (GA):</strong> 10 questions (5 one-mark questions + 5 two-mark questions) = <strong>15 marks</strong>.</li>
+          <li><strong>Technical Section (DA Core):</strong> 55 questions (25 one-mark questions + 30 two-mark questions) = <strong>85 marks</strong>.</li>
+        </ul>
+
+        <h2>3. Subject-Wise Marks Weightage Breakdown</h2>
+        <p>Based on official exam patterns and syllabus specifications, the 85 technical marks are distributed across core mathematical and algorithmic subjects:</p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Approximate Weightage</th>
+                <th>Key Tested Topics</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Probability &amp; Statistics</strong></td>
+                <td>16 – 18 Marks</td>
+                <td>Bayes Theorem, Conditional Distributions, Random Variables, Expectation, CLT, Hypothesis Testing (t-test, z-test, chi-square).</td>
+              </tr>
+              <tr>
+                <td><strong>Machine Learning</strong></td>
+                <td>15 – 18 Marks</td>
+                <td>Linear &amp; Ridge Regression, Logistic Regression, SVMs, Decision Trees (Gini/Entropy), k-Means/Hierarchical Clustering, PCA, Bias-Variance Trade-off.</td>
+              </tr>
+              <tr>
+                <td><strong>Linear Algebra</strong></td>
+                <td>10 – 12 Marks</td>
+                <td>Eigenvalues &amp; Eigenvectors, Rank &amp; Nullity, Orthogonal Matrices, Projections, LU &amp; SVD decompositions.</td>
+              </tr>
+              <tr>
+                <td><strong>Programming &amp; DSA (Python)</strong></td>
+                <td>10 – 12 Marks</td>
+                <td>Python data structures, complexity analysis, recursion, binary search, QuickSort/MergeSort, tree/graph traversals (BFS, DFS, Dijkstra).</td>
+              </tr>
+              <tr>
+                <td><strong>DBMS &amp; Data Warehousing</strong></td>
+                <td>10 – 12 Marks</td>
+                <td>Relational Algebra, SQL queries, BCNF/3NF normalization, B+ Tree indexing, Star/Snowflake schemas.</td>
+              </tr>
+              <tr>
+                <td><strong>Artificial Intelligence</strong></td>
+                <td>8 – 10 Marks</td>
+                <td>A* Search (admissibility/consistency), Minimax with Alpha-Beta pruning, Propositional/Predicate Logic, Variable Elimination.</td>
+              </tr>
+              <tr>
+                <td><strong>Calculus &amp; Optimization</strong></td>
+                <td>6 – 8 Marks</td>
+                <td>Limits, Taylor series expansion, single-variable maxima/minima, gradient-based optimization concepts.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>4. Question Types &amp; Marking Rules</h2>
+        <p>The GATE examination features three distinct question formats:</p>
+        <ul>
+          <li><strong>Multiple Choice Questions (MCQ):</strong> 4 options with exactly 1 correct option. Negative marking applies: ⅓ penalty for 1-mark questions (−0.33) and ⅔ penalty for 2-mark questions (−0.67).</li>
+          <li><strong>Multiple Select Questions (MSQ):</strong> 4 options with one or more correct options. <strong>No negative marking</strong> and <strong>no partial credit</strong>; you must select all correct options and no incorrect options to earn marks.</li>
+          <li><strong>Numerical Answer Type (NAT):</strong> Enter numerical values using a virtual on-screen keypad within an accepted tolerance window. <strong>No negative marking</strong>.</li>
+        </ul>
+
+        <h2>5. How to Prepare with Official PYQs</h2>
+        <p>Follow a proven three-phase preparation cycle:</p>
+        <ol>
+          <li><strong>Concept Grounding:</strong> Never jump directly into PYQs without mastering the fundamentals. Work through our <a class="link" href="../ml-guide.html">Machine Learning Guide</a> and <a class="link" href="../syllabus">Syllabus Index</a> first.</li>
+          <li><strong>Topic-Wise Practice:</strong> Solve standard practice problems under timed conditions. Use our <a class="link" href="../questions">150 GATE ML Practice Questions</a> to build calculation speed and avoid distractor traps.</li>
+          <li><strong>Full-Length Timed Simulation:</strong> Attempt the official GATE DA question paper under strict 3-hour examination conditions using our <a class="link" href="../mock-test">Mock Exam Engine</a>.</li>
+        </ol>
+
+        <h2>6. Official Question Papers &amp; Provenance Policy</h2>
+        <p>At GATE ML, we uphold strict standards of honesty. All questions created natively on our platform are transparently labeled <strong>Practice Questions</strong> and are designed strictly according to the official syllabus. Official previous year papers are cataloged in our interactive PYQ bank above with exact institutional attribution.</p>
+        <p>To download original question papers and master answer keys released by the organizing institutes, consult the official IIT GATE portal: <a class="link" href="https://gate2027.iitm.ac.in" target="_blank" rel="noopener">Official GATE Portal (gate2027.iitm.ac.in)</a>.</p>
+      </div>
+    </section>
+
   </div>
 </main>
+
 <script src="../site-config.js" defer></script>
 <script src="../assets/seo.js" defer></script>
 <script src="../assets/ads.js" defer></script>
 <script src="../assets/app-shell.js" defer></script>
+
+<script>
+(function() {
+  "use strict";
+
+  var pyqData = null;
+  var selectedPaperYear = "all";
+  var showAllSol = false;
+  var userState = {}; // { qid: { answered: true, userAns: ..., isCorrect: bool, marksEarned: num } }
+
+  // Subject code display lookup
+  var SUBJECT_NAMES = {
+    "ga": "General Aptitude",
+    "prob": "Probability & Statistics",
+    "linalg": "Linear Algebra",
+    "calc": "Calculus & Optimization",
+    "prog": "Programming & DSA",
+    "dbms": "DBMS & Warehousing",
+    "ml": "Machine Learning",
+    "ai": "Artificial Intelligence"
+  };
+
+  // Load stored state
+  try {
+    var saved = localStorage.getItem("gateda_pyq_user_state");
+    if (saved) userState = JSON.parse(saved);
+  } catch(e) {}
+
+  function saveState() {
+    try {
+      localStorage.setItem("gateda_pyq_user_state", JSON.stringify(userState));
+    } catch(e) {}
+  }
+
+  // Switch between Interactive PYQ Bank and Exam Analysis Guide
+  window.switchMainView = function(view) {
+    var btnPractice = document.getElementById("tabBtnPractice");
+    var btnGuide = document.getElementById("tabBtnGuide");
+    var secPractice = document.getElementById("viewPractice");
+    var secGuide = document.getElementById("viewGuide");
+
+    if (view === "practice") {
+      btnPractice.classList.add("active");
+      btnPractice.setAttribute("aria-selected", "true");
+      btnGuide.classList.remove("active");
+      btnGuide.setAttribute("aria-selected", "false");
+      secPractice.style.display = "block";
+      secGuide.style.display = "none";
+    } else {
+      btnGuide.classList.add("active");
+      btnGuide.setAttribute("aria-selected", "true");
+      btnPractice.classList.remove("active");
+      btnPractice.setAttribute("aria-selected", "false");
+      secGuide.style.display = "block";
+      secPractice.style.display = "none";
+    }
+  };
+
+  // Switch Paper
+  window.selectPaper = function(year) {
+    selectedPaperYear = year;
+    var btns = document.querySelectorAll("#paperButtons .paper-badge");
+    btns.forEach(function(b) {
+      if (b.dataset.year === year) b.classList.add("active");
+      else b.classList.remove("active");
+    });
+    renderQuestionList();
+  };
+
+  // Reset Session
+  window.resetSession = function() {
+    if (confirm("Reset all question attempts and score on this device?")) {
+      userState = {};
+      saveState();
+      updateScorecard();
+      renderQuestionList();
+    }
+  };
+
+  // Toggle All Solutions
+  window.toggleAllSolutions = function() {
+    showAllSol = !showAllSol;
+    document.getElementById("btnToggleAllSol").textContent = showAllSol ? "Hide All Solutions" : "Show All Solutions";
+    var solBoxes = document.querySelectorAll(".sol-box");
+    solBoxes.forEach(function(b) {
+      b.style.display = showAllSol ? "block" : "none";
+    });
+  };
+
+  // Update Scorecard
+  function updateScorecard() {
+    if (!pyqData || !pyqData.questions) return;
+    var totalQs = pyqData.questions.length;
+    var attempted = 0;
+    var correct = 0;
+    var wrong = 0;
+    var totalMarks = 0;
+
+    pyqData.questions.forEach(function(q) {
+      var st = userState[q.id];
+      if (st && st.answered) {
+        attempted++;
+        if (st.isCorrect) correct++;
+        else wrong++;
+        totalMarks += (st.marksEarned || 0);
+      }
+    });
+
+    document.getElementById("statAttempted").textContent = attempted + " / " + totalQs;
+    document.getElementById("statCorrect").textContent = correct;
+    document.getElementById("statWrong").textContent = wrong;
+    document.getElementById("statScore").textContent = (totalMarks >= 0 ? "+" : "") + totalMarks.toFixed(2);
+    document.getElementById("statAccuracy").textContent = attempted > 0 ? Math.round((correct / attempted) * 100) + "%" : "0%";
+  }
+
+  // Fetch Questions
+  fetch("../data/pyq-da.json")
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      pyqData = data;
+      updateScorecard();
+      renderQuestionList();
+    })
+    .catch(function(err) {
+      console.error("Failed to load PYQ data:", err);
+      document.getElementById("pyqQuestionList").innerHTML = 
+        '<div class="empty-state"><p class="muted">Failed to load PYQ dataset. Please refresh the page.</p></div>';
+    });
+
+  // Render Questions matching active filters
+  window.renderQuestionList = function() {
+    if (!pyqData || !pyqData.questions) return;
+    var container = document.getElementById("pyqQuestionList");
+    var subVal = document.getElementById("filterSubject").value;
+    var typeVal = document.getElementById("filterType").value;
+    var marksVal = document.getElementById("filterMarks").value;
+    var searchVal = document.getElementById("filterSearch").value.trim().toLowerCase();
+
+    var filtered = pyqData.questions.filter(function(q) {
+      if (selectedPaperYear !== "all" && String(q.year) !== selectedPaperYear) return false;
+      if (subVal && q.subject !== subVal) return false;
+      if (typeVal && q.type !== typeVal) return false;
+      if (marksVal && String(q.marks) !== marksVal) return false;
+      if (searchVal) {
+        var hay = (q.id + " " + q.q + " " + (q.topic || "") + " " + (q.o ? q.o.join(" ") : "")).toLowerCase();
+        if (hay.indexOf(searchVal) === -1) return false;
+      }
+      return true;
+    });
+
+    document.getElementById("filterCount").textContent = "Showing " + filtered.length + " of " + pyqData.questions.length + " questions";
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><h3>No questions found</h3><p class="muted">Try adjusting your filters or search keywords.</p></div>';
+      return;
+    }
+
+    container.innerHTML = "";
+    filtered.forEach(function(q) {
+      container.appendChild(createQuestionCard(q));
+    });
+  };
+
+  // Build Individual Question Card
+  function createQuestionCard(q) {
+    var card = document.createElement("article");
+    card.className = "q";
+    card.id = "card-" + q.id;
+
+    var st = userState[q.id] || { answered: false };
+
+    // Meta Header
+    var header = document.createElement("div");
+    header.className = "q-header";
+    
+    var metaLeft = document.createElement("div");
+    metaLeft.className = "row";
+    metaLeft.innerHTML = 
+      '<span class="pill pill--accent">' + q.paper + '</span>' +
+      '<span class="pill">Q.' + q.qno + '</span>' +
+      '<span class="pill">' + (SUBJECT_NAMES[q.subject] || q.subject.toUpperCase()) + '</span>' +
+      '<span class="pill">' + q.type.toUpperCase() + '</span>' +
+      '<span class="pill">' + q.marks + ' Mark' + (q.marks > 1 ? 's' : '') + '</span>';
+
+    var metaRight = document.createElement("div");
+    if (q.type === "mcq") {
+      var penalty = q.marks === 1 ? "-0.33" : "-0.67";
+      metaRight.innerHTML = '<span class="badge-penalty">Negative: ' + penalty + '</span>';
+    } else {
+      metaRight.innerHTML = '<span class="badge-nopenalty">No Negative Marking</span>';
+    }
+
+    header.appendChild(metaLeft);
+    header.appendChild(metaRight);
+    card.appendChild(header);
+
+    // Question Stem
+    var stem = document.createElement("p");
+    stem.className = "q-stem";
+    stem.textContent = q.q;
+    card.appendChild(stem);
+
+    // Interactive Options / Answer Controls
+    var actionBox = document.createElement("div");
+    actionBox.className = "q-actions";
+
+    if (q.type === "mcq") {
+      var optsContainer = document.createElement("div");
+      optsContainer.className = "opts";
+
+      q.o.forEach(function(optText, idx) {
+        var optBtn = document.createElement("button");
+        optBtn.type = "button";
+        optBtn.className = "opt";
+        optBtn.innerHTML = '<span class="key">' + String.fromCharCode(65 + idx) + '</span><span>' + escapeHtml(optText) + '</span>';
+
+        if (st.answered) {
+          optBtn.disabled = true;
+          if (idx === q.a) optBtn.classList.add("correct");
+          if (st.userAns === idx && idx !== q.a) optBtn.classList.add("wrong");
+          if (st.userAns === idx) optBtn.classList.add("selected");
+        } else {
+          optBtn.onclick = function() {
+            var isCorrect = (idx === q.a);
+            var marksEarned = isCorrect ? q.marks : -(q.marks / 3);
+            userState[q.id] = { answered: true, userAns: idx, isCorrect: isCorrect, marksEarned: marksEarned };
+            saveState();
+            updateScorecard();
+            renderQuestionList();
+          };
+        }
+        optsContainer.appendChild(optBtn);
+      });
+      actionBox.appendChild(optsContainer);
+
+    } else if (q.type === "msq") {
+      var msqOpts = document.createElement("div");
+      msqOpts.className = "opts";
+      var selected = Array.isArray(st.userAns) ? st.userAns.slice() : [];
+
+      q.o.forEach(function(optText, idx) {
+        var optBtn = document.createElement("button");
+        optBtn.type = "button";
+        optBtn.className = "opt";
+        optBtn.innerHTML = '<span class="key">' + String.fromCharCode(65 + idx) + '</span><span>' + escapeHtml(optText) + '</span>';
+
+        if (st.answered) {
+          optBtn.disabled = true;
+          var inOfficial = q.a.indexOf(idx) >= 0;
+          var inUser = selected.indexOf(idx) >= 0;
+          if (inOfficial) optBtn.classList.add("correct");
+          else if (inUser) optBtn.classList.add("wrong");
+          if (inUser) optBtn.classList.add("selected");
+        } else {
+          if (selected.indexOf(idx) >= 0) optBtn.classList.add("selected");
+          optBtn.onclick = function() {
+            var pos = selected.indexOf(idx);
+            if (pos >= 0) {
+              selected.splice(pos, 1);
+              optBtn.classList.remove("selected");
+            } else {
+              selected.push(idx);
+              optBtn.classList.add("selected");
+            }
+          };
+        }
+        msqOpts.appendChild(optBtn);
+      });
+      actionBox.appendChild(msqOpts);
+
+      if (!st.answered) {
+        var msqSubmitRow = document.createElement("div");
+        msqSubmitRow.className = "btn-action-bar";
+        var msqSubBtn = document.createElement("button");
+        msqSubBtn.type = "button";
+        msqSubBtn.className = "btn btn--primary btn--sm";
+        msqSubBtn.textContent = "Submit Multi-Select";
+        msqSubBtn.onclick = function() {
+          if (selected.length === 0) {
+            alert("Please select at least one option before submitting.");
+            return;
+          }
+          var isCorrect = (selected.length === q.a.length) && q.a.every(function(v) { return selected.indexOf(v) >= 0; });
+          var marksEarned = isCorrect ? q.marks : 0;
+          userState[q.id] = { answered: true, userAns: selected, isCorrect: isCorrect, marksEarned: marksEarned };
+          saveState();
+          updateScorecard();
+          renderQuestionList();
+        };
+        msqSubmitRow.appendChild(msqSubBtn);
+        msqSubmitRow.insertAdjacentHTML("beforeend", '<span class="muted" style="font-size:12.5px;">MSQ: Select all correct choices (no partial marks).</span>');
+        actionBox.appendChild(msqSubmitRow);
+      }
+
+    } else if (q.type === "nat") {
+      var natRow = document.createElement("div");
+      natRow.className = "btn-action-bar";
+
+      var natInput = document.createElement("input");
+      natInput.type = "number";
+      natInput.step = "any";
+      natInput.className = "nat";
+      natInput.placeholder = "Enter numeric answer";
+      natInput.style.maxWidth = "220px";
+      natInput.style.padding = "6px 10px";
+      natInput.style.borderRadius = "var(--r-sm)";
+      natInput.style.border = "1px solid var(--line-strong)";
+      natInput.style.background = "var(--bg)";
+      natInput.style.color = "var(--text)";
+
+      if (st.answered) {
+        natInput.value = st.userAns;
+        natInput.disabled = true;
+        natRow.appendChild(natInput);
+        var resPill = document.createElement("span");
+        resPill.className = "pill " + (st.isCorrect ? "pill--accent" : "missing");
+        resPill.textContent = st.isCorrect ? "Correct: Accepted" : "Incorrect";
+        natRow.appendChild(resPill);
+        var rangeSpan = document.createElement("span");
+        rangeSpan.className = "muted";
+        rangeSpan.style.fontSize = "12.5px";
+        rangeSpan.textContent = "Official Range: [" + q.a[0] + " to " + q.a[1] + "]";
+        natRow.appendChild(rangeSpan);
+      } else {
+        var natSubBtn = document.createElement("button");
+        natSubBtn.type = "button";
+        natSubBtn.className = "btn btn--primary btn--sm";
+        natSubBtn.textContent = "Check Answer";
+        natSubBtn.onclick = function() {
+          var val = parseFloat(natInput.value);
+          if (isNaN(val)) {
+            alert("Please enter a valid numeric value.");
+            return;
+          }
+          var isCorrect = (val >= q.a[0] && val <= q.a[1]);
+          var marksEarned = isCorrect ? q.marks : 0;
+          userState[q.id] = { answered: true, userAns: val, isCorrect: isCorrect, marksEarned: marksEarned };
+          saveState();
+          updateScorecard();
+          renderQuestionList();
+        };
+        natRow.appendChild(natInput);
+        natRow.appendChild(natSubBtn);
+      }
+      actionBox.appendChild(natRow);
+    }
+
+    card.appendChild(actionBox);
+
+    // Solution Disclosure Section
+    var solToggleBtn = document.createElement("button");
+    solToggleBtn.type = "button";
+    solToggleBtn.className = "sol-toggle";
+    solToggleBtn.innerHTML = '<span>&#9662;</span> Detailed Solution &amp; Working';
+
+    var solBox = document.createElement("div");
+    solBox.className = "sol-box";
+    solBox.style.display = showAllSol ? "block" : "none";
+
+    var officialAnswerText = "";
+    if (q.type === "mcq") officialAnswerText = "Option (" + String.fromCharCode(65 + q.a) + ")";
+    else if (q.type === "msq") officialAnswerText = "Options " + q.a.map(function(idx) { return "(" + String.fromCharCode(65 + idx) + ")"; }).join(", ");
+    else if (q.type === "nat") officialAnswerText = q.a[0] === q.a[1] ? String(q.a[0]) : "[" + q.a[0] + " to " + q.a[1] + "]";
+
+    solBox.innerHTML = 
+      '<h4>Official Answer: ' + officialAnswerText + '</h4>' +
+      '<p>' + escapeHtml(q.s) + '</p>' +
+      '<p class="muted" style="margin: 8px 0 0; font-size: 12px; font-family: var(--font-mono);">' +
+      'ID: ' + q.id + ' · Year: ' + q.year + ' · Topic: ' + q.topic + ' · Provenance: ' + q.prov +
+      '</p>';
+
+    solToggleBtn.onclick = function() {
+      var isHidden = (solBox.style.display === "none");
+      solBox.style.display = isHidden ? "block" : "none";
+      solToggleBtn.innerHTML = (isHidden ? '<span>&#9652;</span>' : '<span>&#9662;</span>') + ' Detailed Solution &amp; Working';
+    };
+
+    card.appendChild(solToggleBtn);
+    card.appendChild(solBox);
+
+    return card;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return "";
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+})();
+</script>
 </body>
 </html>

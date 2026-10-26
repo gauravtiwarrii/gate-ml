@@ -21,3 +21,8 @@ _shot_*.png
 _shot*.png
 _tmp*
 
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
